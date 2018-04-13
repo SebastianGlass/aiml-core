@@ -1,0 +1,35 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+
+archivesBaseName = 'aiml-core'
+version = '1.0-SNAPSHOT'
+ 
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+
+dependencies {
+    
+  	compile group: 'org.json', name: 'json', version: '20160810'
+    compile group: 'junit', name: 'junit', version: '4.12'
+    compile group: 'org.mockito', name: 'mockito-core', version: '2.7.22'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.1'
+    compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: '2.9.4'
+    compile group: 'commons-logging', name: 'commons-logging', version: '1.2'
+    compile group: 'org.reflections', name: 'reflections', version: '0.9.10'
+    
+   
+    testCompile("junit:junit")
+    testCompile 'org.jacoco:org.jacoco.agent:0.7+'
+    testCompile 'org.jacoco:org.jacoco.ant:0.7+'
+    testCompile 'org.jacoco:org.jacoco.core:0.7+'
+    testCompile 'org.jacoco:org.jacoco.report:0.7+'
+    testCompile "org.mockito:mockito-core:2.+"
+   
+}
