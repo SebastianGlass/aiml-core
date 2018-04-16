@@ -42,7 +42,7 @@ catch(Exception e)
 This files can be used to feed the AIMLHandlerBuilder to create an AIMLHandler.
 ```java
 AIMLHandler handler = new AIMLHandlerBuilder()
-    .nonStaticMemory(new HasMap<>())
+    .nonStaticMemory(new HashMap<>())
     .withBotMemory(botMem)
     .withAiml(aimlFiles)
     .build();                      
