@@ -1,0 +1,20 @@
+<aiml>
+    <category>
+        <pattern>WHAT IS YOUR NAME</pattern>
+        <template>My name is <bot name="name"/><think><set name="topic">NAMES</set></think></template>
+    </category>
+    <category>
+        <pattern>WHATS *</pattern>
+        <template><srai>WHAT IS <star/></srai></template>
+    </category>
+    <category>
+        <pattern>RANDOM PICKUP LINE</pattern>
+        <template>Random</template>
+    </category>
+    <topic name="NAMES">
+        <category>
+            <pattern>RANDOM PICKUP LINE</pattern>
+            <template>Random Name Sentence</template>
+        </category>
+    </topic>
+</aiml>
