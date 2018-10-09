@@ -17,7 +17,7 @@ public class BasicExample
 
     private static Map<String, String> botMem = new HashMap<>();
 
-    public static void main(String[] args)
+    private static AIMLHandler getAIMLHandler()
     {
         File file = new File(BasicExample.class.getResource("/example.aiml")
                         .getFile());
@@ -36,8 +36,18 @@ public class BasicExample
                         .withBotMemory(botMem)
                         .withAiml(aimlFiles)
                         .build();
+        return handler;
+    }
+
+    public static void main(String[] args)
+    {
+        AIMLHandler handler = getAIMLHandler();
+
+
         String response = handler.getAnswer("What's your name?");
         System.out.println(response);
+
+
         response = handler.getAnswer("My name is User");
         System.out.println(response);
     }
