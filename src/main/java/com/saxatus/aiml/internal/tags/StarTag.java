@@ -9,6 +9,7 @@ import org.w3c.dom.Node;
 
 import com.saxatus.aiml.internal.factory.TagFactory;
 import com.saxatus.aiml.internal.parsing.AIMLParseNode;
+import com.saxatus.aiml.internal.utils.StringUtils;
 
 public class StarTag extends AbstractBotTag
 {
@@ -66,8 +67,7 @@ public class StarTag extends AbstractBotTag
 
     public static List<String> resolveStars(String request, String input)
     {
-        String regex = input.replace("*", "(.+)")
-                        .replace("_", "(.+)");
+        String regex = StringUtils.toRegex(input);
         Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(request);
 

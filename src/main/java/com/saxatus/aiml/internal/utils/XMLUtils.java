@@ -35,28 +35,21 @@ public class XMLUtils
         documentFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
     }
 
-    private XMLUtils()
-    {
-
-    }
-
     public static String parseXMLToString(Node node) throws TransformerException
     {
         StringWriter sw = new StringWriter();
-        Transformer t = transformerFactory.newTransformer();
-        t.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-        t.setOutputProperty(OutputKeys.INDENT, "yes");
-        t.transform(new DOMSource(node), new StreamResult(sw));
+        Transformer transformer = transformerFactory.newTransformer();
+        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+        transformer.transform(new DOMSource(node), new StreamResult(sw));
         return sw.toString();
-
     }
 
     public static Document parseStringToXMLDocument(String xml)
                     throws ParserConfigurationException, SAXException, IOException
     {
-        DocumentBuilder builder = documentFactory.newDocumentBuilder();
-        InputSource is = new InputSource(new StringReader(xml));
-        return builder.parse(is);
+        DocumentBuilder dbuilder = documentFactory.newDocumentBuilder();
+        return dbuilder.parse(new InputSource(new StringReader(xml)));
     }
 
     public static Document parseFileToXMLDocument(File file)
@@ -70,5 +63,10 @@ public class XMLUtils
     {
         Transformer transformer = transformerFactory.newTransformer();
         transformer.transform(new DOMSource(doc), new StreamResult(output));
+    }
+
+    private XMLUtils()
+    {
+
     }
 }

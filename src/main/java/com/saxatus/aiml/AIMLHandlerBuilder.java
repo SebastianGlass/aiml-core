@@ -69,7 +69,8 @@ public class AIMLHandlerBuilder
         {
             try
             {
-                aimls = reader.stream()
+                aimls = reader.withBotMemory(botMemory)
+                                .stream()
                                 .collect(Collectors.toList());
             }
             catch(ParserConfigurationException | SAXException | IOException e)

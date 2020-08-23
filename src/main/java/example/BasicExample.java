@@ -28,8 +28,7 @@ public class BasicExample
         List<AIML> aimlList = new ArrayList<>();
         try (AIMLFileReader reader = new AIMLFileReader(file))
         {
-            aimlList = reader.withBotMemory(botMem)
-                            .stream()
+            aimlList = reader.stream()
                             .collect(Collectors.toList());
         }
         catch(Exception e)
