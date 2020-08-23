@@ -1,5 +1,7 @@
 package com.saxatus.aiml.parsing;
 
+import java.util.Objects;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -179,15 +181,7 @@ public class AIML implements Comparable<AIML>
     @Override
     public int hashCode()
     {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + line;
-        result = prime * result + ((pattern == null) ? 0 : pattern.hashCode());
-        result = prime * result + ((source == null) ? 0 : source.hashCode());
-        result = prime * result + ((template == null) ? 0 : template.hashCode());
-        result = prime * result + ((that == null) ? 0 : that.hashCode());
-        result = prime * result + ((topic == null) ? 0 : topic.hashCode());
-        return result;
+        return Objects.hash(line, pattern, source, template, that, topic);
     }
 
     @Override
@@ -200,44 +194,11 @@ public class AIML implements Comparable<AIML>
         if (getClass() != obj.getClass())
             return false;
         AIML other = (AIML)obj;
-        if (line != other.line)
-            return false;
-        if (pattern == null)
-        {
-            if (other.pattern != null)
-                return false;
-        }
-        else if (!pattern.equals(other.pattern))
-            return false;
-        if (source == null)
-        {
-            if (other.source != null)
-                return false;
-        }
-        else if (!source.equals(other.source))
-            return false;
-        if (template == null)
-        {
-            if (other.template != null)
-                return false;
-        }
-        else if (!template.equals(other.template))
-            return false;
-        if (that == null)
-        {
-            if (other.that != null)
-                return false;
-        }
-        else if (!that.equals(other.that))
-            return false;
-        if (topic == null)
-        {
-            if (other.topic != null)
-                return false;
-        }
-        else if (!topic.equals(other.topic))
-            return false;
-        return true;
+        return line == other.line && Objects.equals(pattern, other.pattern) && Objects.equals(source, other.source)
+                        && Objects.equals(template, other.template) && Objects.equals(that, other.that)
+                        && Objects.equals(topic, other.topic);
     }
+
+
 
 }
