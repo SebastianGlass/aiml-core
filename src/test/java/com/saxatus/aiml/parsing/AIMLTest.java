@@ -1,15 +1,15 @@
 package com.saxatus.aiml.parsing;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class AIMLTest
+class AIMLTest
 {
 
     @Test
-    public void testAIMLObject()
+    void testAIMLObject()
     {
         AIML a = new AIML("", "", null, null, "", 1);
         assertEquals("AIML [pattern=, template=, src=, line=1]", a.toString());
@@ -24,7 +24,7 @@ public class AIMLTest
     }
 
     @Test
-    public void testAIMLOrder()
+    void testAIMLOrder()
     {
         AIML a = new AIML("_ a", "", null, null, "", 1);
         AIML b = new AIML("a a", "", null, null, "", 1);

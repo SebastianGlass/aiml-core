@@ -1,6 +1,6 @@
 package com.saxatus.aiml;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
 import java.net.URL;
@@ -8,16 +8,16 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.saxatus.aiml.AIMLHandler.AIMLHandlerBuilder;
 import com.saxatus.aiml.parsing.AIML;
 
-public class AIMLHandlerTest
+class AIMLHandlerTest
 {
 
     @Test
-    public void testAIMLHandlerBuilderWithList()
+    void testAIMLHandlerBuilderWithList()
     {
         List<AIML> list = Arrays.asList(new AIML("", "", "", "", "", 1));
         AIMLHandler h = new AIMLHandlerBuilder().withAiml(list)
@@ -26,8 +26,8 @@ public class AIMLHandlerTest
                         .size());
     }
 
-    @Test()
-    public void testAIMLHandlerBuilderWithInitializedReader() throws Exception
+    @Test
+    void testAIMLHandlerBuilderWithInitializedReader() throws Exception
     {
         URL fileURL = this.getClass()
                         .getResource("/complexAIML.aiml");
@@ -40,8 +40,8 @@ public class AIMLHandlerTest
 
     }
 
-    @Test()
-    public void testAIMLHandlerBuilderWithReader() throws Exception
+    @Test
+    void testAIMLHandlerBuilderWithReader() throws Exception
     {
         URL fileURL = this.getClass()
                         .getResource("/complexAIML.aiml");
@@ -54,8 +54,8 @@ public class AIMLHandlerTest
         reader.close();
     }
 
-    @Test()
-    public void integTest() throws Exception
+    @Test
+    void integTest() throws Exception
     {
         URL fileURL = this.getClass()
                         .getResource("/complexAIML.aiml");

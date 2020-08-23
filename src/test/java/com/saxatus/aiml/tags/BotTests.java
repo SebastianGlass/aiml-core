@@ -1,6 +1,7 @@
 package com.saxatus.aiml.tags;
 
-import static org.junit.Assert.assertEquals;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.net.URISyntaxException;
 import java.util.Arrays;
@@ -8,14 +9,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.saxatus.aiml.AIMLHandler;
 import com.saxatus.aiml.AIMLHandler.AIMLHandlerBuilder;
 import com.saxatus.aiml.parsing.AIML;
 
-public class BotTests
+class BotTests
 {
 
     /*
@@ -30,14 +30,9 @@ public class BotTests
                     new AIML("IDENTIFY", "<srai>WHAT IS YOUR NAME</srai>", null, null, "test", -1),
                     new AIML("CRY", ":'(", null, null, "test", -1), new AIML("DO *", "<sr/>", null, null, "test", -1));
 
-    @Before
-    public void setup()
-    {
-
-    }
 
     @Test
-    public void testTopic() throws URISyntaxException
+    void testTopic() throws URISyntaxException
     {
         String[] request = { "Let us talk about cars", "They are cool" };
 
@@ -54,7 +49,7 @@ public class BotTests
     }
 
     @Test
-    public void testNotSetTopic() throws URISyntaxException
+    void testNotSetTopic() throws URISyntaxException
     {
 
         AIMLHandler b = getAIMLHandler(aiml);
@@ -70,7 +65,7 @@ public class BotTests
     }
 
     @Test
-    public void testBotTag() throws URISyntaxException
+    void testBotTag() throws URISyntaxException
     {
         AIMLHandler b = getAIMLHandler(aiml);
         String answer = b.getAnswer("What is your name?");
@@ -78,7 +73,7 @@ public class BotTests
     }
 
     @Test
-    public void testSraiTag() throws URISyntaxException
+    void testSraiTag() throws URISyntaxException
     {
         AIMLHandler b = getAIMLHandler(aiml);
         String answer = b.getAnswer("Identify");
@@ -86,7 +81,7 @@ public class BotTests
     }
 
     @Test
-    public void testSrTag() throws URISyntaxException
+    void testSrTag() throws URISyntaxException
     {
         AIMLHandler b = getAIMLHandler(aiml);
         String answer = b.getAnswer("Do Cry");
@@ -94,7 +89,7 @@ public class BotTests
     }
 
     @Test
-    public void testOrder() throws URISyntaxException
+    void testOrder() throws URISyntaxException
     {
         List<AIML> aiml = Arrays.asList(new AIML("A *", "1", "3", null, "", -1),
                         new AIML("A * IS", "2", "3", null, "", -1), new AIML("A _", "3", null, null, "", -1));

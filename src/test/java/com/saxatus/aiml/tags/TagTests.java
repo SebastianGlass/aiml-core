@@ -1,8 +1,8 @@
 package com.saxatus.aiml.tags;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
 import java.io.IOException;
@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.w3c.dom.Node;
 
@@ -20,7 +20,7 @@ import com.saxatus.aiml.factory.TagFactory;
 import com.saxatus.aiml.parsing.AIMLParseNode;
 import com.saxatus.aiml.parsing.TagParameter;
 
-public class TagTests
+class TagTests
 {
 
     @Mock
@@ -31,7 +31,7 @@ public class TagTests
      */
 
     @Test
-    public void testConditionTag()
+    void testConditionTag()
     {
         String response;
         String template = "<condition name='a' value='b'>b</condition><condition name='a' value='c'>c</condition>";
@@ -53,7 +53,7 @@ public class TagTests
     }
 
     @Test
-    public void testSetTag()
+    void testSetTag()
     {
         String response;
         String template = "<set name='a'>b</set>";
@@ -69,7 +69,7 @@ public class TagTests
     }
 
     @Test
-    public void testSwitchTag()
+    void testSwitchTag()
     {
         String response;
         String template = "<think>" + "<set name=\"branch\">" + "<get name=\"birthday\"/>" + "</set>" + "</think>"
@@ -90,7 +90,7 @@ public class TagTests
     }
 
     @Test
-    public void testNestedSetTag()
+    void testNestedSetTag()
     {
         String response;
         String template = "<set name='a'><set name='b'>b</set></set>";
@@ -108,7 +108,7 @@ public class TagTests
     }
 
     @Test
-    public void testThinkTag()
+    void testThinkTag()
     {
         String response;
         String template = "<think>nom</think>";
@@ -121,7 +121,7 @@ public class TagTests
     }
 
     @Test
-    public void testStarTag()
+    void testStarTag()
     {
         String response;
         String request = "A dog is a cute animal.";
@@ -136,7 +136,7 @@ public class TagTests
     }
 
     @Test
-    public void testBrReduction()
+    void testBrReduction()
     {
         String response;
         String request = "A dog is a cute animal.";
@@ -151,7 +151,7 @@ public class TagTests
     }
 
     @Test
-    public void testUnknownTag()
+    void testUnknownTag()
     {
         String response;
         String request = "A dog is a cute animal.";
@@ -166,7 +166,7 @@ public class TagTests
     }
 
     @Test
-    public void testNestedUnknownTag()
+    void testNestedUnknownTag()
     {
         String response;
         String request = "A dog is a cute animal.";
@@ -181,7 +181,7 @@ public class TagTests
     }
 
     @Test
-    public void testRandomTag()
+    void testRandomTag()
     {
         String response;
         String request = "A dog is a cute animal.";
@@ -197,7 +197,7 @@ public class TagTests
     }
 
     @Test
-    public void testPersonTag()
+    void testPersonTag()
     {
         String response;
         String request = "Your dog is a cute animal.";
@@ -212,7 +212,7 @@ public class TagTests
     }
 
     @Test
-    public void testPersonStar2Tag()
+    void testPersonStar2Tag()
     {
         String response;
         String request = "A dog is a cute animal.";
@@ -227,7 +227,7 @@ public class TagTests
     }
 
     @Test
-    public void testPersonTranscriptionTag()
+    void testPersonTranscriptionTag()
     {
         String response;
         String request = "I like you.";
