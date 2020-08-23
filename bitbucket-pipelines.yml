@@ -1,16 +1,47 @@
-# This is a sample build configuration for Java (Gradle).
-# Check our guides at https://confluence.atlassian.com/x/zd-5Mw for more examples.
-# Only use spaces to indent your .yml configuration.
-# -----
-# You can specify a custom docker image from Docker Hub as your build environment.
-image: java:8
+image: openjdk:11
 
-pipelines:
-  default:
-    - step:
+clone:
+  depth: full              # SonarCloud scanner needs the full history to assign issues properly
+
+definitions:
+  caches:
+    sonar: ~/.sonar/cache  # Caching SonarCloud artifacts will speed up your build
+  steps:
+    - step: &build-content
+        name: Build, test - content
         caches:
           - gradle
-        script: # Modify the commands below to build your repository.
-          # You must commit the Gradle wrapper to your repository
-          # https://docs.gradle.org/current/userguide/gradle_wrapper.html
-          - bash ./gradlew build
+        script:
+          - ./gradlew build
+        artifacts:
+          - build/classes/**
+          - build/jacoco/**
+          - build/libs/**
+
+    - step: &sonar
+        name: analyze on SonarCloud
+        caches:
+          - gradle
+          - sonar
+        script:
+          - bash ./gradlew sonarqube -x test -Dsonar.login=$SONAR_TOKEN
+
+    - step: &spotless
+        name: analyse Code-Style
+        caches:
+          - gradle
+        script:
+          -  ./gradlew spotlessCheck
+pipelines:
+  branches:
+    '**':
+      - step: *build-content
+      - parallel:
+        - step: *sonar
+        - step: *spotless
+  pull-requests:
+    '**':
+      - step: *build-content
+      - parallel:
+        - step: *sonar
+        - step: *spotless

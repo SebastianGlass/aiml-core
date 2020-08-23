@@ -40,7 +40,8 @@ public class RandomTag extends AbstractAIMLTag
         for (int i = 0; i < childNodes.getLength(); i++)
         {
             Node childNode = childNodes.item(i);
-            if (childNode.getNodeName().equals("li"))
+            if (childNode.getNodeName()
+                            .equals("li"))
             {
                 IAIMLTag liTag = getFactory().createTag(childNode);
                 options.add(liTag);
@@ -51,12 +52,13 @@ public class RandomTag extends AbstractAIMLTag
             }
         }
 
-        return options.get(getRandom().nextInt(options.size())).handle(getAIMLParseNode());
+        return options.get(getRandom().nextInt(options.size()))
+                        .handle(getAIMLParseNode());
     }
 
     public Random getRandom()
     {
-       return new Random();
+        return new Random();
     }
 
 }

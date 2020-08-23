@@ -46,7 +46,8 @@ public class PersonTag extends StarTag
     {
         super.handle(debugNode);
         String context;
-        if (getNode().getChildNodes().getLength() == 0)
+        if (getNode().getChildNodes()
+                        .getLength() == 0)
         {
             context = replaceStars();
         }
@@ -62,14 +63,16 @@ public class PersonTag extends StarTag
             contextList[i] = map.getOrDefault(contextList[i].toLowerCase(), contextList[i]);
             context += " " + contextList[i];
         }
-        
+
         return context;
     }
 
-    public  String getDebugInformation(){
-        if(getNode().getChildNodes().getLength() == 0)
+    public String getDebugInformation()
+    {
+        if (getNode().getChildNodes()
+                        .getLength() == 0)
         {
-            return TAG+" ("+replaceStars()+")";
+            return TAG + " (" + replaceStars() + ")";
         }
         else
         {
