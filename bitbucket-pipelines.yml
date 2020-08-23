@@ -24,7 +24,7 @@ definitions:
           - gradle
           - sonar
         script:
-          - bash ./gradlew sonarqube -x test -Dsonar.projectKey=sgla_aiml-core -Dsonar.organization=sgla-bitbucket -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN
+          - bash ./gradlew sonarqube -x test -Dsonar.login=$SONAR_TOKEN
 
     - step: &spotless
         name: analyse Code-Style
