@@ -1,13 +1,13 @@
 package com.saxatus.aiml.api.utils;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class Dictionary<K extends Serializable, V extends Serializable> implements Serializable
+public class Dictionary<K extends Serializable, V extends Serializable> implements Map<K, Set<V>>, Serializable
 {
 
     private static final long serialVersionUID = 3406133571779137771L;
@@ -21,11 +21,6 @@ public class Dictionary<K extends Serializable, V extends Serializable> implemen
         map.put(key, l);
     }
 
-    public Set<V> get(K key)
-    {
-        return map.get(key);
-    }
-
     public void putAll(Dictionary<K, V> dict)
     {
         if (dict == null)
@@ -33,21 +28,7 @@ public class Dictionary<K extends Serializable, V extends Serializable> implemen
         this.putAll(dict.map);
     }
 
-    public void putAll(Map<K, ? extends Iterable<V>> map)
-    {
-        synchronized(this)
-        {
-            for (Entry<K, ? extends Iterable<V>> entry : map.entrySet())
-            {
-                Iterable<V> v = entry.getValue();
-                for (V value : v)
-                {
-                    this.put(entry.getKey(), value);
-                }
-            }
-        }
-    }
-
+    @Override
     public int size()
     {
         return map.values()
@@ -56,25 +37,10 @@ public class Dictionary<K extends Serializable, V extends Serializable> implemen
                         .sum();
     }
 
+    @Override
     public Set<K> keySet()
     {
         return map.keySet();
-    }
-
-    public Set<V> toSet()
-    {
-        Set<V> set = new TreeSet<>();
-        for (K a : keySet())
-        {
-            set.addAll(map.get(a));
-        }
-        return set;
-
-    }
-
-    public Map<K, Set<V>> getMap()
-    {
-        return map;
     }
 
     @Override
@@ -83,9 +49,84 @@ public class Dictionary<K extends Serializable, V extends Serializable> implemen
         return map.toString();
     }
 
+    @Override
     public Set<Entry<K, Set<V>>> entrySet()
     {
         return map.entrySet();
+    }
+
+    @Override
+    public boolean isEmpty()
+    {
+        return map.isEmpty();
+    }
+
+    @Override
+    public boolean containsKey(Object key)
+    {
+
+        return map.containsKey(key);
+    }
+
+    @Override
+    public boolean containsValue(Object value)
+    {
+        return map.values()
+                        .stream()
+                        .anyMatch(val -> val.contains(value));
+    }
+
+    @Override
+    public Set<V> get(Object key)
+    {
+        return map.get(key);
+    }
+
+    @Override
+    public Set<V> put(K key, Set<V> value)
+    {
+        if (!map.containsKey(key))
+        {
+            map.put(key, new TreeSet<>());
+        }
+        value.forEach(map.get(key)::add);
+
+        return map.get(key);
+
+    }
+
+    @Override
+    public Set<V> remove(Object key)
+    {
+        return map.remove(key);
+    }
+
+    @Override
+    public void putAll(Map<? extends K, ? extends Set<V>> m)
+    {
+        synchronized(this)
+        {
+            for (Entry<? extends K, ? extends Set<V>> entry : m.entrySet())
+            {
+                for (V value : entry.getValue())
+                {
+                    this.put(entry.getKey(), value);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void clear()
+    {
+        map.clear();
+
+    }
+
+    @Override
+    public Collection<Set<V>> values()
+    {
+        return map.values();
     }
 
 }

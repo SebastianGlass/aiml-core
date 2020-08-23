@@ -1,5 +1,6 @@
 package com.saxatus.aiml.internal.utils;
 
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -61,17 +62,16 @@ public class DictionaryFilter
         }
         pattern = StringUtils.clearString(pattern);
         Dictionary<String, AIML> d2 = new Dictionary<>();
-        for (String string : dict.keySet())
+        for (Entry<String, Set<AIML>> dictEntry : dict.entrySet())
         {
-            Set<AIML> a = dict.get(string);
-            for (AIML aiml : a)
+            for (AIML aiml : dictEntry.getValue())
             {
                 String regex = StringUtils.toRegex(aiml.getPattern());
                 Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
                 Matcher m = p.matcher(pattern);
                 if (m.find())
                 {
-                    d2.put(string, aiml);
+                    d2.put(dictEntry.getKey(), aiml);
                 }
             }
 
