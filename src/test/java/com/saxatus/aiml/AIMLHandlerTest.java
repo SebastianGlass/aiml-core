@@ -10,8 +10,8 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import com.saxatus.aiml.AIMLHandler.AIMLHandlerBuilder;
-import com.saxatus.aiml.parsing.AIML;
+import com.saxatus.aiml.api.io.AIMLFileReader;
+import com.saxatus.aiml.api.parsing.AIML;
 
 class AIMLHandlerTest
 {
@@ -47,7 +47,7 @@ class AIMLHandlerTest
                         .getResource("/complexAIML.aiml");
         AIMLFileReader reader = new AIMLFileReader(new File(fileURL.getFile()));
         AIMLHandler h = new AIMLHandlerBuilder().withBotMemory(new HashMap<>())
-                        .withAiml(reader)
+                        .withAiml(reader.withBotMemory(new HashMap<>()))
                         .build();
         assertEquals(8, h.getDict()
                         .size());
@@ -61,7 +61,7 @@ class AIMLHandlerTest
                         .getResource("/complexAIML.aiml");
         AIMLFileReader reader = new AIMLFileReader(new File(fileURL.getFile()));
         AIMLHandler handler = new AIMLHandlerBuilder().withBotMemory(new HashMap<>())
-                        .withAiml(reader)
+                        .withAiml(reader.withBotMemory(new HashMap<>()))
                         .build();
         String answer = handler.getAnswer("pattern");
         assertEquals("Correct", answer);

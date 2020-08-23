@@ -10,14 +10,13 @@ import java.util.stream.Collectors;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.saxatus.aiml.AIMLFileReader;
 import com.saxatus.aiml.AIMLHandler;
-import com.saxatus.aiml.AIMLHandler.AIMLHandlerBuilder;
-import com.saxatus.aiml.parsing.AIML;
+import com.saxatus.aiml.AIMLHandlerBuilder;
+import com.saxatus.aiml.api.io.AIMLFileReader;
+import com.saxatus.aiml.api.parsing.AIML;
 
 public class BasicExample
 {
-
     private static final Log log = LogFactory.getLog(BasicExample.class);
     private static Map<String, String> botMem = new HashMap<>();
 
@@ -26,10 +25,10 @@ public class BasicExample
         File file = new File(BasicExample.class.getResource("/example.aiml")
                         .getFile());
         botMem.put("name", "TestBot");
-        List<AIML> aimlFiles = new ArrayList<>();
+        List<AIML> aimlList = new ArrayList<>();
         try (AIMLFileReader reader = new AIMLFileReader(file))
         {
-            aimlFiles = reader.withBotMemory(botMem)
+            aimlList = reader.withBotMemory(botMem)
                             .stream()
                             .collect(Collectors.toList());
         }
@@ -39,7 +38,7 @@ public class BasicExample
         }
         return new AIMLHandlerBuilder().nonStaticMemory(new HashMap<>())
                         .withBotMemory(botMem)
-                        .withAiml(aimlFiles)
+                        .withAiml(aimlList)
                         .build();
     }
 
