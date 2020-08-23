@@ -3,13 +3,18 @@ package com.saxatus.aiml.tags;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import com.saxatus.aiml.factory.TagFactory;
 import com.saxatus.aiml.parsing.AIMLParseNode;
@@ -18,7 +23,6 @@ import com.saxatus.aiml.utils.XMLUtils;
 public class LearnTag extends AbstractBotTag
 {
     // TODO: rework
-
     private LearnTag(Node node, TagFactory factory)
     {
         super(node, factory);
@@ -83,7 +87,8 @@ public class LearnTag extends AbstractBotTag
         return "";
     }
 
-    private void updateAIML(String pattern, String template) throws Exception
+    private void updateAIML(String pattern, String template)
+                    throws IOException, ParserConfigurationException, SAXException, TransformerException
     {
         File learnFile = getAIMLHandler().getLearnFile();
         if (!learnFile.getParentFile()
@@ -92,9 +97,8 @@ public class LearnTag extends AbstractBotTag
             learnFile.getParentFile()
                             .mkdirs();
         }
-        if (!learnFile.exists())
+        if (!learnFile.exists() && learnFile.createNewFile())
         {
-            learnFile.createNewFile();
             try (PrintStream out = new PrintStream(new FileOutputStream(learnFile)))
             {
                 out.print("<aiml></aiml>");
@@ -103,6 +107,7 @@ public class LearnTag extends AbstractBotTag
             {
                 e.printStackTrace();
             }
+
         }
         Document doc = XMLUtils.parseFileToXMLDocument(learnFile);
         Node node = doc.createElement("category");

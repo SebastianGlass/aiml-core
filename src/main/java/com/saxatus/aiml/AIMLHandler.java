@@ -25,7 +25,7 @@ public class AIMLHandler
 {
     private static final Log log = LogFactory.getLog(AIMLHandler.class);
 
-    private Dictionary<String, AIML> aimlList = new Dictionary<String, AIML>();
+    private Dictionary<String, AIML> aimlList = new Dictionary<>();
 
     private Map<String, String> botMemory;
     private Map<String, String> nonStaticMemory;
@@ -40,11 +40,11 @@ public class AIMLHandler
     {
         this.botMemory = botMemory;
         this.nonStaticMemory = nonStaticMemory;
-        this.inputs = new ArrayList<String>();
+        this.inputs = new ArrayList<>();
         this.outputs = new ArrayList<>();
         this.learnFile = learnfile;
 
-        this.aimlList = new Dictionary<String, AIML>();
+        this.aimlList = new Dictionary<>();
         for (AIML aiml2 : aimls)
         {
             aimlList.put(aiml2.getPattern()
@@ -135,8 +135,7 @@ public class AIMLHandler
             Node rootNode = new AIMLDOMFactory(aiml.getTemplate()).getDocumentRoot();
             IAIMLTag tag = factory.createTag(rootNode);
 
-            String response = tag.handle(node);
-            return response;
+            return tag.handle(node);
         }
         catch(IOException e)
         {

@@ -32,11 +32,11 @@ public class SrTag extends StarTag
         super.handle(debugNode);
         String result;
 
-        result = resolvePattern(resolveStars(request, pattern).get(0), debugNode);
+        result = resolvePattern(resolveStars(request, pattern).get(0));
         return result;
     }
 
-    private String resolvePattern(String pattern, AIMLParseNode debugNode)
+    private String resolvePattern(String pattern)
     {
         if (SraiTag.wasTraversed(pattern))
             return ":(";

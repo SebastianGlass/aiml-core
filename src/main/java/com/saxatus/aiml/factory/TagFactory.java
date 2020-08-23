@@ -18,7 +18,7 @@ import com.saxatus.aiml.tags.AbstractAIMLTag;
 public class TagFactory
 {
 
-    private static final HashMap<String, TagSupplier> tagSupplierMap = new HashMap<String, TagSupplier>();
+    private static final HashMap<String, TagSupplier> tagSupplierMap = new HashMap<>();
 
     private static final Log log = LogFactory.getLog(TagFactory.class);
 
@@ -27,7 +27,7 @@ public class TagFactory
         Reflections reflections = new Reflections("com.saxatus");
         List<Class<? extends AbstractAIMLTag>> classes = reflections.getSubTypesOf(AbstractAIMLTag.class)
                         .stream()
-                        .filter(c -> invokeRegisterMethodIfNotAbstract(c))
+                        .filter(TagFactory::invokeRegisterMethodIfNotAbstract)
                         .collect(Collectors.toList());
         log.debug("loaded Tags:");
         for (Class<? extends AbstractAIMLTag> class1 : classes)

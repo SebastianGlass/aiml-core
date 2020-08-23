@@ -15,7 +15,7 @@ public class AIMLParseNode implements Serializable
     public AIMLParseNode(String tag)
     {
         this.tag = tag;
-        this.children = new ArrayList<AIMLParseNode>(10);
+        this.children = new ArrayList<>(10);
     }
 
     public void addChild(AIMLParseNode child)
@@ -34,23 +34,6 @@ public class AIMLParseNode implements Serializable
         StringBuilder builder = new StringBuilder();
         builder.append("TAG " + this.tag + ": " + this.children);
         return (builder.toString());
-    }
-
-    public void reduce()
-    {
-        for (int i = 0; i < children.size(); i++)
-        {
-            AIMLParseNode child = children.get(i);
-            if (child.tag.equals("#text ()") && child.getChildren()
-                            .size() == 0)
-            {
-                children.remove(i--);
-            }
-            else
-            {
-                child.reduce();
-            }
-        }
     }
 
 }

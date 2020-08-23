@@ -1,5 +1,6 @@
 package com.saxatus.aiml.tags;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
@@ -10,14 +11,13 @@ import org.w3c.dom.Node;
 import com.saxatus.aiml.AIMLHandler;
 import com.saxatus.aiml.AIMLNotFoundException;
 import com.saxatus.aiml.factory.TagFactory;
-import com.saxatus.aiml.parsing.AIML;
 import com.saxatus.aiml.parsing.AIMLParseNode;
 
 public class SraiTag extends AbstractBotTag
 {
-    private static final Log log = LogFactory.getLog(AIML.class);
+    private static final Log log = LogFactory.getLog(SraiTag.class);
 
-    private static List<String> handledPatterns = new Vector<String>();
+    private static List<String> handledPatterns = new LinkedList<>();
 
     private SraiTag(Node node, TagFactory factory)
     {
