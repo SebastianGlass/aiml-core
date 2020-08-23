@@ -26,7 +26,6 @@ public class BotTag extends AbstractBotTag
         if (value == null || value.equals("") || value.equals("Unknown"))
         {
             return "'BOTPROPERTY." + key.toUpperCase() + "'";
-            // value = "UNDEFINED";
         }
         return value;
     }
