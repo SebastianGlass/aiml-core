@@ -6,6 +6,8 @@ import org.apache.commons.logging.LogFactory;
 public class AIML implements Comparable<AIML>
 {
 
+    private static final String STAR_REPLACEMENT = "\u1d11e"; // Needs to be a char behind all letters and numbers
+
     private static final Log log = LogFactory.getLog(AIML.class);
 
     private String pattern;
@@ -114,8 +116,9 @@ public class AIML implements Comparable<AIML>
         {
             return -1;
         }
-        c = (this.pattern.replaceAll("\\*", "�") + "�").compareTo((o.pattern.replaceAll("\\*", "�") + "�"));
-
+        String replaceA = this.pattern.replace("*", STAR_REPLACEMENT) + STAR_REPLACEMENT;
+        String replaceB = o.pattern.replace("*", STAR_REPLACEMENT) + STAR_REPLACEMENT;
+        c = replaceA.compareTo(replaceB);
         if (c != 0)
         {
             return c;

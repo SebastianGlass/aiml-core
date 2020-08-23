@@ -2,6 +2,7 @@ package com.saxatus.aiml.tags;
 
 import java.io.StringWriter;
 
+import javax.xml.XMLConstants;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
@@ -18,9 +19,13 @@ import com.saxatus.aiml.parsing.AIMLParseNode;
 public class UnknownTag extends AbstractAIMLTag
 {
 
+    private TransformerFactory transformerFactory;
+
     private UnknownTag(Node node, TagFactory factory)
     {
         super(node, factory);
+        transformerFactory = TransformerFactory.newInstance();
+        transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
     }
 
     private static final String TAG = "unknown";
@@ -74,8 +79,7 @@ public class UnknownTag extends AbstractAIMLTag
         StringWriter sw = new StringWriter();
         try
         {
-            Transformer t = TransformerFactory.newInstance()
-                            .newTransformer();
+            Transformer t = transformerFactory.newTransformer();
             t.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
             t.setOutputProperty(OutputKeys.INDENT, "yes");
             t.transform(new DOMSource(node), new StreamResult(sw));

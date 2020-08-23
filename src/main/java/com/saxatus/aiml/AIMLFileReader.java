@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -40,8 +41,9 @@ public class AIMLFileReader implements AutoCloseable
     {
         try
         {
-            xmlTransformer = TransformerFactory.newInstance()
-                            .newTransformer();
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+            xmlTransformer = transformerFactory.newTransformer();
             xmlTransformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
             xmlTransformer.setOutputProperty(OutputKeys.INDENT, "yes");
         }
@@ -58,7 +60,7 @@ public class AIMLFileReader implements AutoCloseable
     /**
      * A reader for a single.aiml file. This file must syntatically correspond to an xml file, otherwise an exception
      * will be thrown. To get the individual AIML categories, the method {@code withBotMemory} must be called.
-     * 
+     *
      * @param file
      *            a valid .aiml
      * @throws ParserConfigurationException
@@ -69,6 +71,7 @@ public class AIMLFileReader implements AutoCloseable
     {
         this.fileName = file.getAbsolutePath();
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+        dbFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         doc = dBuilder.parse(file);
     }
