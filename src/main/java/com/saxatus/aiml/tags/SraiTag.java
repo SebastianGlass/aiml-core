@@ -41,8 +41,8 @@ public class SraiTag extends AbstractBotTag
     public String handle(AIMLParseNode debugNode)
     {
         super.handle(debugNode);
-        String input = handleSubNodes().replaceAll("\n", "")
-                        .replaceAll("\t", "");
+        String input = handleSubNodes().replace("\n", "")
+                        .replace("\t", "");
         String pattern = getFactory().getParameter()
                         .getPattern();
 
@@ -52,9 +52,7 @@ public class SraiTag extends AbstractBotTag
             return "";
         }
         addTraversed(pattern);
-        String result = resolvePattern(input, getAIMLParseNode());
-
-        return result;
+        return resolvePattern(input, getAIMLParseNode());
     }
 
     private String resolvePattern(String pattern, AIMLParseNode debugNode)

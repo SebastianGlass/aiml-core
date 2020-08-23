@@ -114,7 +114,7 @@ public class LearnTag extends AbstractBotTag
         doc.getElementsByTagName("aiml")
                         .item(0)
                         .appendChild(node);
-        XMLUtils.writeXMLDocumentToFile(doc,learnFile);
+        XMLUtils.writeXMLDocumentToFile(doc, learnFile);
     }
 
 }

@@ -2,6 +2,7 @@ package com.saxatus.aiml;
 
 public class StringUtils
 {
+
     private static final String[] stringReplacements = { "\\.", "\\?", "!", ",", ";", ":", "\\(", "\\)", "\"", "'",
                     "\t", "\n" };
 
@@ -11,7 +12,7 @@ public class StringUtils
         {
             that = that.replaceAll(s, "");
         }
-        return that.replaceAll("  ", " ")
+        return that.replace("  ", " ")
                         .trim();
     }
 
@@ -23,4 +24,8 @@ public class StringUtils
                         .replace("_", "(.+)") + "$";
     }
 
+    private StringUtils()
+    {
+
+    }
 }

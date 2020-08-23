@@ -53,10 +53,9 @@ class AIMLTest
         AIML noSource1 = new AIML("_ a", "", null, null, null, 1);
         AIML noSource2 = new AIML("_ a", "", null, null, null, 1);
 
-
-        assertNotEquals(a,noSource1);
-        assertNotEquals(noSource1,a);
-        assertEquals(noSource1,noSource2);
+        assertNotEquals(a, noSource1);
+        assertNotEquals(noSource1, a);
+        assertEquals(noSource1, noSource2);
     }
 
     @Test
@@ -67,9 +66,8 @@ class AIMLTest
         AIML noSource1 = new AIML("_ a", null, null, null, "", 1);
         AIML noSource2 = new AIML("_ a", null, null, null, "", 1);
 
-
-        assertNotEquals(noSource1,a);
-        assertEquals(noSource1,noSource2);
+        assertNotEquals(noSource1, a);
+        assertEquals(noSource1, noSource2);
     }
 
     @Test
@@ -80,9 +78,8 @@ class AIMLTest
         AIML noSource1 = new AIML("_ a", "", "", null, "", 1);
         AIML noSource2 = new AIML("_ a", "", "", null, "", 1);
 
-
-        assertNotEquals(noSource1,a);
-        assertEquals(noSource1,noSource2);
+        assertNotEquals(noSource1, a);
+        assertEquals(noSource1, noSource2);
     }
 
     @Test
@@ -93,13 +90,13 @@ class AIMLTest
         AIML noSource1 = new AIML("_ a", "", null, null, "", 1);
         AIML noSource2 = new AIML("_ a", "", null, null, "", 1);
 
-
-        assertNotEquals(noSource1,a);
-        assertEquals(noSource1,noSource2);
+        assertNotEquals(noSource1, a);
+        assertEquals(noSource1, noSource2);
     }
 
     @Test
-    void testEquals() {
+    void testEquals()
+    {
 
         AIML a = new AIML("_ a", "", "", "", "", 1);
         AIML a3 = new AIML("_ a", "", "", "b", "", 1);
