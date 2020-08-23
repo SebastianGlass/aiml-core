@@ -65,4 +65,10 @@ public class XMLUtils
         DocumentBuilder dBuilder = documentFactory.newDocumentBuilder();
         return dBuilder.parse(file);
     }
+
+    public static void writeXMLDocumentToFile(Document doc, File output) throws TransformerException
+    {
+        Transformer transformer = transformerFactory.newTransformer();
+        transformer.transform(new DOMSource(doc), new StreamResult(output));
+    }
 }

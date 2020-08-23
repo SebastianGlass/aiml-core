@@ -112,10 +112,12 @@ class AIMLTest
         AIML g = new AIML("_ a", null, null, null, "", 1);
         AIML h = new AIML(null, null, null, null, "", 1);
         AIML h2 = new AIML(null, null, "c1", null, "", 1);
+        String other = "o";
+        String other2 = null;
         assertEquals(a, a);
-        assertNotEquals(a, null);
+        assertNotEquals(a, other2);
         assertNotEquals(a, b);
-        assertNotEquals(a, "");
+        assertNotEquals(a, other);
         assertNotEquals(a, c);
         assertNotEquals(a, d);
         assertNotEquals(a, e);

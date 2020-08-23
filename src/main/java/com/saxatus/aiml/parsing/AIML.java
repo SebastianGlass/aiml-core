@@ -1,12 +1,14 @@
 package com.saxatus.aiml.parsing;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class AIML implements Comparable<AIML>
+public class AIML implements Serializable, Comparable<AIML>
 {
+    private static final long serialVersionUID = 6143514919411255637L;
 
     private static final String STAR_REPLACEMENT = "\u1d11e"; // Needs to be a char behind all letters and numbers
 

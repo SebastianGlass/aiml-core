@@ -7,21 +7,13 @@ import java.io.PrintStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.Result;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.saxatus.aiml.factory.TagFactory;
 import com.saxatus.aiml.parsing.AIMLParseNode;
+import com.saxatus.aiml.utils.XMLUtils;
 
 public class LearnTag extends AbstractBotTag
 {
@@ -88,7 +80,6 @@ public class LearnTag extends AbstractBotTag
                             .getName())
                             .log(Level.SEVERE, "Exception in LearnTag.handle: ", e);
         }
-        // bot.setReinitFlag(true);
         return "";
     }
 
@@ -113,10 +104,7 @@ public class LearnTag extends AbstractBotTag
                 e.printStackTrace();
             }
         }
-        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder dBuilder;
-        dBuilder = dbFactory.newDocumentBuilder();
-        Document doc = dBuilder.parse(learnFile);
+        Document doc = XMLUtils.parseFileToXMLDocument(learnFile);
         Node node = doc.createElement("category");
         node.appendChild(doc.createElement("pattern"))
                         .appendChild(doc.createTextNode(pattern));
@@ -126,11 +114,7 @@ public class LearnTag extends AbstractBotTag
         doc.getElementsByTagName("aiml")
                         .item(0)
                         .appendChild(node);
-        Transformer transformer = TransformerFactory.newInstance()
-                        .newTransformer();
-        Result output = new StreamResult(learnFile);
-        Source input = new DOMSource(doc);
-        transformer.transform(input, output);
+        XMLUtils.writeXMLDocumentToFile(doc,learnFile);
     }
 
 }
