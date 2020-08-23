@@ -27,7 +27,7 @@ public class DictionaryFilter
                         .stream()
                         .forEach(entry -> entry.getValue()
                                         .stream()
-                                        .filter(aiml -> hasMatchingTopic(topic, aiml))
+                                        .filter(aiml -> aiml.hasMatchingTopic(topic))
                                         .forEach(aiml -> newDict.put(entry.getKey(), aiml)));
 
         return new DictionaryFilter(newDict);
@@ -37,12 +37,16 @@ public class DictionaryFilter
     public DictionaryFilter applyThatFilter(String that)
     {
 
+        if (that == null)
+        {
+            return this;
+        }
         Dictionary<String, AIML> newDict = new Dictionary<>();
         dict.entrySet()
                         .stream()
                         .forEach(entry -> entry.getValue()
                                         .stream()
-                                        .filter(aiml -> hasMatchingThat(that, aiml))
+                                        .filter(aiml -> aiml.hasMatchingThat(that))
                                         .forEach(aiml -> newDict.put(entry.getKey(), aiml)));
 
         return new DictionaryFilter(newDict);
@@ -50,6 +54,10 @@ public class DictionaryFilter
 
     public DictionaryFilter applyPatternFilter(String pattern)
     {
+        if (pattern == null)
+        {
+            return this;
+        }
         pattern = StringUtils.clearString(pattern);
         Dictionary<String, AIML> d2 = new Dictionary<>();
         for (String string : dict.keySet())
@@ -73,30 +81,6 @@ public class DictionaryFilter
     public Dictionary<String, AIML> getDict()
     {
         return dict;
-    }
-
-    private boolean hasMatchingTopic(String topic, AIML aiml)
-    {
-        if (topic.equalsIgnoreCase("Unknown") && aiml.getTopic() == null)
-            return true;
-
-        return aiml.getTopic() != null && topic.equalsIgnoreCase(aiml.getTopic());
-
-    }
-
-    private boolean hasMatchingThat(String that, AIML aiml)
-    {
-        if (that == null && aiml.getThat() == null)
-            return true;
-        if (that != null && aiml.getThat() != null)
-        {
-            String regex = StringUtils.toRegex(aiml.getThat());
-            that = StringUtils.clearString(that);
-            Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-            Matcher m = p.matcher(that);
-            return m.find();
-        }
-        return false;
     }
 
 }

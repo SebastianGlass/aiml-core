@@ -50,7 +50,7 @@ public class AIMLResolver
             return null;
         for (AIML aiml : list)
         {
-            if (!hasMatchingTopic(topic, aiml) || !hasMatchingThat(that, aiml))
+            if (!hasMatchingTopic(topic, aiml) || !aiml.hasMatchingThat(that))
             {
                 continue;
             }
@@ -77,21 +77,6 @@ public class AIMLResolver
             return true;
         }
         return (topic != null) && topic.equalsIgnoreCase(aiml.getTopic());
-    }
-
-    private boolean hasMatchingThat(String that, AIML aiml)
-    {
-        if (that == null && aiml.getThat() == null)
-            return true;
-        if (that != null && aiml.getThat() != null)
-        {
-            String regex = StringUtils.toRegex(aiml.getThat());
-            that = StringUtils.clearString(that);
-            Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-            Matcher m = p.matcher(that);
-            return m.find();
-        }
-        return false;
     }
 
 }
