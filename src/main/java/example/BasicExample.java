@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.saxatus.aiml.AIMLFileReader;
 import com.saxatus.aiml.AIMLHandler;
 import com.saxatus.aiml.AIMLHandler.AIMLHandlerBuilder;
@@ -15,6 +18,7 @@ import com.saxatus.aiml.parsing.AIML;
 public class BasicExample
 {
 
+    private static final Log log = LogFactory.getLog(BasicExample.class);
     private static Map<String, String> botMem = new HashMap<>();
 
     private static AIMLHandler getAIMLHandler()
@@ -31,12 +35,12 @@ public class BasicExample
         }
         catch(Exception e)
         {
+            log.error(e);
         }
-        AIMLHandler handler = new AIMLHandlerBuilder().nonStaticMemory(new HashMap<>())
+        return new AIMLHandlerBuilder().nonStaticMemory(new HashMap<>())
                         .withBotMemory(botMem)
                         .withAiml(aimlFiles)
                         .build();
-        return handler;
     }
 
     public static void main(String[] args)
@@ -44,9 +48,9 @@ public class BasicExample
         AIMLHandler handler = getAIMLHandler();
 
         String response = handler.getAnswer("What's your name?");
-        System.out.println(response);
+        log.info(response);
 
         response = handler.getAnswer("My name is User");
-        System.out.println(response);
+        log.info(response);
     }
 }

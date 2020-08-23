@@ -7,7 +7,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class Dictionary<K, V> implements Serializable
+public class Dictionary<K extends Serializable, V extends Serializable> implements Serializable
 {
 
     private static final long serialVersionUID = 3406133571779137771L;

@@ -1,23 +1,23 @@
 package com.saxatus.aiml;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.saxatus.aiml.AIMLFileReader.StreamableAIMLFileReader;
 
-public class AIMLFileReaderTest
+class AIMLFileReaderTest
 {
 
     private Map<String, String> map = new HashMap<>();
 
     @Test
-    public void readComplexAIMLFile()
+    void readComplexAIMLFile()
     {
         URL fileURL = this.getClass()
                         .getResource("/complexAIML.aiml");

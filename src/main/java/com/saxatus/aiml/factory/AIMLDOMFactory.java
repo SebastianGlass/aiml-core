@@ -1,16 +1,14 @@
 package com.saxatus.aiml.factory;
 
 import java.io.IOException;
-import java.io.StringReader;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
+import com.saxatus.aiml.utils.XMLUtils;
 
 public class AIMLDOMFactory
 {
@@ -27,7 +25,7 @@ public class AIMLDOMFactory
         Document document = null;
         try
         {
-            document = loadXMLFromString("<aiml>" + template + "</aiml>");
+            document = XMLUtils.parseStringToXMLDocument("<aiml>" + template + "</aiml>");
             return document.getFirstChild();
         }
         catch(ParserConfigurationException | SAXException | IOException e)
@@ -36,14 +34,6 @@ public class AIMLDOMFactory
         }
         throw new IOException();
 
-    }
-
-    private Document loadXMLFromString(String xml) throws ParserConfigurationException, SAXException, IOException
-    {
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = factory.newDocumentBuilder();
-        InputSource is = new InputSource(new StringReader(xml));
-        return builder.parse(is);
     }
 
 }

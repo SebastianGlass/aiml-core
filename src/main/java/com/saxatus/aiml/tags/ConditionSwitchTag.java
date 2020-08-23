@@ -1,5 +1,9 @@
 package com.saxatus.aiml.tags;
 
+import java.util.Optional;
+import java.util.function.Function;
+
+import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -25,43 +29,46 @@ public class ConditionSwitchTag extends AbstractBotTag
     public String handle(AIMLParseNode debugNode)
     {
         super.handle(debugNode);
-        String val = nonStaticMemory.getOrDefault(key, "Unknown")
-                        .trim();
-        IAIMLTag fallBack = null;
+        return StringUtils.isEmpty(this.key) ? handleKeyValuePairs(debugNode)
+                        : handleValueForSetKey(debugNode, this.key);
 
+    }
+
+    private String handleValueForSetKey(AIMLParseNode debugNode, String key)
+    {
+        return handleKeyValuePairs(debugNode, childNode -> Optional.of(key));
+    }
+
+    private String handleKeyValuePairs(AIMLParseNode debugNode)
+    {
+        return handleKeyValuePairs(debugNode, childNode -> Optional.ofNullable(childNode.getAttributes()
+                        .getNamedItem("name"))
+                        .map(Node::getNodeValue));
+    }
+
+    private String handleKeyValuePairs(AIMLParseNode debugNode, Function<Node, Optional<String>> keyFunction)
+    {
+        AbstractAIMLTag fallBack = null;
         for (int i = 0; i < childNodes.getLength(); i++)
         {
             Node childNode = childNodes.item(i);
             if (childNode.getNodeName()
                             .equals("li"))
             {
-                if (childNode.getAttributes()
-                                .getLength() == 2)
-                {
+                Optional<String> conditionValue = Optional.ofNullable(childNode.getAttributes()
+                                .getNamedItem("value"))
+                                .map(Node::getNodeValue);
 
-                    key = childNode.getAttributes()
-                                    .item(0)
-                                    .getNodeValue();
-                    val = nonStaticMemory.get(key)
+                if (conditionValue.isPresent())
+                {
+                    String cond = conditionValue.get();
+                    String conditionKey = keyFunction.apply(childNode)
+                                    .orElseThrow(() -> new IllegalArgumentException(
+                                                    "Value provided but no key in condition-Tag"));
+                    String val = nonStaticMemory.get(conditionKey)
                                     .trim();
-                    String condition = childNode.getAttributes()
-                                    .item(1)
-                                    .getNodeValue();
 
-                    if (condition.equals(val) || condition.equals("*"))
-                    {
-                        IAIMLTag liTag = getFactory().createTag(childNode);
-                        return liTag.handle(debugNode);
-                    }
-                }
-                else if (childNode.getAttributes()
-                                .getLength() == 1)
-                {
-
-                    String condition = childNode.getAttributes()
-                                    .item(0)
-                                    .getNodeValue();
-                    if (condition.equals(val) || condition.equals("*"))
+                    if (cond.equals(val) || cond.equals("*"))
                     {
                         IAIMLTag liTag = getFactory().createTag(childNode);
                         return liTag.handle(debugNode);
@@ -71,14 +78,15 @@ public class ConditionSwitchTag extends AbstractBotTag
                 {
                     fallBack = getFactory().createTag(childNode);
                 }
+            }
 
-            }
-            else
-            {
-                // TODO: handle Syntax-Error
-            }
+        }
+        if (fallBack == null)
+        {
+            throw new IllegalArgumentException("No fallback was provided.");
         }
         return fallBack.handle(debugNode);
+
     }
 
     @Override

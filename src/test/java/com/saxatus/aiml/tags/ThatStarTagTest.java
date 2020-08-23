@@ -1,14 +1,14 @@
 package com.saxatus.aiml.tags;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 import java.util.HashMap;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
@@ -17,7 +17,7 @@ import com.saxatus.aiml.factory.TagFactory;
 import com.saxatus.aiml.parsing.AIMLParseNode;
 import com.saxatus.aiml.parsing.TagParameter;
 
-public class ThatStarTagTest
+class ThatStarTagTest
 {
 
     private ThatStarTag tag;
@@ -28,7 +28,7 @@ public class ThatStarTagTest
     private AIMLHandler aimlHandler = mock(AIMLHandler.class);
     AIMLParseNode parseNode = mock(AIMLParseNode.class);
 
-    @Before
+    @BeforeEach
     public void setup()
     {
         when(tagParameter.getBotMemory()).thenReturn(new HashMap<>());
@@ -39,7 +39,7 @@ public class ThatStarTagTest
     }
 
     @Test
-    public void testThatWithNoParameter()
+    void testThatWithNoParameter()
     {
         when(namedNodeMap.getLength()).thenReturn(0);
         tag = new ThatStarTag(node, factory);
@@ -49,7 +49,7 @@ public class ThatStarTagTest
     }
 
     @Test
-    public void testThat1()
+    void testThat1()
     {
         Node node1 = mock(Node.class);
         when(namedNodeMap.getNamedItem("index")).thenReturn(node1);
@@ -62,7 +62,7 @@ public class ThatStarTagTest
     }
 
     @Test
-    public void testThat2()
+    void testThat2()
     {
         Node node1 = mock(Node.class);
         when(namedNodeMap.getNamedItem("index")).thenReturn(node1);

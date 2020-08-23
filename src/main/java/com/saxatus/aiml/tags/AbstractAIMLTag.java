@@ -52,7 +52,7 @@ public abstract class AbstractAIMLTag implements IAIMLTag
 
         String response = result.toString()
                         .trim()
-                        .replaceAll("  ", " ");
+                        .replace("  ", " ");
         List<String> s = Arrays.asList(" ", "?", ",", "!", ".", ":", ";");
         for (String string : s)
         {
