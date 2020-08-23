@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.stream.Stream;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -25,7 +24,7 @@ import com.saxatus.aiml.internal.parsing.TagParameter;
 import com.saxatus.aiml.internal.tags.AbstractAIMLTag;
 import com.saxatus.aiml.internal.utils.XMLUtils;
 
-public class AIMLFileReader implements AutoCloseable
+public class AIMLFileReader implements AIMLProvider
 {
     private static final Log log = LogFactory.getLog(AIMLFileReader.class);
 
@@ -63,6 +62,7 @@ public class AIMLFileReader implements AutoCloseable
         this.file = aimlFileReader.file;
     }
 
+    @Override
     public AIMLFileReader withBotMemory(Map<String, String> map)
     {
         this.botMemory = map;
@@ -169,14 +169,9 @@ public class AIMLFileReader implements AutoCloseable
                         .replace("  ", "");
     }
 
-    public Stream<AIML> stream() throws ParserConfigurationException, SAXException, IOException
-    {
-        return loadFromFile().stream();
-    }
-
     @Override
-    public void close() throws Exception
+    public Collection<AIML> provide() throws ParserConfigurationException, SAXException, IOException
     {
-        // NOOP
+        return loadFromFile();
     }
 }

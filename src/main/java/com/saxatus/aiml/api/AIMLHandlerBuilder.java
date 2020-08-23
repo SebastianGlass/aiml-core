@@ -1,19 +1,16 @@
-package com.saxatus.aiml;
+package com.saxatus.aiml.api;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.xml.sax.SAXException;
 
 import com.saxatus.aiml.api.io.AIMLFileReader;
+import com.saxatus.aiml.api.io.AIMLProvider;
 import com.saxatus.aiml.api.parsing.AIML;
 
 public class AIMLHandlerBuilder
@@ -40,10 +37,11 @@ public class AIMLHandlerBuilder
     {
         try
         {
-            this.aimls = aimls.stream()
+            this.aimls = aimls.provide()
+                            .stream()
                             .collect(Collectors.toList());
         }
-        catch(ParserConfigurationException | SAXException | IOException e)
+        catch(Exception e)
         {
             log.error("Could not load aimls from file", e);
         }
@@ -65,27 +63,22 @@ public class AIMLHandlerBuilder
     public class AIMLHandlerBuilderWithBotMemory
     {
 
-        public AIMLHandlerBuilderWithAimls withAiml(AIMLFileReader reader)
+        public AIMLHandlerBuilderWithAimls withAimlProvider(AIMLProvider provider)
         {
             try
             {
-                aimls = reader.withBotMemory(botMemory)
+                aimls = provider.withBotMemory(botMemory)
+                                .provide()
                                 .stream()
                                 .collect(Collectors.toList());
             }
-            catch(ParserConfigurationException | SAXException | IOException e)
+            catch(Exception e)
             {
-                log.error("Could not load aimls from file", e);
+                log.error("Error dua AIMLProvier::provide", e);
             }
+
             return new AIMLHandlerBuilderWithAimls();
         }
-
-        public AIMLHandlerBuilderWithAimls withAiml(List<AIML> list)
-        {
-            aimls = list;
-            return new AIMLHandlerBuilderWithAimls();
-        }
-
     }
 
     public class AIMLHandlerBuilderWithAimls

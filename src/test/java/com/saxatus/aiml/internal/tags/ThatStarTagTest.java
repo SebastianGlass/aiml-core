@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
-import com.saxatus.aiml.AIMLHandler;
+import com.saxatus.aiml.api.AIMLHandler;
 import com.saxatus.aiml.internal.factory.TagFactory;
 import com.saxatus.aiml.internal.parsing.AIMLParseNode;
 import com.saxatus.aiml.internal.parsing.TagParameter;

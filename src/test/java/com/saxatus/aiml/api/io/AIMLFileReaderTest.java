@@ -4,10 +4,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
+
+import com.saxatus.aiml.api.parsing.AIML;
 
 class AIMLFileReaderTest
 {
@@ -20,10 +23,12 @@ class AIMLFileReaderTest
         URL fileURL = this.getClass()
                         .getResource("/complexAIML.aiml");
 
-        try (AIMLFileReader reader = new AIMLFileReader(new File(fileURL.getFile())))
+        try
         {
+            AIMLFileReader reader = new AIMLFileReader(new File(fileURL.getFile()));
             map.put("test", "test");
-            AIMLFileReader streambable = reader.withBotMemory(map);
+            Collection<AIML> streambable = reader.withBotMemory(map)
+                            .provide();
             assertEquals(8, streambable.stream()
                             .count());
             assertEquals(2, streambable.stream()

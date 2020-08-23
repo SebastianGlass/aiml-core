@@ -11,7 +11,7 @@ import org.apache.commons.logging.LogFactory;
 import org.reflections.Reflections;
 import org.w3c.dom.Node;
 
-import com.saxatus.aiml.AIMLHandler;
+import com.saxatus.aiml.api.AIMLHandler;
 import com.saxatus.aiml.internal.parsing.TagParameter;
 import com.saxatus.aiml.internal.tags.AbstractAIMLTag;
 

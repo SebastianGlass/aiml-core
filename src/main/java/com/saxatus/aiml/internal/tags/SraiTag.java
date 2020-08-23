@@ -8,7 +8,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Node;
 
-import com.saxatus.aiml.AIMLHandler;
+import com.saxatus.aiml.api.AIMLHandler;
 import com.saxatus.aiml.internal.factory.TagFactory;
 import com.saxatus.aiml.internal.parsing.AIMLNotFoundException;
 import com.saxatus.aiml.internal.parsing.AIMLParseNode;

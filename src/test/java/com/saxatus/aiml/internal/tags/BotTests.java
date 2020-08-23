@@ -4,14 +4,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.net.URISyntaxException;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
-import com.saxatus.aiml.AIMLHandler;
-import com.saxatus.aiml.AIMLHandlerBuilder;
+import com.saxatus.aiml.api.AIMLHandler;
+import com.saxatus.aiml.api.AIMLHandlerBuilder;
+import com.saxatus.aiml.api.io.AIMLProvider;
 import com.saxatus.aiml.api.parsing.AIML;
 
 class BotTests
@@ -112,9 +114,31 @@ class BotTests
         Map<String, String> map = new HashMap<>();
         map.put("name", "test");
         AIMLHandler a = new AIMLHandlerBuilder().withBotMemory(map)
-                        .withAiml(aimlList)
+                        .withAimlProvider(new TestAIMLProvier(aimlList))
                         .build();
         return a;
     }
 
+    private static class TestAIMLProvier implements AIMLProvider
+    {
+        private List<AIML> aimlList;
+
+        public TestAIMLProvier(List<AIML> aimlList)
+        {
+            this.aimlList = aimlList;
+            // TODO Auto-generated constructor stub
+        }
+
+        @Override
+        public AIMLProvider withBotMemory(Map<String, String> botMemory)
+        {
+            return this;
+        }
+
+        @Override
+        public Collection<AIML> provide()
+        {
+            return aimlList;
+        }
+    }
 }

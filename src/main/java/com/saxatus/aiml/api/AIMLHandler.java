@@ -1,4 +1,4 @@
-package com.saxatus.aiml;
+package com.saxatus.aiml.api;
 
 import java.io.File;
 import java.io.IOException;
