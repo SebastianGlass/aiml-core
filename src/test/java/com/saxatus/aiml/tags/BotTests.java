@@ -1,6 +1,5 @@
 package com.saxatus.aiml.tags;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.net.URISyntaxException;
@@ -29,7 +28,6 @@ class BotTests
                     new AIML("WHAT IS YOUR NAME", "My name is <bot name='name'/>", null, null, "test", -1),
                     new AIML("IDENTIFY", "<srai>WHAT IS YOUR NAME</srai>", null, null, "test", -1),
                     new AIML("CRY", ":'(", null, null, "test", -1), new AIML("DO *", "<sr/>", null, null, "test", -1));
-
 
     @Test
     void testTopic() throws URISyntaxException
