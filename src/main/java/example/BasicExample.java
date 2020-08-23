@@ -43,10 +43,8 @@ public class BasicExample
     {
         AIMLHandler handler = getAIMLHandler();
 
-
         String response = handler.getAnswer("What's your name?");
         System.out.println(response);
-
 
         response = handler.getAnswer("My name is User");
         System.out.println(response);

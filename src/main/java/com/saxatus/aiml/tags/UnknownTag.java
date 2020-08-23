@@ -51,7 +51,9 @@ public class UnknownTag extends AbstractAIMLTag
                 Node childNode = childNodes.item(0);
                 node.removeChild(childNode);
             }
-        } while (node.getChildNodes().getLength() >= 1);
+        }
+        while(node.getChildNodes()
+                        .getLength() >= 1);
 
         String plainNode = nodeToString(getNode());
         String openTag;
@@ -72,12 +74,13 @@ public class UnknownTag extends AbstractAIMLTag
         StringWriter sw = new StringWriter();
         try
         {
-            Transformer t = TransformerFactory.newInstance().newTransformer();
+            Transformer t = TransformerFactory.newInstance()
+                            .newTransformer();
             t.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
             t.setOutputProperty(OutputKeys.INDENT, "yes");
             t.transform(new DOMSource(node), new StreamResult(sw));
         }
-        catch (TransformerException te)
+        catch(TransformerException te)
         {
             System.err.println("nodeToString Transformer Exception");
         }

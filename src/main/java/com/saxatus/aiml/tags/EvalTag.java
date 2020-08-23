@@ -18,9 +18,10 @@ public class EvalTag extends AIMLTag
     @Override
     public String handle(AIMLParseNode debugNode)
     {
-        //TODO DO SOMETHING
+        // TODO DO SOMETHING
         return super.handle(debugNode);
     }
+
     public static void register()
     {
         TagFactory.addTag(TAG, EvalTag::new);

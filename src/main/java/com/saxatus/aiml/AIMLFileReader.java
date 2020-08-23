@@ -56,12 +56,11 @@ public class AIMLFileReader implements AutoCloseable
     private Map<String, String> botMemory;
 
     /**
-     * A reader for a single.aiml file. 
-     * This file must syntatically correspond to an xml file, 
-     * otherwise an exception will be thrown.
-     * To get the individual AIML categories, 
-     * the method {@code withBotMemory} must be called. 
-     * @param file a valid .aiml 
+     * A reader for a single.aiml file. This file must syntatically correspond to an xml file, otherwise an exception
+     * will be thrown. To get the individual AIML categories, the method {@code withBotMemory} must be called.
+     * 
+     * @param file
+     *            a valid .aiml
      * @throws ParserConfigurationException
      * @throws SAXException
      * @throws IOException

@@ -8,7 +8,7 @@ public interface IAIMLTag
     String handle(AIMLParseNode debugNode);
 
     String getTag();
-    
+
     default String getDebugInformation()
     {
         return this.getTag();

@@ -37,7 +37,8 @@ public class AIMLTag extends AbstractAIMLTag
     public String getDebugInformation()
     {
         // TODO Auto-generated method stub
-        return TAG + " (" + getFactory().getParameter().getPattern()+")";
+        return TAG + " (" + getFactory().getParameter()
+                        .getPattern() + ")";
     }
 
 }

@@ -17,8 +17,7 @@ public class DateTag extends AbstractBotTag
     private DateTag(Node node, TagFactory factory)
     {
         super(node, factory);
-        format = getOptionalAttribute("format", "")
-                        .replace("%Y", "yyyy")
+        format = getOptionalAttribute("format", "").replace("%Y", "yyyy")
                         .replace("%B", "MM")
                         .replace("%A", "EEE")
                         .replace("%p", "a")
@@ -30,8 +29,6 @@ public class DateTag extends AbstractBotTag
     {
         super.handle(debugNode);
 
-      
-        
         SimpleDateFormat df = new SimpleDateFormat(format);
 
         Date dt = new Date();

@@ -18,7 +18,8 @@ public class AIMLNotFoundException extends Exception
     @Override
     public String toString()
     {
-        return this.getClass().getName()+" caused by input: "+input;
+        return this.getClass()
+                        .getName() + " caused by input: " + input;
     }
 
 }
