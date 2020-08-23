@@ -10,6 +10,8 @@ import java.util.stream.Stream;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -24,6 +26,8 @@ import com.saxatus.aiml.utils.XMLUtils;
 
 public class AIMLFileReader implements AutoCloseable
 {
+    private static final Log log = LogFactory.getLog(AIMLFileReader.class);
+
     private int readingLine = 1;
 
     private String fileName;
@@ -102,12 +106,13 @@ public class AIMLFileReader implements AutoCloseable
             String template;
             try
             {
-                template = purify(XMLUtils.parseXMLToString(eElement.getElementsByTagName("template")
-                                .item(0)));
+                Node templateNode = eElement.getElementsByTagName("template")
+                                .item(0);
+                template = purify(XMLUtils.parseXMLToString(templateNode));
             }
             catch(TransformerException e)
             {
-                // TODO: error logging
+                log.warn("Template not parseable", e);
                 template = "";
             }
             String that = null;
