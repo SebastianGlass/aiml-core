@@ -50,12 +50,10 @@ public class Dictionary<K extends Serializable, V extends Serializable> implemen
 
     public int size()
     {
-        int i = 0;
-        for (Set<V> s : map.values())
-        {
-            i += s.size();
-        }
-        return i;
+        return map.values()
+                        .stream()
+                        .mapToInt(Set::size)
+                        .sum();
     }
 
     public Set<K> keySet()

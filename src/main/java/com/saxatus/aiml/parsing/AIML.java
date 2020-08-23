@@ -2,9 +2,13 @@ package com.saxatus.aiml.parsing;
 
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import com.saxatus.aiml.StringUtils;
 
 public class AIML implements Serializable, Comparable<AIML>
 {
@@ -184,6 +188,30 @@ public class AIML implements Serializable, Comparable<AIML>
     public int hashCode()
     {
         return Objects.hash(line, pattern, source, template, that, topic);
+    }
+
+    public boolean hasMatchingTopic(String topic)
+    {
+        if (topic.equalsIgnoreCase("Unknown") && getTopic() == null)
+            return true;
+
+        return getTopic() != null && topic.equalsIgnoreCase(getTopic());
+
+    }
+
+    public boolean hasMatchingThat(String that)
+    {
+        if (that == null && getThat() == null)
+            return true;
+        if (that != null && getThat() != null)
+        {
+            String regex = StringUtils.toRegex(getThat());
+            that = StringUtils.clearString(that);
+            Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+            Matcher m = p.matcher(that);
+            return m.find();
+        }
+        return false;
     }
 
     @Override
