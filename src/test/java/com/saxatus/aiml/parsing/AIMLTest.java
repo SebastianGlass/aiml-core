@@ -28,20 +28,23 @@ class AIMLTest
     void testAIMLOrder()
     {
         AIML a = new AIML("_ a", "", null, null, "", 1);
-        AIML b = new AIML("a a", "", null, null, "", 1);
-        AIML c = new AIML("* a", "", null, null, "", 1);
-        AIML d = new AIML("* a", "", "a", null, "", 1);
+        AIML a2 = new AIML("_ a", "", null, null, "", 2);
+        AIML b = new AIML("a a", "", null, null, "", 2);
+        AIML c = new AIML("* a", "", null, null, "", 3);
+        AIML d = new AIML("* a", "", "a", null, "", 4);
+        assertEquals(0, a.compareTo(a));
+        assertEquals(1, a.compareTo(a2));
         isSymetric(a, b);
         isSymetric(b, c);
         isSymetric(a, c);
         isSymetric(d, c);
 
-        AIML e = new AIML("I like *", "", null, null, "", 1);
-        AIML f = new AIML("I *", "", null, null, "", 1);
+        AIML e = new AIML("I like *", "", null, null, "", 5);
+        AIML f = new AIML("I *", "", null, null, "", 6);
         isSymetric(e, f);
 
-        AIML g = new AIML("Hello", "", null, null, "", 1);
-        AIML h = new AIML("*", "", null, null, "", 1);
+        AIML g = new AIML("Hello", "", null, null, "", 7);
+        AIML h = new AIML("*", "", null, null, "", 8);
         isSymetric(g, h);
     }
 

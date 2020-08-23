@@ -5,9 +5,6 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.saxatus.aiml.StringUtils;
 
 public class AIML implements Serializable, Comparable<AIML>
@@ -15,8 +12,6 @@ public class AIML implements Serializable, Comparable<AIML>
     private static final long serialVersionUID = 6143514919411255637L;
 
     private static final String STAR_REPLACEMENT = "\u1d11e"; // Needs to be a char behind all letters and numbers
-
-    private static final Log log = LogFactory.getLog(AIML.class);
 
     private String pattern;
     private String template;
@@ -103,85 +98,16 @@ public class AIML implements Serializable, Comparable<AIML>
         return source;
     }
 
+    String getPatternWithReplacement()
+    {
+        return this.pattern.replace("*", STAR_REPLACEMENT) + STAR_REPLACEMENT;
+    }
+
     @Override
     public int compareTo(AIML o)
     {
-        int c = compareTopic(o);
-        if (c != 0)
-        {
-            return c;
-        }
-        c = compareThat(o);
-        if (c != 0)
-        {
-            return c;
-        }
-        if (pattern.endsWith("*") && !o.pattern.endsWith("*"))
-        {
-            return 1;
-        }
-        if (!pattern.endsWith("*") && o.pattern.endsWith("*"))
-        {
-            return -1;
-        }
-        String replaceA = this.pattern.replace("*", STAR_REPLACEMENT) + STAR_REPLACEMENT;
-        String replaceB = o.pattern.replace("*", STAR_REPLACEMENT) + STAR_REPLACEMENT;
-        c = replaceA.compareTo(replaceB);
-        if (c != 0)
-        {
-            return c;
-        }
-        if (line == o.line && source.equals(o.source))
-        {
-            return 0;
-        }
-        if (source.contains("learned"))
-        {
-            return -1;
-        }
-        if (o.source.contains("learned"))
-        {
-            return 1;
-        }
-        log.warn("Duplicated AIML Signature: " + this + "," + o);
+        return new AIMLComparator().compare(this, o);
 
-        return 1;
-    }
-
-    private int compareThat(AIML o)
-    {
-        if (that != null || o.that != null)
-        {
-            if (that == null)
-            {
-                return 1;
-            }
-            if (o.that == null)
-            {
-                return -1;
-            }
-            return this.that.compareTo(o.that);
-
-        }
-        return 0;
-    }
-
-    private int compareTopic(AIML o)
-    {
-        if (topic != null || o.topic != null)
-        {
-            if (topic == null)
-            {
-                return 1;
-            }
-            if (o.topic == null)
-            {
-                return -1;
-            }
-            return this.topic.compareTo(o.topic);
-
-        }
-        return 0;
     }
 
     @Override
@@ -229,4 +155,8 @@ public class AIML implements Serializable, Comparable<AIML>
                         && Objects.equals(topic, other.topic);
     }
 
+    public int getLine()
+    {
+        return line;
+    }
 }

@@ -17,13 +17,13 @@ class DictionaryFilterTest
     {
         Dictionary<String, AIML> dict = new Dictionary<>();
         dict.put("A", new AIML("_ a", "", "a", "1", "", 1));
-        dict.put("A", new AIML("_ b", "", "b", "2", "", 1));
-        dict.put("A", new AIML("a a", "", "c", "3", "", 1));
-        dict.put("A", new AIML("a _", "", "d", "4", "", 1));
-        dict.put("B", new AIML("b _", "", "a", "1", "", 1));
-        dict.put("B", new AIML("b b", "", "b", "2", "", 1));
-        dict.put("B", new AIML("b a", "", "c", "3", "", 1));
-        dict.put("B", new AIML("_ _", "", "d", "4", "", 1));
+        dict.put("A", new AIML("_ b", "", "b", "2", "", 2));
+        dict.put("A", new AIML("a a", "", "c", "3", "", 3));
+        dict.put("A", new AIML("a _", "", "d", "4", "", 4));
+        dict.put("B", new AIML("b _", "", "a", "1", "", 5));
+        dict.put("B", new AIML("b b", "", "b", "2", "", 6));
+        dict.put("B", new AIML("b a", "", "c", "3", "", 7));
+        dict.put("B", new AIML("_ _", "", "d", "4", "", 8));
 
         filter = new DictionaryFilter(dict);
     }

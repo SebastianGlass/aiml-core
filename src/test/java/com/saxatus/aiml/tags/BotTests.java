@@ -22,12 +22,12 @@ class BotTests
      */
     private final List<AIML> aiml = Arrays.asList(new AIML("*", "", null, null, "", -1),
                     new AIML("LET US TALK ABOUT *", "Sure, <set name='topic'><person/></set> sounds like a good topic.",
-                                    null, null, "test", -1),
-                    new AIML("THEY ARE COOL", "Yeah, I like <get name='topic'/> so much.", null, "cars", "test", -1),
-                    new AIML("THEY ARE COOL", "What?", null, null, "test", -1),
-                    new AIML("WHAT IS YOUR NAME", "My name is <bot name='name'/>", null, null, "test", -1),
-                    new AIML("IDENTIFY", "<srai>WHAT IS YOUR NAME</srai>", null, null, "test", -1),
-                    new AIML("CRY", ":'(", null, null, "test", -1), new AIML("DO *", "<sr/>", null, null, "test", -1));
+                                    null, null, "test", 0),
+                    new AIML("THEY ARE COOL", "Yeah, I like <get name='topic'/> so much.", null, "cars", "test", 1),
+                    new AIML("THEY ARE COOL", "What?", null, null, "test", 2),
+                    new AIML("WHAT IS YOUR NAME", "My name is <bot name='name'/>", null, null, "test", 3),
+                    new AIML("IDENTIFY", "<srai>WHAT IS YOUR NAME</srai>", null, null, "test", 4),
+                    new AIML("CRY", ":'(", null, null, "test", -1), new AIML("DO *", "<sr/>", null, null, "test", 5));
 
     @Test
     void testTopic() throws URISyntaxException
@@ -89,8 +89,8 @@ class BotTests
     @Test
     void testOrder() throws URISyntaxException
     {
-        List<AIML> aiml = Arrays.asList(new AIML("A *", "1", "3", null, "", -1),
-                        new AIML("A * IS", "2", "3", null, "", -1), new AIML("A _", "3", null, null, "", -1));
+        List<AIML> aiml = Arrays.asList(new AIML("A *", "1", "3", null, "", 1),
+                        new AIML("A * IS", "2", "3", null, "", 2), new AIML("A _", "3", null, null, "", 3));
 
         AIMLHandler b = getAIMLHandler(aiml);
         String answer = b.getAnswer("A B");
