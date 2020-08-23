@@ -2,22 +2,13 @@ package com.saxatus.aiml;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.StringWriter;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import javax.xml.XMLConstants;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
@@ -30,28 +21,13 @@ import com.saxatus.aiml.factory.TagFactory;
 import com.saxatus.aiml.parsing.AIML;
 import com.saxatus.aiml.parsing.AIMLParseNode;
 import com.saxatus.aiml.parsing.TagParameter;
+import com.saxatus.aiml.utils.XMLUtils;
 
 public class AIMLFileReader implements AutoCloseable
 {
     private int readingLine = 1;
 
     private String fileName;
-    private static Transformer xmlTransformer;
-    static
-    {
-        try
-        {
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
-            xmlTransformer = transformerFactory.newTransformer();
-            xmlTransformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-            xmlTransformer.setOutputProperty(OutputKeys.INDENT, "yes");
-        }
-        catch(Exception e)
-        {
-            throw new RuntimeException(e);
-        }
-    }
 
     private Document doc;
 
@@ -70,10 +46,7 @@ public class AIMLFileReader implements AutoCloseable
     public AIMLFileReader(File file) throws ParserConfigurationException, SAXException, IOException
     {
         this.fileName = file.getAbsolutePath();
-        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-        dbFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
-        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-        doc = dBuilder.parse(file);
+        this.doc = XMLUtils.parseFileToXMLDocument(file);
     }
 
     private Collection<AIML> loadFromFile()
@@ -92,17 +65,14 @@ public class AIMLFileReader implements AutoCloseable
             {
                 continue;
             }
-            // there are two possible kinds of nodes in an aiml tag:
-            // * category : descripes a I/O pair, with optional topic and that field
-            // * topic : works as wrapper around other category tags to create a default topic for this pairings
-            switch(nNode.getNodeName())
+            String nodeName = nNode.getNodeName();
+            if ("category".equals(nodeName))
             {
-                case "category":
-                    addCategory((Element)nNode, dict);
-                    break;
-                case "topic":
-                    handleTopicTag(dict, nNode);
-                    break;
+                addCategory((Element)nNode, dict);
+            }
+            else if ("topic".equals(nodeName))
+            {
+                handleTopicTag(dict, nNode);
             }
         }
         return dict;
@@ -121,8 +91,17 @@ public class AIMLFileReader implements AutoCloseable
                         .item(0))
                         .handle(new AIMLParseNode("AIML"));
         pattern = purify(pattern).toUpperCase();
-        String template = purify(nodeToString(eElement.getElementsByTagName("template")
-                        .item(0)));
+        String template;
+        try
+        {
+            template = purify(XMLUtils.parseXMLToString(eElement.getElementsByTagName("template")
+                            .item(0)));
+        }
+        catch(TransformerException e)
+        {
+            // TODO: error logging
+            template = "";
+        }
         String that = null;
         NodeList nodeList = eElement.getChildNodes();
         for (int i = 0; i < nodeList.getLength(); i++)
@@ -159,20 +138,6 @@ public class AIMLFileReader implements AutoCloseable
                 addCategory((Element)sNode, topic, dict);
             }
         }
-    }
-
-    private static String nodeToString(Node node)
-    {
-        StringWriter sw = new StringWriter();
-        try
-        {
-            xmlTransformer.transform(new DOMSource(node), new StreamResult(sw));
-        }
-        catch(TransformerException te)
-        {
-            System.out.println("nodeToString Transformer Exception");
-        }
-        return sw.toString();
     }
 
     private String purify(String input)
