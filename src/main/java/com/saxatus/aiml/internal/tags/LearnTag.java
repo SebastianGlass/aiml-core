@@ -5,12 +5,12 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -22,7 +22,8 @@ import com.saxatus.aiml.internal.utils.XMLUtils;
 
 public class LearnTag extends AbstractBotTag
 {
-    // TODO: rework
+    private static final Log log = LogFactory.getLog(LearnTag.class);
+
     private LearnTag(Node node, TagFactory factory)
     {
         super(node, factory);
@@ -50,24 +51,23 @@ public class LearnTag extends AbstractBotTag
         NodeList nodes = getNode().getChildNodes();
         for (int i = 0; i < nodes.getLength(); i++)
         {
-            Node node = nodes.item(i);
-            if (node.getNodeName()
+            Node categoriesNode = nodes.item(i);
+            if (categoriesNode.getNodeName()
                             .equals("category"))
             {
-                NodeList nodes2 = node.getChildNodes();
-                for (int i2 = 0; i2 < nodes2.getLength(); i2++)
+                NodeList categoryChildren = categoriesNode.getChildNodes();
+                for (int i2 = 0; i2 < categoryChildren.getLength(); i2++)
                 {
-                    Node node2 = nodes2.item(i2);
-                    if (node2.getNodeName()
-                                    .equals("pattern"))
+                    Node patternOrTemplateNode = categoryChildren.item(i2);
+                    String nodeName = patternOrTemplateNode.getNodeName();
+                    if (nodeName.equals("pattern"))
                     {
-                        pattern = getFactory().createTag(node2)
+                        pattern = getFactory().createTag(patternOrTemplateNode)
                                         .handle(this.getAIMLParseNode());
                     }
-                    if (node2.getNodeName()
-                                    .equals("template"))
+                    else if (nodeName.equals("template"))
                     {
-                        template = getFactory().createTag(node2)
+                        template = getFactory().createTag(patternOrTemplateNode)
                                         .handle(this.getAIMLParseNode());
                     }
                 }
@@ -75,14 +75,11 @@ public class LearnTag extends AbstractBotTag
         }
         try
         {
-
             updateAIML(pattern, template);
         }
         catch(Exception e)
         {
-            Logger.getLogger(this.getClass()
-                            .getName())
-                            .log(Level.SEVERE, "Exception in LearnTag.handle: ", e);
+            log.error("Exception in LearnTag.handle: ", e);
         }
         return "";
     }
@@ -91,23 +88,14 @@ public class LearnTag extends AbstractBotTag
                     throws IOException, ParserConfigurationException, SAXException, TransformerException
     {
         File learnFile = getAIMLHandler().getLearnFile();
-        if (!learnFile.getParentFile()
-                        .exists())
+        File parentFile = learnFile.getParentFile();
+        if (!parentFile.exists())
         {
-            learnFile.getParentFile()
-                            .mkdirs();
+            parentFile.mkdirs();
         }
-        if (!learnFile.exists() && learnFile.createNewFile())
+        if (!learnFile.exists())
         {
-            try (PrintStream out = new PrintStream(new FileOutputStream(learnFile)))
-            {
-                out.print("<aiml></aiml>");
-            }
-            catch(FileNotFoundException e)
-            {
-                e.printStackTrace();
-            }
-
+            createNewLearnFile(learnFile);
         }
         Document doc = XMLUtils.parseFileToXMLDocument(learnFile);
         Node node = doc.createElement("category");
@@ -120,6 +108,24 @@ public class LearnTag extends AbstractBotTag
                         .item(0)
                         .appendChild(node);
         XMLUtils.writeXMLDocumentToFile(doc, learnFile);
+    }
+
+    private void createNewLearnFile(File learnFile) throws IOException
+    {
+        boolean success = (learnFile.createNewFile());
+        if (!success)
+        {
+            log.warn("File already exists, while File::exists returned false. What did you do?");
+        }
+        try (PrintStream out = new PrintStream(new FileOutputStream(learnFile)))
+        {
+            out.print("<aiml></aiml>");
+        }
+        catch(FileNotFoundException e)
+        {
+            log.error("Can't write to learnFile " + learnFile.getAbsolutePath(), e);
+        }
+
     }
 
 }
