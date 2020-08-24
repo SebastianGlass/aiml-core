@@ -10,6 +10,7 @@ import org.w3c.dom.NodeList;
 import com.saxatus.aiml.api.tags.AIMLParseTag;
 import com.saxatus.aiml.internal.factory.TagFactory;
 import com.saxatus.aiml.internal.parsing.AIMLParseNode;
+import com.saxatus.aiml.internal.parsing.TagRepository;
 
 public class RandomTag extends AbstractAIMLTag
 {
@@ -23,7 +24,7 @@ public class RandomTag extends AbstractAIMLTag
 
     public static void register()
     {
-        TagFactory.addTag(TAG, RandomTag::new);
+        TagRepository.addTag(TAG, RandomTag::new);
     }
 
     @Override

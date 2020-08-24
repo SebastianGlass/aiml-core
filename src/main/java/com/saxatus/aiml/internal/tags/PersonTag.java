@@ -9,6 +9,7 @@ import org.w3c.dom.Node;
 
 import com.saxatus.aiml.internal.factory.TagFactory;
 import com.saxatus.aiml.internal.parsing.AIMLParseNode;
+import com.saxatus.aiml.internal.parsing.TagRepository;
 
 public class PersonTag extends StarTag
 {
@@ -31,7 +32,7 @@ public class PersonTag extends StarTag
 
     public static void register()
     {
-        TagFactory.addTag(TAG, PersonTag::new);
+        TagRepository.addTag(TAG, PersonTag::new);
     }
 
     @Override

@@ -49,7 +49,7 @@ public class ConditionSwitchTag extends AbstractBotTag
 
     private String handleKeyValuePairs(AIMLParseNode debugNode, Function<Node, Optional<String>> keyFunction)
     {
-        AbstractAIMLTag fallBack = null;
+        AIMLParseTag fallBack = null;
         for (int i = 0; i < childNodes.getLength(); i++)
         {
             Node childNode = childNodes.item(i);

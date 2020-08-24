@@ -4,6 +4,7 @@ import org.w3c.dom.Node;
 
 import com.saxatus.aiml.internal.factory.TagFactory;
 import com.saxatus.aiml.internal.parsing.AIMLParseNode;
+import com.saxatus.aiml.internal.parsing.TagRepository;
 
 public class BotTag extends AbstractBotTag
 {
@@ -32,7 +33,7 @@ public class BotTag extends AbstractBotTag
 
     public static void register()
     {
-        TagFactory.addTag(TAG, BotTag::new);
+        TagRepository.addTag(TAG, BotTag::new);
     }
 
     @Override

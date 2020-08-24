@@ -7,6 +7,7 @@ import org.w3c.dom.NodeList;
 
 import com.saxatus.aiml.internal.factory.TagFactory;
 import com.saxatus.aiml.internal.parsing.AIMLParseNode;
+import com.saxatus.aiml.internal.parsing.TagRepository;
 import com.saxatus.aiml.internal.utils.XMLUtils;
 
 public class UnknownTag extends AbstractAIMLTag
@@ -21,7 +22,7 @@ public class UnknownTag extends AbstractAIMLTag
 
     public static void register()
     {
-        TagFactory.addTag(TAG, UnknownTag::new);
+        TagRepository.addTag(TAG, UnknownTag::new);
     }
 
     @Override

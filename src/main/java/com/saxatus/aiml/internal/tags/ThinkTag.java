@@ -4,6 +4,7 @@ import org.w3c.dom.Node;
 
 import com.saxatus.aiml.internal.factory.TagFactory;
 import com.saxatus.aiml.internal.parsing.AIMLParseNode;
+import com.saxatus.aiml.internal.parsing.TagRepository;
 
 public class ThinkTag extends AbstractAIMLTag
 {
@@ -18,7 +19,7 @@ public class ThinkTag extends AbstractAIMLTag
 
     public static void register()
     {
-        TagFactory.addTag(TAG, ThinkTag::new);
+        TagRepository.addTag(TAG, ThinkTag::new);
     }
 
     @Override

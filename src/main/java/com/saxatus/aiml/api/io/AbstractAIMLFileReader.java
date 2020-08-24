@@ -18,10 +18,10 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import com.saxatus.aiml.api.parsing.AIML;
+import com.saxatus.aiml.api.tags.AIMLParseTag;
 import com.saxatus.aiml.internal.factory.TagFactory;
 import com.saxatus.aiml.internal.parsing.AIMLParseNode;
 import com.saxatus.aiml.internal.parsing.TagParameter;
-import com.saxatus.aiml.internal.tags.AbstractAIMLTag;
 import com.saxatus.aiml.internal.utils.XMLUtils;
 
 public abstract class AbstractAIMLFileReader implements AIMLProvider
@@ -101,7 +101,7 @@ public abstract class AbstractAIMLFileReader implements AIMLProvider
     {
 
         TagParameter tp = new TagParameter("", "", "", botMemory, null);
-        AbstractAIMLTag tag = new TagFactory(tp, null).createTag(eElement.getElementsByTagName("pattern")
+        AIMLParseTag tag = new TagFactory(tp, null).createTag(eElement.getElementsByTagName("pattern")
                         .item(0));
         String pattern = tag.handle(new AIMLParseNode("AIML"));
         pattern = purify(pattern).toUpperCase();

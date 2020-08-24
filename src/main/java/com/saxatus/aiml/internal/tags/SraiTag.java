@@ -12,6 +12,7 @@ import com.saxatus.aiml.api.AIMLHandler;
 import com.saxatus.aiml.internal.factory.TagFactory;
 import com.saxatus.aiml.internal.parsing.AIMLNotFoundException;
 import com.saxatus.aiml.internal.parsing.AIMLParseNode;
+import com.saxatus.aiml.internal.parsing.TagRepository;
 
 public class SraiTag extends AbstractBotTag
 {
@@ -28,7 +29,7 @@ public class SraiTag extends AbstractBotTag
 
     public static void register()
     {
-        TagFactory.addTag(TAG, SraiTag::new);
+        TagRepository.addTag(TAG, SraiTag::new);
     }
 
     @Override

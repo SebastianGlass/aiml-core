@@ -7,6 +7,7 @@ import org.w3c.dom.Node;
 
 import com.saxatus.aiml.internal.factory.TagFactory;
 import com.saxatus.aiml.internal.parsing.AIMLParseNode;
+import com.saxatus.aiml.internal.parsing.TagRepository;
 
 public class DateTag extends AbstractBotTag
 {
@@ -38,7 +39,7 @@ public class DateTag extends AbstractBotTag
 
     public static void register()
     {
-        TagFactory.addTag(TAG, DateTag::new);
+        TagRepository.addTag(TAG, DateTag::new);
     }
 
     @Override

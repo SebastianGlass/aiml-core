@@ -4,6 +4,7 @@ import org.w3c.dom.Node;
 
 import com.saxatus.aiml.internal.factory.TagFactory;
 import com.saxatus.aiml.internal.parsing.AIMLParseNode;
+import com.saxatus.aiml.internal.parsing.TagRepository;
 
 public class SrTag extends StarTag
 {
@@ -17,7 +18,7 @@ public class SrTag extends StarTag
 
     public static void register()
     {
-        TagFactory.addTag(TAG, SrTag::new);
+        TagRepository.addTag(TAG, SrTag::new);
     }
 
     @Override

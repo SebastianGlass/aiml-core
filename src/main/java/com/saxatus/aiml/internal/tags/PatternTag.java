@@ -4,6 +4,7 @@ import org.w3c.dom.Node;
 
 import com.saxatus.aiml.internal.factory.TagFactory;
 import com.saxatus.aiml.internal.parsing.AIMLParseNode;
+import com.saxatus.aiml.internal.parsing.TagRepository;
 
 public class PatternTag extends AbstractAIMLTag
 {
@@ -24,8 +25,8 @@ public class PatternTag extends AbstractAIMLTag
 
     public static void register()
     {
-        TagFactory.addTag(TAG, PatternTag::new);
-        TagFactory.addTag("template", PatternTag::new);
+        TagRepository.addTag(TAG, PatternTag::new);
+        TagRepository.addTag("template", PatternTag::new);
     }
 
     @Override

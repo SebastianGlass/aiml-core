@@ -4,6 +4,7 @@ import org.w3c.dom.Node;
 
 import com.saxatus.aiml.internal.factory.TagFactory;
 import com.saxatus.aiml.internal.parsing.AIMLParseNode;
+import com.saxatus.aiml.internal.parsing.TagRepository;
 import com.saxatus.aiml.internal.utils.StringUtils;
 
 public class TextTag extends AbstractAIMLTag
@@ -18,7 +19,7 @@ public class TextTag extends AbstractAIMLTag
 
     public static void register()
     {
-        TagFactory.addTag(TAG, TextTag::new);
+        TagRepository.addTag(TAG, TextTag::new);
     }
 
     @Override

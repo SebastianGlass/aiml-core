@@ -18,6 +18,7 @@ import org.xml.sax.SAXException;
 
 import com.saxatus.aiml.internal.factory.TagFactory;
 import com.saxatus.aiml.internal.parsing.AIMLParseNode;
+import com.saxatus.aiml.internal.parsing.TagRepository;
 import com.saxatus.aiml.internal.utils.XMLUtils;
 
 public class LearnTag extends AbstractBotTag
@@ -33,7 +34,7 @@ public class LearnTag extends AbstractBotTag
 
     public static void register()
     {
-        TagFactory.addTag(TAG, LearnTag::new);
+        TagRepository.addTag(TAG, LearnTag::new);
     }
 
     @Override
