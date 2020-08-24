@@ -17,7 +17,7 @@ public class TagRepository
 {
 
     private static final Log log = LogFactory.getLog(TagRepository.class);
-    
+
     private static final HashMap<String, TagSupplier> tagSupplierMap = new HashMap<>();
 
     static
@@ -33,7 +33,7 @@ public class TagRepository
             log.debug(" +- " + class1);
         }
     }
-    
+
     private static boolean invokeRegisterMethodIfNotAbstract(Class<?> clazz)
     {
         try
@@ -51,7 +51,7 @@ public class TagRepository
         }
         return false;
     }
-    
+
     public static void addTag(String tagName, TagSupplier tagSupplier)
     {
         synchronized(tagSupplierMap)

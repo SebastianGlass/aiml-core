@@ -5,9 +5,9 @@ import javax.xml.transform.TransformerException;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.saxatus.aiml.api.parsing.AIMLParseNode;
 import com.saxatus.aiml.api.utils.XMLUtils;
 import com.saxatus.aiml.internal.factory.TagFactory;
-import com.saxatus.aiml.internal.parsing.AIMLParseNode;
 import com.saxatus.aiml.internal.parsing.TagRepository;
 
 public class UnknownTag extends AbstractAIMLTag
@@ -62,7 +62,7 @@ public class UnknownTag extends AbstractAIMLTag
         String openTag;
         if (!plainNode.contains("/>"))
         {
-            openTag = plainNode.substring(0, plainNode.indexOf(">")) + ">";
+            openTag = plainNode.substring(0, plainNode.indexOf('>')) + ">";
         }
         else
         {

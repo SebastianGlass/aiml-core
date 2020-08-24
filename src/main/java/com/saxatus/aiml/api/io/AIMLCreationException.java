@@ -6,17 +6,16 @@ public class AIMLCreationException extends Exception
     {
         super(msg);
     }
-    
+
     public AIMLCreationException(Throwable cause)
     {
         super(cause);
     }
-    
+
     public AIMLCreationException(String msg, Throwable cause)
     {
         super(msg, cause);
     }
-
 
     private static final long serialVersionUID = -645624332803611696L;
 

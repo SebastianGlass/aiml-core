@@ -1,4 +1,4 @@
-package com.saxatus.aiml.internal.parsing;
+package com.saxatus.aiml.api.parsing;
 
 import java.io.Serializable;
 import java.util.ArrayList;

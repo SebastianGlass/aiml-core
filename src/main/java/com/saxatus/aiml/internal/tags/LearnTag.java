@@ -16,9 +16,9 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import com.saxatus.aiml.api.parsing.AIMLParseNode;
 import com.saxatus.aiml.api.utils.XMLUtils;
 import com.saxatus.aiml.internal.factory.TagFactory;
-import com.saxatus.aiml.internal.parsing.AIMLParseNode;
 import com.saxatus.aiml.internal.parsing.TagRepository;
 
 public class LearnTag extends AbstractBotTag

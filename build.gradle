@@ -40,6 +40,8 @@ dependencies {
   implementation "commons-logging:commons-logging:1.2"
   implementation "org.reflections:reflections:0.9.10"
   implementation "com.google.inject:guice:4.2.3"
+  implementation "com.google.inject.extensions:guice-assistedinject:4.2.3"
+  
 
   
   testImplementation "org.mockito:mockito-core:2.7.22"

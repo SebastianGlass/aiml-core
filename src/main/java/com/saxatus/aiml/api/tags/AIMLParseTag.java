@@ -1,8 +1,7 @@
 package com.saxatus.aiml.api.tags;
 
-import com.saxatus.aiml.internal.parsing.AIMLParseNode;
+import com.saxatus.aiml.api.parsing.AIMLParseNode;
 
-//TODO: remove internal references
 public interface AIMLParseTag
 {
 

@@ -6,28 +6,33 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import javax.inject.Inject;
 
 import com.saxatus.aiml.api.AIMLHandler;
 import com.saxatus.aiml.api.AIMLHandlerBuilder;
-import com.saxatus.aiml.api.io.AIMLFileReader;
+import com.saxatus.aiml.api.factory.AIMLHandlerFactory;
+import com.saxatus.aiml.api.factory.AIMLParserFactory;
+import com.saxatus.aiml.api.io.AIMLCreationException;
 import com.saxatus.aiml.api.io.AIMLProvider;
 import com.saxatus.aiml.api.parsing.AIML;
+import com.saxatus.aiml.api.parsing.AIMLParser;
 
 public class AIMLHandlerBuilderImpl implements AIMLHandlerBuilder
 {
+    private AIMLHandlerFactory aimlHandlerFactory;
+    private AIMLParserFactory aimlParserFactory;
 
-    private static final Log log = LogFactory.getLog(AIMLHandlerBuilderImpl.class);
-    private List<AIML> aimls;
+    private AIMLProvider aimlProvider;
+
     private Map<String, String> nonStaticMemory = new HashMap<>();
     private Map<String, String> botMemory = new HashMap<>();
     private File learnFile = new File("./temp.aiml");
 
-    public AIMLHandlerBuilderWithAimlsImpl withAiml(List<AIML> aimls)
+    @Inject
+    public AIMLHandlerBuilderImpl(AIMLHandlerFactory aimlHandlerFactory, AIMLParserFactory aimlParserFactory)
     {
-        this.aimls = aimls;
-        return new AIMLHandlerBuilderWithAimlsImpl();
+        this.aimlHandlerFactory = aimlHandlerFactory;
+        this.aimlParserFactory = aimlParserFactory;
     }
 
     public AIMLHandlerBuilderImpl withLearnFile(File file)
@@ -36,18 +41,9 @@ public class AIMLHandlerBuilderImpl implements AIMLHandlerBuilder
         return this;
     }
 
-    public AIMLHandlerBuilderWithAimlsImpl withAiml(AIMLFileReader aimls)
+    public AIMLHandlerBuilderWithAimlsImpl withAiml(AIMLProvider provider)
     {
-        try
-        {
-            this.aimls = aimls.provide()
-                            .stream()
-                            .collect(Collectors.toList());
-        }
-        catch(Exception e)
-        {
-            log.error("Could not load aimls from file", e);
-        }
+        this.aimlProvider = provider;
         return new AIMLHandlerBuilderWithAimlsImpl();
     }
 
@@ -65,31 +61,22 @@ public class AIMLHandlerBuilderImpl implements AIMLHandlerBuilder
 
     public class AIMLHandlerBuilderWithBotMemoryImpl implements AIMLHandlerBuilderWithBotMemory
     {
-
         public AIMLHandlerBuilderWithAimls withAimlProvider(AIMLProvider provider)
         {
-            try
-            {
-                aimls = provider.withBotMemory(botMemory)
-                                .provide()
-                                .stream()
-                                .collect(Collectors.toList());
-            }
-            catch(Exception e)
-            {
-                log.error("Error dua AIMLProvier::provide", e);
-            }
-
+            aimlProvider = provider;
             return new AIMLHandlerBuilderWithAimlsImpl();
         }
     }
 
     public class AIMLHandlerBuilderWithAimlsImpl implements AIMLHandlerBuilderWithAimls
     {
-
-        public AIMLHandler build()
+        public AIMLHandler build() throws AIMLCreationException
         {
-            return new AIMLHandlerImpl(aimls, nonStaticMemory, botMemory, learnFile);
+            AIMLParser aimlParser = aimlParserFactory.createPatternParser(botMemory);
+            List<AIML> aimls = aimlProvider.provide(aimlParser)
+                            .stream()
+                            .collect(Collectors.toList());
+            return aimlHandlerFactory.create(aimls, nonStaticMemory, botMemory, learnFile);
         }
     }
 }

@@ -3,13 +3,13 @@ package com.saxatus.aiml.api.io;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
 import com.saxatus.aiml.api.parsing.AIML;
+import com.saxatus.aiml.api.parsing.AIMLParser;
 
 public class AIMLFileReader extends AbstractAIMLFileReader
 {
@@ -25,7 +25,7 @@ public class AIMLFileReader extends AbstractAIMLFileReader
     }
 
     @Override
-    public Collection<AIML> provide() throws AIMLCreationException
+    public Collection<AIML> provide(AIMLParser aimlParser) throws AIMLCreationException
     {
         if (!this.file.isFile() || !this.file.canRead())
         {
@@ -33,20 +33,12 @@ public class AIMLFileReader extends AbstractAIMLFileReader
         }
         try
         {
-            return loadFromFile(this.file);
+            return loadFromFile(this.file, aimlParser);
         }
         catch(ParserConfigurationException | SAXException | IOException e)
         {
             throw new AIMLCreationException(e);
         }
-
-    }
-
-    @Override
-    public AIMLFileReader withBotMemory(Map<String, String> map)
-    {
-        this.botMemory = map;
-        return new AIMLFileReader(this);
 
     }
 }

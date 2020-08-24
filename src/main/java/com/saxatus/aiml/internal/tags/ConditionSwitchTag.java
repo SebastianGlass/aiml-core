@@ -7,9 +7,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.saxatus.aiml.api.parsing.AIMLParseNode;
 import com.saxatus.aiml.api.tags.AIMLParseTag;
 import com.saxatus.aiml.internal.factory.TagFactory;
-import com.saxatus.aiml.internal.parsing.AIMLParseNode;
 
 public class ConditionSwitchTag extends AbstractBotTag
 {

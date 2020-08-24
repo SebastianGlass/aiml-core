@@ -6,9 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.saxatus.aiml.api.utils.StringUtils;
-import com.saxatus.aiml.api.parsing.AIMLComparator;
 
-//TODO: remove internal references
 public class AIML implements Serializable, Comparable<AIML>
 {
     private static final long serialVersionUID = 6143514919411255637L;

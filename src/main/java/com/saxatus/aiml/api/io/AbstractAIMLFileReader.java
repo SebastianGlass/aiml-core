@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -18,13 +17,9 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import com.saxatus.aiml.api.parsing.AIML;
-import com.saxatus.aiml.api.tags.AIMLParseTag;
+import com.saxatus.aiml.api.parsing.AIMLParser;
 import com.saxatus.aiml.api.utils.XMLUtils;
-import com.saxatus.aiml.internal.factory.TagFactory;
-import com.saxatus.aiml.internal.parsing.AIMLParseNode;
-import com.saxatus.aiml.internal.parsing.TagParameter;
 
-// TODO: remove internal references
 public abstract class AbstractAIMLFileReader implements AIMLProvider
 {
     private static final Log log = LogFactory.getLog(AbstractAIMLFileReader.class);
@@ -34,8 +29,6 @@ public abstract class AbstractAIMLFileReader implements AIMLProvider
     protected String fileName;
 
     protected Document doc;
-
-    protected Map<String, String> botMemory;
 
     protected File file;
 
@@ -59,11 +52,11 @@ public abstract class AbstractAIMLFileReader implements AIMLProvider
     {
         this.fileName = aimlFileReader.fileName;
         this.doc = aimlFileReader.doc;
-        this.botMemory = aimlFileReader.botMemory;
         this.file = aimlFileReader.file;
     }
 
-    protected Collection<AIML> loadFromFile(File file) throws ParserConfigurationException, SAXException, IOException
+    protected Collection<AIML> loadFromFile(File file, AIMLParser aimlParser)
+                    throws ParserConfigurationException, SAXException, IOException
     {
         doc = XMLUtils.parseFileToXMLDocument(file);
         readingLine = 1;
@@ -83,28 +76,26 @@ public abstract class AbstractAIMLFileReader implements AIMLProvider
             String nodeName = nNode.getNodeName();
             if ("category".equals(nodeName))
             {
-                addCategory((Element)nNode, dict);
+                addCategory((Element)nNode, dict, aimlParser);
             }
             else if ("topic".equals(nodeName))
             {
-                handleTopicTag(dict, nNode);
+                handleTopicTag(dict, nNode, aimlParser);
             }
         }
         return dict;
     }
 
-    private void addCategory(Element eElement, Collection<AIML> subList)
+    private void addCategory(Element eElement, Collection<AIML> subList, AIMLParser aimlParser)
     {
-        addCategory(eElement, null, subList);
+        addCategory(eElement, null, subList, aimlParser);
     }
 
-    private void addCategory(Element eElement, String topic, Collection<AIML> subList)
+    private void addCategory(Element eElement, String topic, Collection<AIML> subList, AIMLParser aimlParser)
     {
-
-        TagParameter tp = new TagParameter("", "", "", botMemory, null);
-        AIMLParseTag tag = new TagFactory(tp, null).createTag(eElement.getElementsByTagName("pattern")
-                        .item(0));
-        String pattern = tag.handle(new AIMLParseNode("AIML"));
+        Node patternNode = eElement.getElementsByTagName("pattern")
+                        .item(0);
+        String pattern = aimlParser.parse(patternNode);
         pattern = purify(pattern).toUpperCase();
         String template;
         try
@@ -138,7 +129,7 @@ public abstract class AbstractAIMLFileReader implements AIMLProvider
         subList.add(aiml);
     }
 
-    private void handleTopicTag(Collection<AIML> dict, Node nNode)
+    private void handleTopicTag(Collection<AIML> dict, Node nNode, AIMLParser aimlParser)
     {
         NodeList sub = nNode.getChildNodes();
         for (int i = 0; i < sub.getLength(); i++)
@@ -149,7 +140,7 @@ public abstract class AbstractAIMLFileReader implements AIMLProvider
                 String topic = nNode.getAttributes()
                                 .item(0)
                                 .getNodeValue();
-                addCategory((Element)sNode, topic, dict);
+                addCategory((Element)sNode, topic, dict, aimlParser);
             }
         }
     }

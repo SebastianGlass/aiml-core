@@ -14,6 +14,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.saxatus.aiml.api.AIMLHandler;
 import com.saxatus.aiml.api.AIMLHandlerBuilder;
+import com.saxatus.aiml.api.io.AIMLCreationException;
 import com.saxatus.aiml.api.io.AIMLFileReader;
 import com.saxatus.aiml.module.AIMLModule;
 
@@ -22,11 +23,11 @@ public class BasicExample
 
     @Inject
     AIMLHandlerBuilder aimlHandlerBuilder;
-    
+
     private static final Log log = LogFactory.getLog(BasicExample.class);
     private Map<String, String> botMem = new HashMap<>();
 
-    private AIMLHandler getAIMLHandler()
+    private AIMLHandler getAIMLHandler() throws AIMLCreationException
     {
         URL r = getClass().getResource("/example.aiml");
         File file = new File(r.getFile());
@@ -40,13 +41,22 @@ public class BasicExample
 
     public void getAnswer()
     {
-        AIMLHandler handler = getAIMLHandler();
+        try
+        {
 
-        String response = handler.getAnswer("What's your name?");
-        log.info(response);
+            AIMLHandler handler = getAIMLHandler();
 
-        response = handler.getAnswer("My name is User");
-        log.info(response);
+            String response = handler.getAnswer("What's your name?");
+            log.info(response);
+
+            response = handler.getAnswer("My name is User");
+            log.info(response);
+        }
+        catch(AIMLCreationException e)
+        {
+            log.error(e);
+        }
+
     }
 
     public static void main(String[] args)
