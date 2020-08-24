@@ -19,9 +19,9 @@ public class ConditionTag extends AbstractBotTag
     private String key;
     private String value;
 
-    public ConditionTag(Node node, AIMLParsingSession factory)
+    public ConditionTag(Node node, AIMLParsingSession session)
     {
-        super(node, factory);
+        super(node, session);
         key = Optional.ofNullable(getNode().getAttributes()
                         .getNamedItem("name"))
                         .map(Node::getNodeValue)
@@ -105,13 +105,13 @@ public class ConditionTag extends AbstractBotTag
 
                     if (cond.equals(val) || cond.equals("*"))
                     {
-                        AIMLParseTag liTag = getFactory().createTag(childNode);
+                        AIMLParseTag liTag = getSession().createTag(childNode);
                         return liTag.handle(debugNode);
                     }
                 }
                 else
                 {
-                    fallBack = getFactory().createTag(childNode);
+                    fallBack = getSession().createTag(childNode);
                 }
             }
 

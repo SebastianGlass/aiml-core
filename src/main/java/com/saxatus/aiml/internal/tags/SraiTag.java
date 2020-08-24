@@ -21,9 +21,9 @@ public class SraiTag extends AbstractBotTag
 
     private static List<String> handledPatterns = new LinkedList<>();
 
-    public SraiTag(Node node, AIMLParsingSession factory)
+    public SraiTag(Node node, AIMLParsingSession session)
     {
-        super(node, factory);
+        super(node, session);
     }
 
     @Override
@@ -32,7 +32,7 @@ public class SraiTag extends AbstractBotTag
         super.handle(debugNode);
         String input = handleSubNodes().replace("\n", "")
                         .replace("\t", "");
-        String pattern = getFactory().getParameter()
+        String pattern = getSession().getParameter()
                         .getPattern();
 
         if (/* wasTraversed(pattern) || */ handledPatterns.size() > 30)

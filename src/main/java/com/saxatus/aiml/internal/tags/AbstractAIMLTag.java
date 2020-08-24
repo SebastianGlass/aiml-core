@@ -18,12 +18,12 @@ public abstract class AbstractAIMLTag implements AIMLParseTag
 
     private final Node node;
     private AIMLParseNode debugNode;
-    private final AIMLParsingSession factory;
+    private final AIMLParsingSession session;
 
-    public AbstractAIMLTag(Node node, AIMLParsingSession factory)
+    public AbstractAIMLTag(Node node, AIMLParsingSession session)
     {
         this.node = node;
-        this.factory = factory;
+        this.session = session;
     }
 
     @Override
@@ -45,7 +45,7 @@ public abstract class AbstractAIMLTag implements AIMLParseTag
         {
 
             Node childNode = childNodes.item(i);
-            AIMLParseTag tag = factory.createTag(childNode);
+            AIMLParseTag tag = getSession().createTag(childNode);
 
             result.append(" ")
                             .append(tag.handle(debugNode))
@@ -76,9 +76,9 @@ public abstract class AbstractAIMLTag implements AIMLParseTag
         return debugNode;
     }
 
-    public AIMLParsingSession getFactory()
+    public AIMLParsingSession getSession()
     {
-        return factory;
+        return session;
     }
 
     public String getOptionalAttribute(String string, String i)
@@ -97,7 +97,7 @@ public abstract class AbstractAIMLTag implements AIMLParseTag
 
     protected AIMLHandler getAIMLHandler()
     {
-        return factory.getAIMLHandler();
+        return getSession().getAIMLHandler();
     }
 
     @Override

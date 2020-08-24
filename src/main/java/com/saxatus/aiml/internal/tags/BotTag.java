@@ -12,9 +12,9 @@ public class BotTag extends AbstractBotTag
 
     private String key;
 
-    public BotTag(Node node, AIMLParsingSession factory)
+    public BotTag(Node node, AIMLParsingSession session)
     {
-        super(node, factory);
+        super(node, session);
         key = getOptionalAttribute("name", "").toLowerCase();
     }
 

@@ -11,9 +11,9 @@ import com.saxatus.aiml.api.tags.TagName;
 public class FormalTag extends StarTag
 {
 
-    public FormalTag(Node node, AIMLParsingSession factory)
+    public FormalTag(Node node, AIMLParsingSession session)
     {
-        super(node, factory);
+        super(node, session);
 
     }
 

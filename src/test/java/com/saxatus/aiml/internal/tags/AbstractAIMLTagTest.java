@@ -39,8 +39,8 @@ public abstract class AbstractAIMLTagTest
         {
             rootNode = XMLUtils.parseStringToXMLNode(template, "aiml");
             TagParameterImpl tp = new TagParameterImpl(request, pattern, "", botMemory, nonStaticMeory);
-            AIMLParsingSession factory = new AIMLParsingSessionImpl(tp, aimlHandlerMock);
-            tag = factory.createTag(rootNode);
+            AIMLParsingSession session = new AIMLParsingSessionImpl(tp, aimlHandlerMock);
+            tag = session.createTag(rootNode);
         }
         catch(IOException | ParserConfigurationException | SAXException e)
         {

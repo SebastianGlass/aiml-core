@@ -19,12 +19,12 @@ public class StarTag extends AbstractBotTag
     protected final String request;
     protected final String pattern;
 
-    public StarTag(Node node, AIMLParsingSession factory)
+    public StarTag(Node node, AIMLParsingSession session)
     {
-        super(node, factory);
-        this.request = factory.getParameter()
+        super(node, session);
+        this.request = session.getParameter()
                         .getRequest();
-        this.pattern = factory.getParameter()
+        this.pattern = session.getParameter()
                         .getPattern();
 
     }

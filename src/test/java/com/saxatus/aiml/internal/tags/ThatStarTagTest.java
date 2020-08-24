@@ -22,7 +22,7 @@ class ThatStarTagTest
 
     private ThatStarTag tag;
     private Node node = mock(Node.class);
-    private AIMLParsingSession factory = mock(AIMLParsingSession.class);
+    private AIMLParsingSession session = mock(AIMLParsingSession.class);
     private TagParameterImpl tagParameter = mock(TagParameterImpl.class);
     private NamedNodeMap namedNodeMap = mock(NamedNodeMap.class);
     private AIMLHandlerImpl aimlHandler = mock(AIMLHandlerImpl.class);
@@ -32,8 +32,8 @@ class ThatStarTagTest
     public void setup()
     {
         when(tagParameter.getBotMemory()).thenReturn(new HashMap<>());
-        when(factory.getParameter()).thenReturn(tagParameter);
-        when(factory.getAIMLHandler()).thenReturn(aimlHandler);
+        when(session.getParameter()).thenReturn(tagParameter);
+        when(session.getAIMLHandler()).thenReturn(aimlHandler);
         when(aimlHandler.getThatStar()).thenReturn(Arrays.asList("A", "B", "C"));
         when(node.getAttributes()).thenReturn(namedNodeMap);
     }
@@ -42,7 +42,7 @@ class ThatStarTagTest
     void testThatWithNoParameter()
     {
         when(namedNodeMap.getLength()).thenReturn(0);
-        tag = new ThatStarTag(node, factory);
+        tag = new ThatStarTag(node, session);
         String result = tag.handle(parseNode);
         assertEquals("A", result);
 
@@ -55,7 +55,7 @@ class ThatStarTagTest
         when(namedNodeMap.getNamedItem("index")).thenReturn(node1);
         when(namedNodeMap.getLength()).thenReturn(1);
         when(node1.getNodeValue()).thenReturn("1");
-        tag = new ThatStarTag(node, factory);
+        tag = new ThatStarTag(node, session);
         String result = tag.handle(parseNode);
         assertEquals("A", result);
 
@@ -68,7 +68,7 @@ class ThatStarTagTest
         when(namedNodeMap.getNamedItem("index")).thenReturn(node1);
         when(namedNodeMap.getLength()).thenReturn(1);
         when(node1.getNodeValue()).thenReturn("2");
-        tag = new ThatStarTag(node, factory);
+        tag = new ThatStarTag(node, session);
         String result = tag.handle(parseNode);
         assertEquals("B", result);
 

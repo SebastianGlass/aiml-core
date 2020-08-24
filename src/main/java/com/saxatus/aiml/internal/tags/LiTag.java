@@ -10,9 +10,9 @@ import com.saxatus.aiml.api.tags.TagName;
 public class LiTag extends AbstractAIMLTag
 {
 
-    public LiTag(Node node, AIMLParsingSession factory)
+    public LiTag(Node node, AIMLParsingSession session)
     {
-        super(node, factory);
+        super(node, session);
     }
 
     @Override

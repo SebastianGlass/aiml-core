@@ -18,14 +18,14 @@ import com.saxatus.aiml.internal.parsing.parser.AIMLTemplateParserImpl;
 public class AIMLParserProviderImpl implements AIMLParserProvider
 {
     @Inject
-    AIMLParsingSessionProvider tagFactoryProvider;
+    AIMLParsingSessionProvider aimlParsingSessionProvider;
 
     @Override
     public AIMLParser providePatternParser(Map<String, String> botMemory)
     {
         TagParameter tp = new TagParameterImpl("", "", "", botMemory, null);
-        AIMLParsingSession tagFactory = tagFactoryProvider.create(tp, null);
-        return new AIMLPatternParserImpl(tagFactory);
+        AIMLParsingSession session = aimlParsingSessionProvider.create(tp, null);
+        return new AIMLPatternParserImpl(session);
     }
 
     @Override
@@ -34,8 +34,8 @@ public class AIMLParserProviderImpl implements AIMLParserProvider
     {
         TagParameter tp = new TagParameterImpl(input, pattern, real, aimlHandler.getStaticMemory(),
                         aimlHandler.getNonStaticMemory());
-        AIMLParsingSession factory = tagFactoryProvider.create(tp, aimlHandler);
+        AIMLParsingSession session = aimlParsingSessionProvider.create(tp, aimlHandler);
 
-        return new AIMLTemplateParserImpl(factory, parseNode);
+        return new AIMLTemplateParserImpl(session, parseNode);
     }
 }

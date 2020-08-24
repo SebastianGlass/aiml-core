@@ -27,7 +27,7 @@ import com.saxatus.aiml.internal.parsing.AIMLNotFoundException;
 class AIMLHandlerImplTest
 {
     @Mock
-    AIMLParserProvider aimlParserFactory;
+    AIMLParserProvider aimlParserProvider;
     @Mock
     AIMLParseNode node;
     @Mock
@@ -43,9 +43,9 @@ class AIMLHandlerImplTest
         when(aimlParser.parse(any())).thenReturn("it worked");
         List<AIML> list = Arrays.asList(new AIML("A B", "", null, null, "", 1),
                         new AIML("BRO KEN", "<>", null, null, "", 2), new AIML("A B", "", "that", "topic", "", 3));
-        aimlHandler = new AIMLHandlerImpl(list, nonStatic, Collections.emptyMap(), null, aimlParserFactory);
+        aimlHandler = new AIMLHandlerImpl(list, nonStatic, Collections.emptyMap(), null, aimlParserProvider);
 
-        when(aimlParserFactory.provideTemplateParser(any(), any(), any(), any(), any())).thenReturn(aimlParser);
+        when(aimlParserProvider.provideTemplateParser(any(), any(), any(), any(), any())).thenReturn(aimlParser);
 
     }
 

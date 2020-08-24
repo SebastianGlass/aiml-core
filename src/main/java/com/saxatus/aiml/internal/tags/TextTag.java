@@ -11,9 +11,9 @@ import com.saxatus.aiml.api.utils.StringUtils;
 public class TextTag extends AbstractAIMLTag
 {
 
-    public TextTag(Node node, AIMLParsingSession factory)
+    public TextTag(Node node, AIMLParsingSession session)
     {
-        super(node, factory);
+        super(node, session);
     }
 
     @Override

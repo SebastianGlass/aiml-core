@@ -10,9 +10,9 @@ import com.saxatus.aiml.api.tags.TagName;
 public class AIMLTag extends AbstractAIMLTag
 {
 
-    public AIMLTag(Node node, AIMLParsingSession factory)
+    public AIMLTag(Node node, AIMLParsingSession session)
     {
-        super(node, factory);
+        super(node, session);
     }
 
     @Override
@@ -25,7 +25,7 @@ public class AIMLTag extends AbstractAIMLTag
     @Override
     public String getDebugInformation()
     {
-        return getTag() + " (" + getFactory().getParameter()
+        return getTag() + " (" + getSession().getParameter()
                         .getPattern() + ")";
     }
 

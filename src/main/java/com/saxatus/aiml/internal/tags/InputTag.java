@@ -11,9 +11,9 @@ import com.saxatus.aiml.api.tags.TagName;
 @TagName("input")
 public class InputTag extends AbstractBotTag
 {
-    public InputTag(Node node, AIMLParsingSession factory)
+    public InputTag(Node node, AIMLParsingSession session)
     {
-        super(node, factory);
+        super(node, session);
     }
 
     @Override

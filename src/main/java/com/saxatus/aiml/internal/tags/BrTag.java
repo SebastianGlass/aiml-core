@@ -11,9 +11,9 @@ import com.saxatus.aiml.api.tags.TagName;
 public class BrTag extends AbstractAIMLTag
 {
 
-    public BrTag(Node node, AIMLParsingSession factory)
+    public BrTag(Node node, AIMLParsingSession session)
     {
-        super(node, factory);
+        super(node, session);
     }
 
     @Override

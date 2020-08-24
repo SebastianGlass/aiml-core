@@ -12,9 +12,9 @@ public class SetTag extends AbstractBotTag
 
     private String key;
 
-    public SetTag(Node node, AIMLParsingSession factory)
+    public SetTag(Node node, AIMLParsingSession session)
     {
-        super(node, factory);
+        super(node, session);
         key = getOptionalAttribute("name", "");
     }
 

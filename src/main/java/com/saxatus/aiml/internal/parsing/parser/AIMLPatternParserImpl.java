@@ -8,17 +8,17 @@ import com.saxatus.aiml.api.parsing.AIMLParsingSession;
 
 public class AIMLPatternParserImpl implements AIMLParser
 {
-    AIMLParsingSession tagFactory;
+    AIMLParsingSession session;
 
-    public AIMLPatternParserImpl(AIMLParsingSession fac)
+    public AIMLPatternParserImpl(AIMLParsingSession session)
     {
-        this.tagFactory = fac;
+        this.session = session;
     }
 
     @Override
     public String parse(Node node)
     {
-        return tagFactory.createTag(node)
+        return session.createTag(node)
                         .handle(getParseNode());
     }
 

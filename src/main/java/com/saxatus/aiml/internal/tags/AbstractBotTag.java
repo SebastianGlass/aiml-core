@@ -12,13 +12,13 @@ public abstract class AbstractBotTag extends AbstractAIMLTag
     protected Map<String, String> botMemory;
     protected Map<String, String> nonStaticMemory;
 
-    public AbstractBotTag(Node node, AIMLParsingSession factory)
+    public AbstractBotTag(Node node, AIMLParsingSession session)
     {
-        super(node, factory);
-        botMemory = factory.getParameter()
+        super(node, session);
+        botMemory = getSession().getParameter()
                         .getBotMemory();
 
-        nonStaticMemory = factory.getParameter()
+        nonStaticMemory = getSession().getParameter()
                         .getNonStaticMemory();
     }
 

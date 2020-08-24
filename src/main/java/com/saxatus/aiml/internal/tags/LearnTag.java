@@ -27,9 +27,9 @@ public class LearnTag extends AbstractBotTag
 {
     private static final Log log = LogFactory.getLog(LearnTag.class);
 
-    public LearnTag(Node node, AIMLParsingSession factory)
+    public LearnTag(Node node, AIMLParsingSession session)
     {
-        super(node, factory);
+        super(node, session);
     }
 
     @Override
@@ -66,12 +66,12 @@ public class LearnTag extends AbstractBotTag
                     String nodeName = patternOrTemplateNode.getNodeName();
                     if (nodeName.equals("pattern"))
                     {
-                        pattern = getFactory().createTag(patternOrTemplateNode)
+                        pattern = getSession().createTag(patternOrTemplateNode)
                                         .handle(this.getAIMLParseNode());
                     }
                     else if (nodeName.equals("template"))
                     {
-                        template = getFactory().createTag(patternOrTemplateNode)
+                        template = getSession().createTag(patternOrTemplateNode)
                                         .handle(this.getAIMLParseNode());
                     }
                 }

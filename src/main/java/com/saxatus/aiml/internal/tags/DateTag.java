@@ -14,9 +14,9 @@ public class DateTag extends AbstractBotTag
 {
     private String format;
 
-    public DateTag(Node node, AIMLParsingSession factory)
+    public DateTag(Node node, AIMLParsingSession session)
     {
-        super(node, factory);
+        super(node, session);
         format = getOptionalAttribute("format", "").replace("%Y", "yyyy")
                         .replace("%B", "MM")
                         .replace("%A", "EEE")

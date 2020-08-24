@@ -30,7 +30,7 @@ class LearnTagTest
 
     LearnTag tag;
     @Mock
-    AIMLParsingSession factory;
+    AIMLParsingSession session;
     @Mock
     TagParameter tagParameter;
 
@@ -38,11 +38,11 @@ class LearnTagTest
     void setup() throws ParserConfigurationException, SAXException, IOException
     {
         MockitoAnnotations.initMocks(this);
-        when(factory.getParameter()).thenReturn(tagParameter);
+        when(session.getParameter()).thenReturn(tagParameter);
         when(tagParameter.getBotMemory()).thenReturn(Collections.emptyMap());
         when(tagParameter.getNonStaticMemory()).thenReturn(Collections.emptyMap());
-        tag = new LearnTag(newNode(), factory);
-        when(factory.createTag(any())).then(answer());
+        tag = new LearnTag(newNode(), session);
+        when(session.createTag(any())).then(answer());
 
     }
 

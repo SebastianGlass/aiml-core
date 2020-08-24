@@ -10,9 +10,9 @@ import com.saxatus.aiml.api.tags.TagName;
 public class UppercaseTag extends AbstractAIMLTag
 {
 
-    public UppercaseTag(Node node, AIMLParsingSession factory)
+    public UppercaseTag(Node node, AIMLParsingSession session)
     {
-        super(node, factory);
+        super(node, session);
     }
 
     @Override

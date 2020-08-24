@@ -14,9 +14,9 @@ import com.saxatus.aiml.api.utils.XMLUtils;
 public class UnknownTag extends AbstractAIMLTag
 {
 
-    public UnknownTag(Node node, AIMLParsingSession factory)
+    public UnknownTag(Node node, AIMLParsingSession session)
     {
-        super(node, factory);
+        super(node, session);
     }
 
     @Override

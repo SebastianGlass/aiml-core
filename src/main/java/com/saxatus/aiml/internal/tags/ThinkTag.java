@@ -10,9 +10,9 @@ import com.saxatus.aiml.api.tags.TagName;
 public class ThinkTag extends AbstractAIMLTag
 {
 
-    public ThinkTag(Node node, AIMLParsingSession factory)
+    public ThinkTag(Node node, AIMLParsingSession session)
     {
-        super(node, factory);
+        super(node, session);
 
     }
 

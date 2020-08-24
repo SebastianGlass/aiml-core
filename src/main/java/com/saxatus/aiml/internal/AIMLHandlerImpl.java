@@ -43,16 +43,16 @@ public class AIMLHandlerImpl implements AIMLHandler
 
     private File learnFile;
 
-    private final AIMLParserProvider aimlParserFactory;
+    private final AIMLParserProvider aimlParserProvider;
 
     @Inject
     public AIMLHandlerImpl(@Assisted List<AIML> aimls, @Assisted("non-static") Map<String, String> nonStaticMemory,
                     @Assisted("static") Map<String, String> botMemory, @Assisted File learnfile,
-                    AIMLParserProvider aimlParserFactory)
+                    AIMLParserProvider aimlParserProvider)
     {
         this.botMemory = botMemory;
         this.nonStaticMemory = nonStaticMemory;
-        this.aimlParserFactory = aimlParserFactory;
+        this.aimlParserProvider = aimlParserProvider;
         this.inputs = new ArrayList<>();
         this.outputs = new ArrayList<>();
         this.learnFile = learnfile;
@@ -98,7 +98,7 @@ public class AIMLHandlerImpl implements AIMLHandler
         try
         {
             Node rootNode = XMLUtils.parseStringToXMLNode(aiml.getTemplate(), "aiml");
-            AIMLParser parser = aimlParserFactory.provideTemplateParser(aiml.getPattern(), input, real, this, node);
+            AIMLParser parser = aimlParserProvider.provideTemplateParser(aiml.getPattern(), input, real, this, node);
             return parser.parse(rootNode);
         }
         catch(IOException | ParserConfigurationException | SAXException e)

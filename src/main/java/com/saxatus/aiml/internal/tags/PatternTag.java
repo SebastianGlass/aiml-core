@@ -11,9 +11,9 @@ import com.saxatus.aiml.api.tags.TagName;
 public class PatternTag extends AbstractAIMLTag
 {
 
-    public PatternTag(Node node, AIMLParsingSession factory)
+    public PatternTag(Node node, AIMLParsingSession session)
     {
-        super(node, factory);
+        super(node, session);
     }
 
     @Override

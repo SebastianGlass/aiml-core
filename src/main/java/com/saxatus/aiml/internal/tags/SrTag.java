@@ -10,9 +10,9 @@ import com.saxatus.aiml.api.tags.TagName;
 public class SrTag extends StarTag
 {
 
-    public SrTag(Node node, AIMLParsingSession factory)
+    public SrTag(Node node, AIMLParsingSession session)
     {
-        super(node, factory);
+        super(node, session);
     }
 
     @Override

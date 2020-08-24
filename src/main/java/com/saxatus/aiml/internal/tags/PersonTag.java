@@ -17,9 +17,9 @@ public class PersonTag extends StarTag
 
     private final Map<String, String> map = new HashMap<>();
 
-    public PersonTag(Node node, AIMLParsingSession factory)
+    public PersonTag(Node node, AIMLParsingSession session)
     {
-        super(node, factory);
+        super(node, session);
         map.put("i", "you");
         map.put("me", "you");
         map.put("my", "your");

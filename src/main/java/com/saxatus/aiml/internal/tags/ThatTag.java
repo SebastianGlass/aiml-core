@@ -12,9 +12,9 @@ import com.saxatus.aiml.api.tags.TagName;
 public class ThatTag extends AbstractBotTag
 {
 
-    public ThatTag(Node node, AIMLParsingSession factory)
+    public ThatTag(Node node, AIMLParsingSession session)
     {
-        super(node, factory);
+        super(node, session);
     }
 
     @Override

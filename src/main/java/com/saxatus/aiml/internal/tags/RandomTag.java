@@ -16,9 +16,9 @@ import com.saxatus.aiml.api.tags.TagName;
 public class RandomTag extends AbstractAIMLTag
 {
 
-    public RandomTag(Node node, AIMLParsingSession factory)
+    public RandomTag(Node node, AIMLParsingSession session)
     {
-        super(node, factory);
+        super(node, session);
     }
 
     @Override
@@ -33,7 +33,7 @@ public class RandomTag extends AbstractAIMLTag
             if (childNode.getNodeName()
                             .equals("li"))
             {
-                AIMLParseTag liTag = getFactory().createTag(childNode);
+                AIMLParseTag liTag = getSession().createTag(childNode);
                 options.add(liTag);
             }
             else
