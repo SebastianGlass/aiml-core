@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
@@ -12,6 +14,7 @@ import com.saxatus.aiml.api.utils.XMLUtils;
 
 public class AIMLDOMFactory
 {
+    private static final Log log = LogFactory.getLog(AIMLDOMFactory.class);
 
     private final String template;
 
@@ -30,7 +33,7 @@ public class AIMLDOMFactory
         }
         catch(ParserConfigurationException | SAXException | IOException e)
         {
-            e.printStackTrace();
+            log.error(e);
         }
         throw new IOException();
 

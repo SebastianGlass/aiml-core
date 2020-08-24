@@ -1,6 +1,5 @@
 package com.saxatus.aiml.internal.factory;
 
-import java.io.IOException;
 import java.util.Map;
 
 import com.saxatus.aiml.api.AIMLHandler;
@@ -23,7 +22,7 @@ public class AIMLParserFactoryImpl implements AIMLParserFactory
 
     @Override
     public AIMLParser createTemplateParser(String pattern, String input, String real, AIMLHandler aimlHandler,
-                    AIMLParseNode parseNode) throws IOException
+                    AIMLParseNode parseNode)
     {
         TagParameter tp = new TagParameter(input, pattern, real, aimlHandler.getStaticMemory(),
                         aimlHandler.getNonStaticMemory());

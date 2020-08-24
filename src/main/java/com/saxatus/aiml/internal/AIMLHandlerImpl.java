@@ -131,7 +131,7 @@ public class AIMLHandlerImpl implements AIMLHandler
 
     public Dictionary<String, AIML> getTopicDict()
     {
-        String topic = botMemory.get("topic");
+        String topic = nonStaticMemory.get("topic");
         return new DictionaryFilter(aimlDict).applyTopicFilter(topic)
                         .getDict();
     }
@@ -144,7 +144,6 @@ public class AIMLHandlerImpl implements AIMLHandler
 
     public File getLearnFile()
     {
-
         return learnFile;
     }
 
