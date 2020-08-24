@@ -16,6 +16,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import com.saxatus.aiml.api.parsing.AIML;
 import com.saxatus.aiml.api.parsing.AIMLParseNode;
 import com.saxatus.aiml.api.parsing.AIMLParsingSession;
 import com.saxatus.aiml.api.tags.TagName;
@@ -35,6 +36,20 @@ public class LearnTag extends AbstractBotTag
     public String handle(AIMLParseNode debugNode)
     {
         super.handle(debugNode);
+        AIML aiml = createAIML();
+        try
+        {
+            updateLearnFile(aiml);
+        }
+        catch(Exception e)
+        {
+            log.error("Exception in LearnTag.handle: ", e);
+        }
+        return "";
+    }
+
+    AIML createAIML()
+    {
         String pattern = "";
         String template = "";
         NodeList nodes = getNode().getChildNodes();
@@ -62,18 +77,10 @@ public class LearnTag extends AbstractBotTag
                 }
             }
         }
-        try
-        {
-            updateAIML(pattern, template);
-        }
-        catch(Exception e)
-        {
-            log.error("Exception in LearnTag.handle: ", e);
-        }
-        return "";
+        return new AIML(pattern, template, null, null, "learned", -1);
     }
 
-    private void updateAIML(String pattern, String template)
+    private void updateLearnFile(AIML aiml)
                     throws IOException, ParserConfigurationException, SAXException, TransformerException
     {
         File learnFile = getAIMLHandler().getLearnFile();
@@ -89,9 +96,9 @@ public class LearnTag extends AbstractBotTag
         Document doc = XMLUtils.parseFileToXMLDocument(learnFile);
         Node node = doc.createElement("category");
         node.appendChild(doc.createElement("pattern"))
-                        .appendChild(doc.createTextNode(pattern));
+                        .appendChild(doc.createTextNode(aiml.getPattern()));
         node.appendChild(doc.createElement("template"))
-                        .appendChild(doc.createTextNode(template));
+                        .appendChild(doc.createTextNode(aiml.getTemplate()));
         node.appendChild(doc.createComment("taught by " + nonStaticMemory.get("name")));
         doc.getElementsByTagName("aiml")
                         .item(0)
