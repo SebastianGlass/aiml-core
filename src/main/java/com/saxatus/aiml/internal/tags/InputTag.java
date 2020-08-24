@@ -4,13 +4,14 @@ import java.util.List;
 
 import org.w3c.dom.Node;
 
+import com.saxatus.aiml.api.factory.TagFactory;
 import com.saxatus.aiml.api.parsing.AIMLParseNode;
-import com.saxatus.aiml.internal.factory.TagFactory;
+import com.saxatus.aiml.api.tags.TagName;
 
+@TagName("input")
 public class InputTag extends AbstractBotTag
 {
-    // TODO: Rework
-    private InputTag(Node node, TagFactory factory)
+    public InputTag(Node node, TagFactory factory)
     {
         super(node, factory);
     }
@@ -24,19 +25,6 @@ public class InputTag extends AbstractBotTag
         if (l.size() >= index)
             return l.get(l.size() - index);
         return "";
-    }
-
-    private static final String TAG = "input";
-
-    public static void register()
-    {
-        // TagFactory.addTag(TAG, InputTag::new);
-    }
-
-    @Override
-    public String getTag()
-    {
-        return TAG;
     }
 
 }

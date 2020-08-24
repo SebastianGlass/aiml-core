@@ -9,11 +9,12 @@ import java.util.Map;
 
 import org.w3c.dom.Node;
 
+import com.saxatus.aiml.api.factory.TagFactory;
 import com.saxatus.aiml.api.tags.AIMLParseTag;
 import com.saxatus.aiml.internal.AIMLHandlerImpl;
 import com.saxatus.aiml.internal.factory.AIMLDOMFactory;
-import com.saxatus.aiml.internal.factory.TagFactory;
-import com.saxatus.aiml.internal.parsing.TagParameter;
+import com.saxatus.aiml.internal.factory.TagFactoryImpl;
+import com.saxatus.aiml.internal.factory.TagFactoryImpl.TagParameterImpl;
 
 public abstract class AbstractAIMLTagTest
 {
@@ -33,8 +34,8 @@ public abstract class AbstractAIMLTagTest
         try
         {
             rootNode = new AIMLDOMFactory(template).getDocumentRoot();
-            TagParameter tp = new TagParameter(request, pattern, "", botMemory, nonStaticMeory);
-            TagFactory factory = new TagFactory(tp, aimlHandlerMock);
+            TagParameterImpl tp = new TagParameterImpl(request, pattern, "", botMemory, nonStaticMeory);
+            TagFactory factory = new TagFactoryImpl(tp, aimlHandlerMock);
             tag = factory.createTag(rootNode);
         }
         catch(IOException e)

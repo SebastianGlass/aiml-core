@@ -8,9 +8,10 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.saxatus.aiml.api.AIMLHandler;
+import com.saxatus.aiml.api.factory.TagFactory;
 import com.saxatus.aiml.api.parsing.AIMLParseNode;
 import com.saxatus.aiml.api.tags.AIMLParseTag;
-import com.saxatus.aiml.internal.factory.TagFactory;
+import com.saxatus.aiml.api.tags.TagName;
 
 public abstract class AbstractAIMLTag implements AIMLParseTag
 {
@@ -97,6 +98,14 @@ public abstract class AbstractAIMLTag implements AIMLParseTag
     protected AIMLHandler getAIMLHandler()
     {
         return factory.getAIMLHandler();
+    }
+
+    @Override
+    public String getTag()
+    {
+        TagName[] names = this.getClass()
+                        .getAnnotationsByType(TagName.class);
+        return names.length > 0 ? names[0].value() : "UNKNOWN";
     }
 
 }

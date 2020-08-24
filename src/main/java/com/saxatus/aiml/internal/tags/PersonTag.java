@@ -7,16 +7,17 @@ import java.util.stream.Collectors;
 
 import org.w3c.dom.Node;
 
+import com.saxatus.aiml.api.factory.TagFactory;
 import com.saxatus.aiml.api.parsing.AIMLParseNode;
-import com.saxatus.aiml.internal.factory.TagFactory;
-import com.saxatus.aiml.internal.parsing.TagRepository;
+import com.saxatus.aiml.api.tags.TagName;
 
+@TagName("person")
 public class PersonTag extends StarTag
 {
 
     private final Map<String, String> map = new HashMap<>();
 
-    private PersonTag(Node node, TagFactory factory)
+    public PersonTag(Node node, TagFactory factory)
     {
         super(node, factory);
         map.put("i", "you");
@@ -26,19 +27,6 @@ public class PersonTag extends StarTag
 
         map.put("you", "me");
         map.put("your", "my");
-    }
-
-    private static final String TAG = "person";
-
-    public static void register()
-    {
-        TagRepository.addTag(TAG, PersonTag::new);
-    }
-
-    @Override
-    public String getTag()
-    {
-        return TAG;
     }
 
     @Override
@@ -68,11 +56,11 @@ public class PersonTag extends StarTag
         if (getNode().getChildNodes()
                         .getLength() == 0)
         {
-            return TAG + " (" + replaceStars() + ")";
+            return getTag() + " (" + replaceStars() + ")";
         }
         else
         {
-            return TAG;
+            return getTag();
         }
     }
 

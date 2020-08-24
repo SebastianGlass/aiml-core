@@ -7,45 +7,49 @@ import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.saxatus.aiml.api.factory.TagFactory;
 import com.saxatus.aiml.api.parsing.AIMLParseNode;
 import com.saxatus.aiml.api.tags.AIMLParseTag;
-import com.saxatus.aiml.internal.factory.TagFactory;
-import com.saxatus.aiml.internal.parsing.TagRepository;
+import com.saxatus.aiml.api.tags.TagName;
 
+@TagName("condition")
 public class ConditionTag extends AbstractBotTag
 {
+
+    private String key;
+    private String value;
 
     public ConditionTag(Node node, TagFactory factory)
     {
         super(node, factory);
+        key = Optional.ofNullable(getNode().getAttributes()
+                        .getNamedItem("name"))
+                        .map(Node::getNodeValue)
+                        .map(String::toLowerCase)
+                        .orElse("");
+
+        value = Optional.ofNullable(getNode().getAttributes()
+                        .getNamedItem("value"))
+                        .map(Node::getNodeValue)
+                        .orElse(null);
 
     }
 
     @Override
     public String handle(AIMLParseNode debugNode)
     {
-        String key = Optional.ofNullable(getNode().getAttributes()
-                        .getNamedItem("name"))
-                        .map(Node::getNodeValue)
-                        .map(String::toLowerCase)
-                        .orElse("");
-
-        String value = Optional.ofNullable(getNode().getAttributes()
-                        .getNamedItem("value"))
-                        .map(Node::getNodeValue)
-                        .orElse(null);
 
         if (value != null)
         {
-            return handleIfTrue(debugNode, key, value);
+            return handleIfTrue(debugNode);
         }
         else
         {
-            return handleSwitch(debugNode, key);
+            return handleSwitch(debugNode);
         }
     }
 
-    public String handleIfTrue(AIMLParseNode debugNode, String key, String value)
+    public String handleIfTrue(AIMLParseNode debugNode)
     {
         super.handle(debugNode);
         String response = "";
@@ -57,21 +61,14 @@ public class ConditionTag extends AbstractBotTag
         return response;
     }
 
-    private static final String TAG = "condition";
-
-    public static void register()
-    {
-        TagRepository.addTag(TAG, ConditionTag::new);
-    }
-
-    public String handleSwitch(AIMLParseNode debugNode, String key)
+    public String handleSwitch(AIMLParseNode debugNode)
     {
         super.handle(debugNode);
-        return StringUtils.isEmpty(key) ? handleKeyValuePairs(debugNode) : handleValueForSetKey(debugNode, key);
+        return StringUtils.isEmpty(key) ? handleKeyValuePairs(debugNode) : handleValueForSetKey(debugNode);
 
     }
 
-    private String handleValueForSetKey(AIMLParseNode debugNode, String key)
+    private String handleValueForSetKey(AIMLParseNode debugNode)
     {
         return handleKeyValuePairs(debugNode, childNode -> Optional.of(key));
     }
@@ -125,12 +122,6 @@ public class ConditionTag extends AbstractBotTag
         }
         return fallBack.handle(debugNode);
 
-    }
-
-    @Override
-    public String getTag()
-    {
-        return TAG;
     }
 
 }

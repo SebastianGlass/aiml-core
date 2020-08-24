@@ -9,33 +9,21 @@ import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Node;
 
 import com.saxatus.aiml.api.AIMLHandler;
+import com.saxatus.aiml.api.factory.TagFactory;
 import com.saxatus.aiml.api.parsing.AIMLParseNode;
-import com.saxatus.aiml.internal.factory.TagFactory;
+import com.saxatus.aiml.api.tags.TagName;
 import com.saxatus.aiml.internal.parsing.AIMLNotFoundException;
-import com.saxatus.aiml.internal.parsing.TagRepository;
 
+@TagName("srai")
 public class SraiTag extends AbstractBotTag
 {
     private static final Log log = LogFactory.getLog(SraiTag.class);
 
     private static List<String> handledPatterns = new LinkedList<>();
 
-    private SraiTag(Node node, TagFactory factory)
+    public SraiTag(Node node, TagFactory factory)
     {
         super(node, factory);
-    }
-
-    private static final String TAG = "srai";
-
-    public static void register()
-    {
-        TagRepository.addTag(TAG, SraiTag::new);
-    }
-
-    @Override
-    public String getTag()
-    {
-        return TAG;
     }
 
     @Override

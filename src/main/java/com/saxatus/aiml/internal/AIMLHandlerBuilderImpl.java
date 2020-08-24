@@ -10,7 +10,7 @@ import javax.inject.Inject;
 
 import com.saxatus.aiml.api.AIMLHandler;
 import com.saxatus.aiml.api.AIMLHandlerBuilder;
-import com.saxatus.aiml.api.factory.AIMLHandlerFactory;
+import com.saxatus.aiml.api.factory.AIMLHandlerProvider;
 import com.saxatus.aiml.api.factory.AIMLParserFactory;
 import com.saxatus.aiml.api.io.AIMLCreationException;
 import com.saxatus.aiml.api.io.AIMLProvider;
@@ -19,7 +19,7 @@ import com.saxatus.aiml.api.parsing.AIMLParser;
 
 public class AIMLHandlerBuilderImpl implements AIMLHandlerBuilder
 {
-    private AIMLHandlerFactory aimlHandlerFactory;
+    private AIMLHandlerProvider aimlHandlerFactory;
     private AIMLParserFactory aimlParserFactory;
 
     private AIMLProvider aimlProvider;
@@ -29,7 +29,7 @@ public class AIMLHandlerBuilderImpl implements AIMLHandlerBuilder
     private File learnFile = new File("./temp.aiml");
 
     @Inject
-    public AIMLHandlerBuilderImpl(AIMLHandlerFactory aimlHandlerFactory, AIMLParserFactory aimlParserFactory)
+    public AIMLHandlerBuilderImpl(AIMLHandlerProvider aimlHandlerFactory, AIMLParserFactory aimlParserFactory)
     {
         this.aimlHandlerFactory = aimlHandlerFactory;
         this.aimlParserFactory = aimlParserFactory;
@@ -76,7 +76,7 @@ public class AIMLHandlerBuilderImpl implements AIMLHandlerBuilder
             List<AIML> aimls = aimlProvider.provide(aimlParser)
                             .stream()
                             .collect(Collectors.toList());
-            return aimlHandlerFactory.create(aimls, nonStaticMemory, botMemory, learnFile);
+            return aimlHandlerFactory.provide(aimls, nonStaticMemory, botMemory, learnFile);
         }
     }
 }

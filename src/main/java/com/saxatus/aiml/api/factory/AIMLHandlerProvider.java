@@ -8,8 +8,8 @@ import com.google.inject.assistedinject.Assisted;
 import com.saxatus.aiml.api.AIMLHandler;
 import com.saxatus.aiml.api.parsing.AIML;
 
-public interface AIMLHandlerFactory
+public interface AIMLHandlerProvider
 {
-    AIMLHandler create(List<AIML> aimls, @Assisted("non-static") Map<String, String> nonStaticMemory,
+    AIMLHandler provide(List<AIML> aimls, @Assisted("non-static") Map<String, String> nonStaticMemory,
                     @Assisted("static") Map<String, String> botMemory, File learnfile);
 }

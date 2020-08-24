@@ -4,7 +4,7 @@ import java.util.Map;
 
 import org.w3c.dom.Node;
 
-import com.saxatus.aiml.internal.factory.TagFactory;
+import com.saxatus.aiml.api.factory.TagFactory;
 
 public abstract class AbstractBotTag extends AbstractAIMLTag
 {

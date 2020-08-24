@@ -5,17 +5,16 @@ import java.util.Date;
 
 import org.w3c.dom.Node;
 
+import com.saxatus.aiml.api.factory.TagFactory;
 import com.saxatus.aiml.api.parsing.AIMLParseNode;
-import com.saxatus.aiml.internal.factory.TagFactory;
-import com.saxatus.aiml.internal.parsing.TagRepository;
+import com.saxatus.aiml.api.tags.TagName;
 
+@TagName("date")
 public class DateTag extends AbstractBotTag
 {
-
-    private static final String TAG = "date";
     private String format;
 
-    private DateTag(Node node, TagFactory factory)
+    public DateTag(Node node, TagFactory factory)
     {
         super(node, factory);
         format = getOptionalAttribute("format", "").replace("%Y", "yyyy")
@@ -37,21 +36,10 @@ public class DateTag extends AbstractBotTag
         return " " + value + " ";
     }
 
-    public static void register()
-    {
-        TagRepository.addTag(TAG, DateTag::new);
-    }
-
-    @Override
-    public String getTag()
-    {
-        return TAG;
-    }
-
     @Override
     public String getDebugInformation()
     {
-        return TAG + " (" + format + ")";
+        return getTag() + " (" + format + ")";
     }
 
 }

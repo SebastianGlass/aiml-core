@@ -4,30 +4,18 @@ import java.util.List;
 
 import org.w3c.dom.Node;
 
+import com.saxatus.aiml.api.factory.TagFactory;
 import com.saxatus.aiml.api.parsing.AIMLParseNode;
-import com.saxatus.aiml.internal.factory.TagFactory;
-import com.saxatus.aiml.internal.parsing.TagRepository;
+import com.saxatus.aiml.api.tags.TagName;
 
+@TagName("thatstar")
 public class ThatStarTag extends AbstractBotTag
 {
 
-    protected ThatStarTag(Node node, TagFactory factory)
+    public ThatStarTag(Node node, TagFactory factory)
     {
         super(node, factory);
 
-    }
-
-    private static final String TAG = "thatstar";
-
-    public static void register()
-    {
-        TagRepository.addTag(TAG, ThatStarTag::new);
-    }
-
-    @Override
-    public String getTag()
-    {
-        return TAG;
     }
 
     @Override

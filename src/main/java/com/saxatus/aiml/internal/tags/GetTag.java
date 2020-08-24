@@ -2,17 +2,17 @@ package com.saxatus.aiml.internal.tags;
 
 import org.w3c.dom.Node;
 
+import com.saxatus.aiml.api.factory.TagFactory;
 import com.saxatus.aiml.api.parsing.AIMLParseNode;
-import com.saxatus.aiml.internal.factory.TagFactory;
-import com.saxatus.aiml.internal.parsing.TagRepository;
+import com.saxatus.aiml.api.tags.TagName;
 
+@TagName("get")
 public class GetTag extends AbstractBotTag
 {
 
-    private static final String TAG = "get";
     private String key;
 
-    private GetTag(Node node, TagFactory factory)
+    public GetTag(Node node, TagFactory factory)
     {
         super(node, factory);
         key = getOptionalAttribute("name", "").toLowerCase();
@@ -26,21 +26,10 @@ public class GetTag extends AbstractBotTag
         return " " + value + " ";
     }
 
-    public static void register()
-    {
-        TagRepository.addTag(TAG, GetTag::new);
-    }
-
-    @Override
-    public String getTag()
-    {
-        return TAG;
-    }
-
     @Override
     public String getDebugInformation()
     {
-        return TAG + " (" + key + ")";
+        return getTag() + " (" + key + ")";
     }
 
 }

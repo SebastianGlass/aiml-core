@@ -1,7 +1,7 @@
 package com.saxatus.aiml.internal.parsing;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -9,7 +9,10 @@ import java.util.stream.Collectors;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.reflections.Reflections;
+import org.w3c.dom.Node;
 
+import com.saxatus.aiml.api.factory.TagFactory;
+import com.saxatus.aiml.api.tags.TagName;
 import com.saxatus.aiml.internal.factory.TagSupplier;
 import com.saxatus.aiml.internal.tags.AbstractAIMLTag;
 
@@ -18,14 +21,14 @@ public class TagRepository
 
     private static final Log log = LogFactory.getLog(TagRepository.class);
 
-    private static final HashMap<String, TagSupplier> tagSupplierMap = new HashMap<>();
+    private final HashMap<String, TagSupplier> tagSupplierMap = new HashMap<>();
 
-    static
+    public TagRepository()
     {
         Reflections reflections = new Reflections("com.saxatus");
         List<Class<? extends AbstractAIMLTag>> classes = reflections.getSubTypesOf(AbstractAIMLTag.class)
                         .stream()
-                        .filter(TagRepository::invokeRegisterMethodIfNotAbstract)
+                        .filter(this::invokeRegisterMethodIfNotAbstract)
                         .collect(Collectors.toList());
         log.debug("loaded Tags:");
         for (Class<? extends AbstractAIMLTag> class1 : classes)
@@ -34,25 +37,43 @@ public class TagRepository
         }
     }
 
-    private static boolean invokeRegisterMethodIfNotAbstract(Class<?> clazz)
+    @SuppressWarnings("unchecked")
+    private boolean invokeRegisterMethodIfNotAbstract(Class<?> clazz)
     {
-        try
+        if (!Modifier.isAbstract(clazz.getModifiers()) && AbstractAIMLTag.class.isAssignableFrom(clazz))
         {
-            if (!Modifier.isAbstract(clazz.getModifiers()) && AbstractAIMLTag.class.isAssignableFrom(clazz))
+            Class<AbstractAIMLTag> aimlClazz = (Class<AbstractAIMLTag>)clazz;
+            TagName[] tagNames = clazz.getAnnotationsByType(TagName.class);
+            if (tagNames.length == 0)
             {
-                clazz.getMethod("register")
-                                .invoke(null);
-                return true;
+                return false;
             }
+            Arrays.stream(tagNames)
+                            .forEach(tagName -> this.addTag(tagName.value(), getTagSupplierForClass(aimlClazz)));
+
+            return true;
         }
-        catch(IllegalAccessException | InvocationTargetException | NoSuchMethodException e)
-        {
-            log.warn(clazz.getName() + " will not be registered.");
-        }
+
         return false;
     }
 
-    public static void addTag(String tagName, TagSupplier tagSupplier)
+    private static TagSupplier getTagSupplierForClass(Class<AbstractAIMLTag> clazz)
+    {
+        return (node, fac) -> {
+            try
+            {
+                return (AbstractAIMLTag)clazz.getConstructor(Node.class, TagFactory.class)
+                                .newInstance(node, fac);
+            }
+            catch(Exception e)
+            {
+                log.error(e);
+            }
+            return null;
+        };
+    }
+
+    public void addTag(String tagName, TagSupplier tagSupplier)
     {
         synchronized(tagSupplierMap)
         {
@@ -60,7 +81,7 @@ public class TagRepository
         }
     }
 
-    public static TagSupplier getByName(String name)
+    public TagSupplier getByName(String name)
     {
         TagSupplier supplier;
 
@@ -76,8 +97,4 @@ public class TagRepository
         return supplier;
     }
 
-    private TagRepository()
-    {
-
-    }
 }

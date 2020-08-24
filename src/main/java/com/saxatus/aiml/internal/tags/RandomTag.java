@@ -7,30 +7,18 @@ import java.util.Random;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.saxatus.aiml.api.factory.TagFactory;
 import com.saxatus.aiml.api.parsing.AIMLParseNode;
 import com.saxatus.aiml.api.tags.AIMLParseTag;
-import com.saxatus.aiml.internal.factory.TagFactory;
-import com.saxatus.aiml.internal.parsing.TagRepository;
+import com.saxatus.aiml.api.tags.TagName;
 
+@TagName("random")
 public class RandomTag extends AbstractAIMLTag
 {
 
-    private RandomTag(Node node, TagFactory factory)
+    public RandomTag(Node node, TagFactory factory)
     {
         super(node, factory);
-    }
-
-    private static final String TAG = "random";
-
-    public static void register()
-    {
-        TagRepository.addTag(TAG, RandomTag::new);
-    }
-
-    @Override
-    public String getTag()
-    {
-        return TAG;
     }
 
     @Override

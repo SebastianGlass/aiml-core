@@ -7,18 +7,19 @@ import java.util.regex.Pattern;
 
 import org.w3c.dom.Node;
 
+import com.saxatus.aiml.api.factory.TagFactory;
 import com.saxatus.aiml.api.parsing.AIMLParseNode;
+import com.saxatus.aiml.api.tags.TagName;
 import com.saxatus.aiml.api.utils.StringUtils;
-import com.saxatus.aiml.internal.factory.TagFactory;
-import com.saxatus.aiml.internal.parsing.TagRepository;
 
+@TagName("star")
 public class StarTag extends AbstractBotTag
 {
 
     protected final String request;
     protected final String pattern;
 
-    protected StarTag(Node node, TagFactory factory)
+    public StarTag(Node node, TagFactory factory)
     {
         super(node, factory);
         this.request = factory.getParameter()
@@ -26,19 +27,6 @@ public class StarTag extends AbstractBotTag
         this.pattern = factory.getParameter()
                         .getPattern();
 
-    }
-
-    private static final String TAG = "star";
-
-    public static void register()
-    {
-        TagRepository.addTag(TAG, StarTag::new);
-    }
-
-    @Override
-    public String getTag()
-    {
-        return TAG;
     }
 
     @Override

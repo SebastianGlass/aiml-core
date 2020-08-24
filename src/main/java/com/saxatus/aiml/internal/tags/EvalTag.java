@@ -2,23 +2,17 @@ package com.saxatus.aiml.internal.tags;
 
 import org.w3c.dom.Node;
 
+import com.saxatus.aiml.api.factory.TagFactory;
 import com.saxatus.aiml.api.parsing.AIMLParseNode;
-import com.saxatus.aiml.internal.factory.TagFactory;
-import com.saxatus.aiml.internal.parsing.TagRepository;
+import com.saxatus.aiml.api.tags.TagName;
 
+@TagName("eval")
 public class EvalTag extends AbstractAIMLTag
 {
 
-    private EvalTag(Node node, TagFactory factory)
+    public EvalTag(Node node, TagFactory factory)
     {
         super(node, factory);
-    }
-
-    private static final String TAG = "eval";
-
-    public static void register()
-    {
-        TagRepository.addTag(TAG, EvalTag::new);
     }
 
     @Override
@@ -26,12 +20,6 @@ public class EvalTag extends AbstractAIMLTag
     {
         super.handle(debugNode);
         return handleSubNodes();
-    }
-
-    @Override
-    public String getTag()
-    {
-        return TAG;
     }
 
 }

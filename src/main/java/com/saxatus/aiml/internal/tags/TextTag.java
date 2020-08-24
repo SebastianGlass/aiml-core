@@ -2,30 +2,18 @@ package com.saxatus.aiml.internal.tags;
 
 import org.w3c.dom.Node;
 
+import com.saxatus.aiml.api.factory.TagFactory;
 import com.saxatus.aiml.api.parsing.AIMLParseNode;
+import com.saxatus.aiml.api.tags.TagName;
 import com.saxatus.aiml.api.utils.StringUtils;
-import com.saxatus.aiml.internal.factory.TagFactory;
-import com.saxatus.aiml.internal.parsing.TagRepository;
 
+@TagName("#text")
 public class TextTag extends AbstractAIMLTag
 {
 
-    private TextTag(Node node, TagFactory factory)
+    public TextTag(Node node, TagFactory factory)
     {
         super(node, factory);
-    }
-
-    private static final String TAG = "#text";
-
-    public static void register()
-    {
-        TagRepository.addTag(TAG, TextTag::new);
-    }
-
-    @Override
-    public String getTag()
-    {
-        return TAG;
     }
 
     @Override
@@ -38,7 +26,7 @@ public class TextTag extends AbstractAIMLTag
     @Override
     public String getDebugInformation()
     {
-        return TAG + " (" + StringUtils.clearString(getNode().getTextContent()) + ")";
+        return getTag() + " (" + StringUtils.clearString(getNode().getTextContent()) + ")";
     }
 
 }
