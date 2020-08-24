@@ -1,4 +1,4 @@
-package com.saxatus.aiml.internal.parsing;
+package com.saxatus.aiml.internal.parsing.parser;
 
 import org.w3c.dom.Node;
 
@@ -6,11 +6,11 @@ import com.saxatus.aiml.api.parsing.AIMLParseNode;
 import com.saxatus.aiml.api.parsing.AIMLParser;
 import com.saxatus.aiml.internal.factory.TagFactory;
 
-public class AIMLParserImpl implements AIMLParser
+public class AIMLPatternParserImpl implements AIMLParser
 {
     TagFactory tagFactory;
 
-    public AIMLParserImpl(TagFactory fac)
+    public AIMLPatternParserImpl(TagFactory fac)
     {
         this.tagFactory = fac;
     }
@@ -18,9 +18,14 @@ public class AIMLParserImpl implements AIMLParser
     @Override
     public String parse(Node node)
     {
-        AIMLParseNode debugNode = new AIMLParseNode("AIML");
         return tagFactory.createTag(node)
-                        .handle(debugNode);
+                        .handle(getParseNode());
+    }
+
+    @Override
+    public AIMLParseNode getParseNode()
+    {
+        return new AIMLParseNode("AIML");
     }
 
 }

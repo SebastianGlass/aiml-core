@@ -7,9 +7,9 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.saxatus.aiml.api.AIMLHandler;
 import com.saxatus.aiml.api.parsing.AIMLParseNode;
 import com.saxatus.aiml.api.tags.AIMLParseTag;
-import com.saxatus.aiml.internal.AIMLHandlerImpl;
 import com.saxatus.aiml.internal.factory.TagFactory;
 
 public abstract class AbstractAIMLTag implements AIMLParseTag
@@ -94,7 +94,7 @@ public abstract class AbstractAIMLTag implements AIMLParseTag
         return index;
     }
 
-    protected AIMLHandlerImpl getAIMLHandler()
+    protected AIMLHandler getAIMLHandler()
     {
         return factory.getAIMLHandler();
     }

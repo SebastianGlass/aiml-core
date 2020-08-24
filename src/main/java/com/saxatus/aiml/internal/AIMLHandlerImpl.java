@@ -12,19 +12,19 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Node;
 
+import com.google.common.collect.Maps;
 import com.google.inject.assistedinject.Assisted;
 import com.saxatus.aiml.api.AIMLHandler;
+import com.saxatus.aiml.api.factory.AIMLParserFactory;
 import com.saxatus.aiml.api.parsing.AIML;
 import com.saxatus.aiml.api.parsing.AIMLParseNode;
-import com.saxatus.aiml.api.tags.AIMLParseTag;
+import com.saxatus.aiml.api.parsing.AIMLParser;
 import com.saxatus.aiml.api.utils.Dictionary;
 import com.saxatus.aiml.api.utils.DictionaryFilter;
 import com.saxatus.aiml.api.utils.StringUtils;
 import com.saxatus.aiml.internal.factory.AIMLDOMFactory;
-import com.saxatus.aiml.internal.factory.TagFactory;
 import com.saxatus.aiml.internal.parsing.AIMLNotFoundException;
 import com.saxatus.aiml.internal.parsing.AIMLResolver;
-import com.saxatus.aiml.internal.parsing.TagParameter;
 
 public class AIMLHandlerImpl implements AIMLHandler
 {
@@ -41,12 +41,16 @@ public class AIMLHandlerImpl implements AIMLHandler
 
     private File learnFile;
 
+    private final AIMLParserFactory aimlParserFactory;
+
     @Inject
     public AIMLHandlerImpl(@Assisted List<AIML> aimls, @Assisted("non-static") Map<String, String> nonStaticMemory,
-                    @Assisted("static") Map<String, String> botMemory, @Assisted File learnfile)
+                    @Assisted("static") Map<String, String> botMemory, @Assisted File learnfile,
+                    AIMLParserFactory aimlParserFactory)
     {
         this.botMemory = botMemory;
         this.nonStaticMemory = nonStaticMemory;
+        this.aimlParserFactory = aimlParserFactory;
         this.inputs = new ArrayList<>();
         this.outputs = new ArrayList<>();
         this.learnFile = learnfile;
@@ -58,19 +62,12 @@ public class AIMLHandlerImpl implements AIMLHandler
     }
 
     @Override
-    public String getAnswer(String input)
-    {
-        return getAnswer(input, new AIMLParseNode("root"));
-    }
-
     public String getAnswer(String input, AIMLParseNode node)
     {
         inputs.add(input);
-        String real = input;
-        input = StringUtils.clearString(input);
         try
         {
-            String answer = getAIMLResponse(input, real, node);
+            String answer = getAnswer(StringUtils.clearString(input), input, node);
             nonStaticMemory.put("that", answer);
             outputs.add(answer);
             return answer;
@@ -79,11 +76,12 @@ public class AIMLHandlerImpl implements AIMLHandler
         {
             log.warn(e);
             AIML aiml = new AIML("", "<srai>RANDOM PICKUP LINE</srai>", "", "", "", 1);
-            return aimltoString(aiml, "", real, node);
+            return aimltoString(aiml, "", input, node);
         }
     }
 
-    public String getAIMLResponse(String input, String real, AIMLParseNode node) throws AIMLNotFoundException
+    @Override
+    public String getAnswer(String input, String real, AIMLParseNode node) throws AIMLNotFoundException
     {
         AIML aiml = new AIMLResolver(aimlDict, nonStaticMemory).getAIML(input);
         if (aiml == null)
@@ -97,13 +95,9 @@ public class AIMLHandlerImpl implements AIMLHandler
     {
         try
         {
-            TagParameter tp = new TagParameter(input, aiml.getPattern(), real, botMemory, nonStaticMemory);
-            TagFactory factory = new TagFactory(tp, this);
-
             Node rootNode = new AIMLDOMFactory(aiml.getTemplate()).getDocumentRoot();
-            AIMLParseTag tag = factory.createTag(rootNode);
-
-            return tag.handle(node);
+            AIMLParser parser = aimlParserFactory.createTemplateParser(aiml.getPattern(), input, real, this, node);
+            return parser.parse(rootNode);
         }
         catch(IOException e)
         {
@@ -117,16 +111,19 @@ public class AIMLHandlerImpl implements AIMLHandler
         return aimlDict;
     }
 
+    @Override
     public List<String> getOutputHistory()
     {
         return outputs;
     }
 
+    @Override
     public List<String> getInputHistory()
     {
         return inputs;
     }
 
+    @Override
     public List<String> getThatStar()
     {
         return thatStars;
@@ -139,6 +136,7 @@ public class AIMLHandlerImpl implements AIMLHandler
                         .getDict();
     }
 
+    @Override
     public void setThatStar(List<String> thatStars)
     {
         this.thatStars = thatStars;
@@ -148,6 +146,18 @@ public class AIMLHandlerImpl implements AIMLHandler
     {
 
         return learnFile;
+    }
+
+    @Override
+    public Map<String, String> getStaticMemory()
+    {
+        return Maps.newHashMap(botMemory);
+    }
+
+    @Override
+    public Map<String, String> getNonStaticMemory()
+    {
+        return nonStaticMemory;
     }
 
 }
