@@ -19,14 +19,15 @@ import org.xml.sax.SAXException;
 
 import com.saxatus.aiml.api.parsing.AIML;
 import com.saxatus.aiml.api.tags.AIMLParseTag;
+import com.saxatus.aiml.api.utils.XMLUtils;
 import com.saxatus.aiml.internal.factory.TagFactory;
 import com.saxatus.aiml.internal.parsing.AIMLParseNode;
 import com.saxatus.aiml.internal.parsing.TagParameter;
-import com.saxatus.aiml.internal.utils.XMLUtils;
 
+// TODO: remove internal references
 public abstract class AbstractAIMLFileReader implements AIMLProvider
 {
-    private static final Log log = LogFactory.getLog(AIMLFileReader.class);
+    private static final Log log = LogFactory.getLog(AbstractAIMLFileReader.class);
 
     private int readingLine = 1;
 

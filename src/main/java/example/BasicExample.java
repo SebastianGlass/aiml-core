@@ -5,16 +5,24 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import com.saxatus.aiml.api.AIMLHandler;
 import com.saxatus.aiml.api.AIMLHandlerBuilder;
 import com.saxatus.aiml.api.io.AIMLFileReader;
+import com.saxatus.aiml.module.AIMLModule;
 
 public class BasicExample
 {
 
+    @Inject
+    AIMLHandlerBuilder aimlHandlerBuilder;
+    
     private static final Log log = LogFactory.getLog(BasicExample.class);
     private Map<String, String> botMem = new HashMap<>();
 
@@ -24,7 +32,7 @@ public class BasicExample
         File file = new File(r.getFile());
         botMem.put("name", "TestBot");
 
-        return new AIMLHandlerBuilder().nonStaticMemory(new HashMap<>())
+        return aimlHandlerBuilder.nonStaticMemory(new HashMap<>())
                         .withBotMemory(botMem)
                         .withAimlProvider(new AIMLFileReader(file))
                         .build();
@@ -43,7 +51,10 @@ public class BasicExample
 
     public static void main(String[] args)
     {
-        new BasicExample().getAnswer();
+        Injector injector = Guice.createInjector(new AIMLModule());
+        BasicExample example = new BasicExample();
+        injector.injectMembers(example);
+        example.getAnswer();
 
     }
 }

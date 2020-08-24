@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 
 import com.saxatus.aiml.api.parsing.AIML;
 import com.saxatus.aiml.api.utils.Dictionary;
-import com.saxatus.aiml.internal.utils.StringUtils;
+import com.saxatus.aiml.api.utils.StringUtils;
 
 public class AIMLResolver
 {

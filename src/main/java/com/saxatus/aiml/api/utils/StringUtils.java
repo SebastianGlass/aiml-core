@@ -1,4 +1,4 @@
-package com.saxatus.aiml.internal.utils;
+package com.saxatus.aiml.api.utils;
 
 public class StringUtils
 {

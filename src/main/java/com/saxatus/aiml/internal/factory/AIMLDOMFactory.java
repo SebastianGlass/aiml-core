@@ -8,7 +8,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
-import com.saxatus.aiml.internal.utils.XMLUtils;
+import com.saxatus.aiml.api.utils.XMLUtils;
 
 public class AIMLDOMFactory
 {

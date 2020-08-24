@@ -2,10 +2,10 @@ package com.saxatus.aiml.internal.tags;
 
 import org.w3c.dom.Node;
 
+import com.saxatus.aiml.api.utils.StringUtils;
 import com.saxatus.aiml.internal.factory.TagFactory;
 import com.saxatus.aiml.internal.parsing.AIMLParseNode;
 import com.saxatus.aiml.internal.parsing.TagRepository;
-import com.saxatus.aiml.internal.utils.StringUtils;
 
 public class TextTag extends AbstractAIMLTag
 {

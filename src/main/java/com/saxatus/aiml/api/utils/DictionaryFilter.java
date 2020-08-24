@@ -1,4 +1,4 @@
-package com.saxatus.aiml.internal.utils;
+package com.saxatus.aiml.api.utils;
 
 import java.util.Map.Entry;
 import java.util.Set;
@@ -6,7 +6,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.saxatus.aiml.api.parsing.AIML;
-import com.saxatus.aiml.api.utils.Dictionary;
 
 public class DictionaryFilter
 {

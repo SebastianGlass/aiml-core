@@ -1,6 +1,7 @@
 package com.saxatus.aiml;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.net.URL;
@@ -11,9 +12,10 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import com.saxatus.aiml.api.AIMLHandler;
-import com.saxatus.aiml.api.AIMLHandlerBuilder;
 import com.saxatus.aiml.api.io.AIMLFileReader;
 import com.saxatus.aiml.api.parsing.AIML;
+import com.saxatus.aiml.internal.AIMLHandlerBuilderImpl;
+import com.saxatus.aiml.internal.AIMLHandlerImpl;
 
 class AIMLHandlerTest
 {
@@ -22,9 +24,10 @@ class AIMLHandlerTest
     void testAIMLHandlerBuilderWithList()
     {
         List<AIML> list = Arrays.asList(new AIML("", "", "", "", "", 1));
-        AIMLHandler h = new AIMLHandlerBuilder().withAiml(list)
+        AIMLHandler h = new AIMLHandlerBuilderImpl().withAiml(list)
                         .build();
-        assertEquals(1, h.getDict()
+        assertTrue(h instanceof AIMLHandlerImpl);
+        assertEquals(1, ((AIMLHandlerImpl)h).getDict()
                         .size());
     }
 
@@ -34,9 +37,10 @@ class AIMLHandlerTest
         URL fileURL = this.getClass()
                         .getResource("/complexAIML.aiml");
         AIMLFileReader reader = new AIMLFileReader(new File(fileURL.getFile()));
-        AIMLHandler h = new AIMLHandlerBuilder().withAiml(reader.withBotMemory(new HashMap<>()))
+        AIMLHandler h = new AIMLHandlerBuilderImpl().withAiml(reader.withBotMemory(new HashMap<>()))
                         .build();
-        assertEquals(8, h.getDict()
+        assertTrue(h instanceof AIMLHandlerImpl);
+        assertEquals(8, ((AIMLHandlerImpl)h).getDict()
                         .size());
 
     }
@@ -47,11 +51,13 @@ class AIMLHandlerTest
         URL fileURL = this.getClass()
                         .getResource("/complexAIML.aiml");
         AIMLFileReader reader = new AIMLFileReader(new File(fileURL.getFile()));
-        AIMLHandler h = new AIMLHandlerBuilder().withBotMemory(new HashMap<>())
+        AIMLHandler h = new AIMLHandlerBuilderImpl().withBotMemory(new HashMap<>())
                         .withAimlProvider(reader)
                         .build();
-        assertEquals(8, h.getDict()
+        assertTrue(h instanceof AIMLHandlerImpl);
+        assertEquals(8, ((AIMLHandlerImpl)h).getDict()
                         .size());
+
     }
 
     @Test
@@ -60,7 +66,7 @@ class AIMLHandlerTest
         URL fileURL = this.getClass()
                         .getResource("/complexAIML.aiml");
         AIMLFileReader reader = new AIMLFileReader(new File(fileURL.getFile()));
-        AIMLHandler handler = new AIMLHandlerBuilder().withBotMemory(new HashMap<>())
+        AIMLHandler handler = new AIMLHandlerBuilderImpl().withBotMemory(new HashMap<>())
                         .withAimlProvider(reader)
                         .build();
         String answer = handler.getAnswer("pattern");

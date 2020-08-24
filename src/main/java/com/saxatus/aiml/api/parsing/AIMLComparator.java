@@ -1,4 +1,4 @@
-package com.saxatus.aiml.internal.parsing;
+package com.saxatus.aiml.api.parsing;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -8,8 +8,7 @@ import java.util.function.BiFunction;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.saxatus.aiml.api.parsing.AIML;
-import com.saxatus.aiml.internal.utils.StringUtils;
+import com.saxatus.aiml.api.utils.StringUtils;
 
 public class AIMLComparator implements Comparator<AIML>
 {
@@ -77,5 +76,4 @@ public class AIMLComparator implements Comparator<AIML>
     {
         return StringUtils.compareTo(aiml11.getTopic(), aiml2.getTopic());
     }
-
 }

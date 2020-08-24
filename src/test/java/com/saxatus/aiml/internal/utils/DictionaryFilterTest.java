@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import com.saxatus.aiml.api.parsing.AIML;
 import com.saxatus.aiml.api.utils.Dictionary;
+import com.saxatus.aiml.api.utils.DictionaryFilter;
 
 class DictionaryFilterTest
 {

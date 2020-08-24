@@ -5,10 +5,10 @@ import javax.xml.transform.TransformerException;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.saxatus.aiml.api.utils.XMLUtils;
 import com.saxatus.aiml.internal.factory.TagFactory;
 import com.saxatus.aiml.internal.parsing.AIMLParseNode;
 import com.saxatus.aiml.internal.parsing.TagRepository;
-import com.saxatus.aiml.internal.utils.XMLUtils;
 
 public class UnknownTag extends AbstractAIMLTag
 {

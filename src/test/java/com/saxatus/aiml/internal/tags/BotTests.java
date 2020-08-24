@@ -12,9 +12,9 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 import com.saxatus.aiml.api.AIMLHandler;
-import com.saxatus.aiml.api.AIMLHandlerBuilder;
 import com.saxatus.aiml.api.io.AIMLProvider;
 import com.saxatus.aiml.api.parsing.AIML;
+import com.saxatus.aiml.internal.AIMLHandlerBuilderImpl;
 
 class BotTests
 {
@@ -113,7 +113,7 @@ class BotTests
 
         Map<String, String> map = new HashMap<>();
         map.put("name", "test");
-        AIMLHandler a = new AIMLHandlerBuilder().withBotMemory(map)
+        AIMLHandler a = new AIMLHandlerBuilderImpl().withBotMemory(map)
                         .withAimlProvider(new TestAIMLProvier(aimlList))
                         .build();
         return a;

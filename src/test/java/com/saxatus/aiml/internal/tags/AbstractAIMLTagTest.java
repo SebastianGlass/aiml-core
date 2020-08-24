@@ -9,8 +9,8 @@ import java.util.Map;
 
 import org.w3c.dom.Node;
 
-import com.saxatus.aiml.api.AIMLHandler;
 import com.saxatus.aiml.api.tags.AIMLParseTag;
+import com.saxatus.aiml.internal.AIMLHandlerImpl;
 import com.saxatus.aiml.internal.factory.AIMLDOMFactory;
 import com.saxatus.aiml.internal.factory.TagFactory;
 import com.saxatus.aiml.internal.parsing.TagParameter;
@@ -18,7 +18,7 @@ import com.saxatus.aiml.internal.parsing.TagParameter;
 public abstract class AbstractAIMLTagTest
 {
 
-    protected AIMLHandler aimlHandlerMock = mock(AIMLHandler.class);
+    protected AIMLHandlerImpl aimlHandlerMock = mock(AIMLHandlerImpl.class);
 
     protected AIMLParseTag getAIMLTag(String template, String request, String pattern)
     {

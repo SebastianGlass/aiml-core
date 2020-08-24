@@ -8,7 +8,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Node;
 
-import com.saxatus.aiml.api.AIMLHandler;
+import com.saxatus.aiml.internal.AIMLHandlerImpl;
 import com.saxatus.aiml.internal.factory.TagFactory;
 import com.saxatus.aiml.internal.parsing.AIMLNotFoundException;
 import com.saxatus.aiml.internal.parsing.AIMLParseNode;
@@ -58,7 +58,7 @@ public class SraiTag extends AbstractBotTag
 
     private String resolvePattern(String pattern, AIMLParseNode debugNode)
     {
-        AIMLHandler handler = getAIMLHandler();
+        AIMLHandlerImpl handler = getAIMLHandler();
         try
         {
             return handler.getAIMLResponse(pattern, pattern, debugNode);
