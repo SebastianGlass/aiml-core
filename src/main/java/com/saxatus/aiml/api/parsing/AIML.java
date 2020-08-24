@@ -12,10 +12,10 @@ public class AIML implements Serializable, Comparable<AIML>
 {
     private static final long serialVersionUID = 6143514919411255637L;
 
-    private String pattern;
-    private String template;
-    private String that;
-    private String topic;
+    private final String pattern;
+    private final String template;
+    private final String that;
+    private final String topic;
 
     private final String source;
     private final int line;
@@ -57,19 +57,9 @@ public class AIML implements Serializable, Comparable<AIML>
         return pattern;
     }
 
-    public void setPattern(String pattern)
-    {
-        this.pattern = pattern;
-    }
-
     public String getTemplate()
     {
         return template;
-    }
-
-    public void setTemplate(String template)
-    {
-        this.template = template;
     }
 
     public String getThat()
@@ -77,19 +67,9 @@ public class AIML implements Serializable, Comparable<AIML>
         return that;
     }
 
-    public void setThat(String that)
-    {
-        this.that = that;
-    }
-
     public String getTopic()
     {
         return topic;
-    }
-
-    public void setTopic(String topic)
-    {
-        this.topic = topic;
     }
 
     public String getSource()

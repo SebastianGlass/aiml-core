@@ -85,13 +85,21 @@ public class Dictionary<K extends Serializable, V extends Serializable> implemen
     @Override
     public Set<V> put(K key, Set<V> value)
     {
-        if (!map.containsKey(key))
+        synchronized(this)
         {
-            map.put(key, new TreeSet<>());
-        }
-        value.forEach(map.get(key)::add);
+            Set<V> pervious = map.get(key);
+            if (value == null)
+            {
+                return pervious;
+            }
+            if (!map.containsKey(key))
+            {
+                map.put(key, new TreeSet<>());
+            }
+            value.forEach(map.get(key)::add);
 
-        return map.get(key);
+            return pervious;
+        }
 
     }
 

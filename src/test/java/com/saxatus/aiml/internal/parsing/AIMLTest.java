@@ -12,21 +12,6 @@ class AIMLTest
 {
 
     @Test
-    void testAIMLObject()
-    {
-        AIML a = new AIML("", "", null, null, "", 1);
-        assertEquals("AIML [pattern=, template=, src=, line=1]", a.toString());
-        a.setPattern("A");
-        assertEquals("AIML [pattern=A, template=, src=, line=1]", a.toString());
-        a.setTemplate("B");
-        assertEquals("AIML [pattern=A, template=B, src=, line=1]", a.toString());
-        a.setThat("C");
-        assertEquals("AIML [pattern=A, template=B, that=C, src=, line=1]", a.toString());
-        a.setTopic("D");
-        assertEquals("AIML [pattern=A, template=B, that=C, src=, topic=D, line=1]", a.toString());
-    }
-
-    @Test
     void testAIMLOrder()
     {
         AIML a = new AIML("_ a", "", null, null, "", 1);
