@@ -15,8 +15,8 @@ import org.junit.jupiter.api.Test;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.saxatus.aiml.api.factory.AIMLParserFactory;
 import com.saxatus.aiml.api.parsing.AIML;
+import com.saxatus.aiml.api.provider.AIMLParserProvider;
 import com.saxatus.aiml.module.AIMLModule;
 
 class AIMLFileReaderTest
@@ -25,7 +25,7 @@ class AIMLFileReaderTest
     private Map<String, String> map = new HashMap<>();
 
     @Inject
-    AIMLParserFactory aimlParserFac;
+    AIMLParserProvider aimlParserFac;
 
     @BeforeEach
     void setup()
@@ -45,7 +45,7 @@ class AIMLFileReaderTest
         {
             AIMLFileReader reader = new AIMLFileReader(new File(fileURL.getFile()));
             map.put("test", "test");
-            Collection<AIML> streambable = reader.provide(aimlParserFac.createPatternParser(map));
+            Collection<AIML> streambable = reader.provide(aimlParserFac.providePatternParser(map));
             assertEquals(8, streambable.stream()
                             .count());
             assertEquals(2, streambable.stream()

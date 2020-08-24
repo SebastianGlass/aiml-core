@@ -2,8 +2,8 @@ package com.saxatus.aiml.internal.tags;
 
 import org.w3c.dom.Node;
 
-import com.saxatus.aiml.api.factory.TagFactory;
 import com.saxatus.aiml.api.parsing.AIMLParseNode;
+import com.saxatus.aiml.api.parsing.AIMLParsingSession;
 import com.saxatus.aiml.api.tags.TagName;
 
 @TagName("pattern")
@@ -11,7 +11,7 @@ import com.saxatus.aiml.api.tags.TagName;
 public class PatternTag extends AbstractAIMLTag
 {
 
-    public PatternTag(Node node, TagFactory factory)
+    public PatternTag(Node node, AIMLParsingSession factory)
     {
         super(node, factory);
     }

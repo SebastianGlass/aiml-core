@@ -7,8 +7,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.saxatus.aiml.api.factory.TagFactory;
 import com.saxatus.aiml.api.parsing.AIMLParseNode;
+import com.saxatus.aiml.api.parsing.AIMLParsingSession;
 import com.saxatus.aiml.api.tags.AIMLParseTag;
 import com.saxatus.aiml.api.tags.TagName;
 
@@ -19,7 +19,7 @@ public class ConditionTag extends AbstractBotTag
     private String key;
     private String value;
 
-    public ConditionTag(Node node, TagFactory factory)
+    public ConditionTag(Node node, AIMLParsingSession factory)
     {
         super(node, factory);
         key = Optional.ofNullable(getNode().getAttributes()

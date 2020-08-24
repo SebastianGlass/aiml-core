@@ -1,4 +1,4 @@
-package com.saxatus.aiml.internal.factory;
+package com.saxatus.aiml.internal.parsing;
 
 import java.util.Map;
 
@@ -9,11 +9,11 @@ import org.w3c.dom.Node;
 
 import com.google.inject.assistedinject.Assisted;
 import com.saxatus.aiml.api.AIMLHandler;
-import com.saxatus.aiml.api.factory.TagFactory;
+import com.saxatus.aiml.api.parsing.AIMLParsingSession;
 import com.saxatus.aiml.api.tags.AIMLParseTag;
-import com.saxatus.aiml.internal.parsing.TagRepository;
+import com.saxatus.aiml.internal.parsing.TagRepository.TagSupplier;
 
-public class TagFactoryImpl implements TagFactory
+public class AIMLParsingSessionImpl implements AIMLParsingSession
 {
 
     private final TagParameter parameter;
@@ -21,7 +21,7 @@ public class TagFactoryImpl implements TagFactory
     private static TagRepository tagRepo = new TagRepository();
 
     @Inject
-    public TagFactoryImpl(@Assisted TagParameter parameter, @Assisted @Nullable AIMLHandler handler)
+    public AIMLParsingSessionImpl(@Assisted TagParameter parameter, @Assisted @Nullable AIMLHandler handler)
     {
         this.parameter = parameter;
         this.handler = handler;

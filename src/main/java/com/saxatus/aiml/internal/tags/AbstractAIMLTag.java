@@ -8,8 +8,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.saxatus.aiml.api.AIMLHandler;
-import com.saxatus.aiml.api.factory.TagFactory;
 import com.saxatus.aiml.api.parsing.AIMLParseNode;
+import com.saxatus.aiml.api.parsing.AIMLParsingSession;
 import com.saxatus.aiml.api.tags.AIMLParseTag;
 import com.saxatus.aiml.api.tags.TagName;
 
@@ -18,9 +18,9 @@ public abstract class AbstractAIMLTag implements AIMLParseTag
 
     private final Node node;
     private AIMLParseNode debugNode;
-    private final TagFactory factory;
+    private final AIMLParsingSession factory;
 
-    public AbstractAIMLTag(Node node, TagFactory factory)
+    public AbstractAIMLTag(Node node, AIMLParsingSession factory)
     {
         this.node = node;
         this.factory = factory;
@@ -76,7 +76,7 @@ public abstract class AbstractAIMLTag implements AIMLParseTag
         return debugNode;
     }
 
-    public TagFactory getFactory()
+    public AIMLParsingSession getFactory()
     {
         return factory;
     }

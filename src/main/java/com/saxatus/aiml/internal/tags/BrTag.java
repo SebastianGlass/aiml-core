@@ -2,8 +2,8 @@ package com.saxatus.aiml.internal.tags;
 
 import org.w3c.dom.Node;
 
-import com.saxatus.aiml.api.factory.TagFactory;
 import com.saxatus.aiml.api.parsing.AIMLParseNode;
+import com.saxatus.aiml.api.parsing.AIMLParsingSession;
 import com.saxatus.aiml.api.tags.TagName;
 
 @TagName("br")
@@ -11,7 +11,7 @@ import com.saxatus.aiml.api.tags.TagName;
 public class BrTag extends AbstractAIMLTag
 {
 
-    public BrTag(Node node, TagFactory factory)
+    public BrTag(Node node, AIMLParsingSession factory)
     {
         super(node, factory);
     }

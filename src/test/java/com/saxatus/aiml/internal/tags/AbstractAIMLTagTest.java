@@ -1,20 +1,24 @@
 package com.saxatus.aiml.internal.tags;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.w3c.dom.Node;
+import javax.xml.parsers.ParserConfigurationException;
 
-import com.saxatus.aiml.api.factory.TagFactory;
+import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
+
+import com.saxatus.aiml.api.parsing.AIMLParsingSession;
 import com.saxatus.aiml.api.tags.AIMLParseTag;
+import com.saxatus.aiml.api.utils.XMLUtils;
 import com.saxatus.aiml.internal.AIMLHandlerImpl;
-import com.saxatus.aiml.internal.factory.AIMLDOMFactory;
-import com.saxatus.aiml.internal.factory.TagFactoryImpl;
-import com.saxatus.aiml.internal.factory.TagFactoryImpl.TagParameterImpl;
+import com.saxatus.aiml.internal.parsing.AIMLParsingSessionImpl;
+import com.saxatus.aiml.internal.parsing.AIMLParsingSessionImpl.TagParameterImpl;
 
 public abstract class AbstractAIMLTagTest
 {
@@ -33,14 +37,15 @@ public abstract class AbstractAIMLTagTest
         AIMLParseTag tag = null;
         try
         {
-            rootNode = new AIMLDOMFactory(template).getDocumentRoot();
+            rootNode = XMLUtils.parseStringToXMLNode(template, "aiml");
             TagParameterImpl tp = new TagParameterImpl(request, pattern, "", botMemory, nonStaticMeory);
-            TagFactory factory = new TagFactoryImpl(tp, aimlHandlerMock);
+            AIMLParsingSession factory = new AIMLParsingSessionImpl(tp, aimlHandlerMock);
             tag = factory.createTag(rootNode);
         }
-        catch(IOException e)
+        catch(IOException | ParserConfigurationException | SAXException e)
         {
             e.printStackTrace();
+            fail();
         }
         assertNotNull(tag);
         return tag;

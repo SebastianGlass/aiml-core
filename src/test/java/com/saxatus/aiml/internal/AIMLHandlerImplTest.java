@@ -17,17 +17,17 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import com.saxatus.aiml.api.factory.AIMLParserFactory;
 import com.saxatus.aiml.api.io.AIMLCreationException;
 import com.saxatus.aiml.api.parsing.AIML;
 import com.saxatus.aiml.api.parsing.AIMLParseNode;
 import com.saxatus.aiml.api.parsing.AIMLParser;
+import com.saxatus.aiml.api.provider.AIMLParserProvider;
 import com.saxatus.aiml.internal.parsing.AIMLNotFoundException;
 
 class AIMLHandlerImplTest
 {
     @Mock
-    AIMLParserFactory aimlParserFactory;
+    AIMLParserProvider aimlParserFactory;
     @Mock
     AIMLParseNode node;
     @Mock
@@ -45,7 +45,7 @@ class AIMLHandlerImplTest
                         new AIML("BRO KEN", "<>", null, null, "", 2), new AIML("A B", "", "that", "topic", "", 3));
         aimlHandler = new AIMLHandlerImpl(list, nonStatic, Collections.emptyMap(), null, aimlParserFactory);
 
-        when(aimlParserFactory.createTemplateParser(any(), any(), any(), any(), any())).thenReturn(aimlParser);
+        when(aimlParserFactory.provideTemplateParser(any(), any(), any(), any(), any())).thenReturn(aimlParser);
 
     }
 

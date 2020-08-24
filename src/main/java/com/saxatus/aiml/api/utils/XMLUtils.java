@@ -52,6 +52,14 @@ public class XMLUtils
         return dbuilder.parse(new InputSource(new StringReader(xml)));
     }
 
+    public static Node parseStringToXMLNode(String xml, String enclosing)
+                    throws ParserConfigurationException, SAXException, IOException
+    {
+        Document document = XMLUtils.parseStringToXMLDocument("<" + enclosing + ">" + xml + "</" + enclosing + ">");
+        return document.getFirstChild();
+
+    }
+
     public static Document parseFileToXMLDocument(File file)
                     throws ParserConfigurationException, SAXException, IOException
     {

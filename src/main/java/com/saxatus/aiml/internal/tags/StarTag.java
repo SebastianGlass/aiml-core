@@ -7,8 +7,8 @@ import java.util.regex.Pattern;
 
 import org.w3c.dom.Node;
 
-import com.saxatus.aiml.api.factory.TagFactory;
 import com.saxatus.aiml.api.parsing.AIMLParseNode;
+import com.saxatus.aiml.api.parsing.AIMLParsingSession;
 import com.saxatus.aiml.api.tags.TagName;
 import com.saxatus.aiml.api.utils.StringUtils;
 
@@ -19,7 +19,7 @@ public class StarTag extends AbstractBotTag
     protected final String request;
     protected final String pattern;
 
-    public StarTag(Node node, TagFactory factory)
+    public StarTag(Node node, AIMLParsingSession factory)
     {
         super(node, factory);
         this.request = factory.getParameter()

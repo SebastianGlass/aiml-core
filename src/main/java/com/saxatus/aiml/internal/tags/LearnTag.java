@@ -16,8 +16,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import com.saxatus.aiml.api.factory.TagFactory;
 import com.saxatus.aiml.api.parsing.AIMLParseNode;
+import com.saxatus.aiml.api.parsing.AIMLParsingSession;
 import com.saxatus.aiml.api.tags.TagName;
 import com.saxatus.aiml.api.utils.XMLUtils;
 
@@ -26,7 +26,7 @@ public class LearnTag extends AbstractBotTag
 {
     private static final Log log = LogFactory.getLog(LearnTag.class);
 
-    public LearnTag(Node node, TagFactory factory)
+    public LearnTag(Node node, AIMLParsingSession factory)
     {
         super(node, factory);
     }

@@ -9,8 +9,8 @@ import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Node;
 
 import com.saxatus.aiml.api.AIMLHandler;
-import com.saxatus.aiml.api.factory.TagFactory;
 import com.saxatus.aiml.api.parsing.AIMLParseNode;
+import com.saxatus.aiml.api.parsing.AIMLParsingSession;
 import com.saxatus.aiml.api.tags.TagName;
 import com.saxatus.aiml.internal.parsing.AIMLNotFoundException;
 
@@ -21,7 +21,7 @@ public class SraiTag extends AbstractBotTag
 
     private static List<String> handledPatterns = new LinkedList<>();
 
-    public SraiTag(Node node, TagFactory factory)
+    public SraiTag(Node node, AIMLParsingSession factory)
     {
         super(node, factory);
     }

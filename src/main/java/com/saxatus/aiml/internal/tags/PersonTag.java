@@ -7,8 +7,8 @@ import java.util.stream.Collectors;
 
 import org.w3c.dom.Node;
 
-import com.saxatus.aiml.api.factory.TagFactory;
 import com.saxatus.aiml.api.parsing.AIMLParseNode;
+import com.saxatus.aiml.api.parsing.AIMLParsingSession;
 import com.saxatus.aiml.api.tags.TagName;
 
 @TagName("person")
@@ -17,7 +17,7 @@ public class PersonTag extends StarTag
 
     private final Map<String, String> map = new HashMap<>();
 
-    public PersonTag(Node node, TagFactory factory)
+    public PersonTag(Node node, AIMLParsingSession factory)
     {
         super(node, factory);
         map.put("i", "you");

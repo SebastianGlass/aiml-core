@@ -2,15 +2,15 @@ package com.saxatus.aiml.internal.parsing.parser;
 
 import org.w3c.dom.Node;
 
-import com.saxatus.aiml.api.factory.TagFactory;
 import com.saxatus.aiml.api.parsing.AIMLParseNode;
 import com.saxatus.aiml.api.parsing.AIMLParser;
+import com.saxatus.aiml.api.parsing.AIMLParsingSession;
 
 public class AIMLPatternParserImpl implements AIMLParser
 {
-    TagFactory tagFactory;
+    AIMLParsingSession tagFactory;
 
-    public AIMLPatternParserImpl(TagFactory fac)
+    public AIMLPatternParserImpl(AIMLParsingSession fac)
     {
         this.tagFactory = fac;
     }

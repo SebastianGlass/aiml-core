@@ -7,22 +7,24 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
 
 import com.google.common.collect.Maps;
 import com.google.inject.assistedinject.Assisted;
 import com.saxatus.aiml.api.AIMLHandler;
-import com.saxatus.aiml.api.factory.AIMLParserFactory;
 import com.saxatus.aiml.api.parsing.AIML;
 import com.saxatus.aiml.api.parsing.AIMLParseNode;
 import com.saxatus.aiml.api.parsing.AIMLParser;
+import com.saxatus.aiml.api.provider.AIMLParserProvider;
 import com.saxatus.aiml.api.utils.Dictionary;
 import com.saxatus.aiml.api.utils.DictionaryFilter;
 import com.saxatus.aiml.api.utils.StringUtils;
-import com.saxatus.aiml.internal.factory.AIMLDOMFactory;
+import com.saxatus.aiml.api.utils.XMLUtils;
 import com.saxatus.aiml.internal.parsing.AIMLNotFoundException;
 import com.saxatus.aiml.internal.parsing.AIMLResolver;
 
@@ -41,12 +43,12 @@ public class AIMLHandlerImpl implements AIMLHandler
 
     private File learnFile;
 
-    private final AIMLParserFactory aimlParserFactory;
+    private final AIMLParserProvider aimlParserFactory;
 
     @Inject
     public AIMLHandlerImpl(@Assisted List<AIML> aimls, @Assisted("non-static") Map<String, String> nonStaticMemory,
                     @Assisted("static") Map<String, String> botMemory, @Assisted File learnfile,
-                    AIMLParserFactory aimlParserFactory)
+                    AIMLParserProvider aimlParserFactory)
     {
         this.botMemory = botMemory;
         this.nonStaticMemory = nonStaticMemory;
@@ -95,11 +97,11 @@ public class AIMLHandlerImpl implements AIMLHandler
     {
         try
         {
-            Node rootNode = new AIMLDOMFactory(aiml.getTemplate()).getDocumentRoot();
-            AIMLParser parser = aimlParserFactory.createTemplateParser(aiml.getPattern(), input, real, this, node);
+            Node rootNode = XMLUtils.parseStringToXMLNode(aiml.getTemplate(), "aiml");
+            AIMLParser parser = aimlParserFactory.provideTemplateParser(aiml.getPattern(), input, real, this, node);
             return parser.parse(rootNode);
         }
-        catch(IOException e)
+        catch(IOException | ParserConfigurationException | SAXException e)
         {
             return "I've lost track, sorry.";
         }

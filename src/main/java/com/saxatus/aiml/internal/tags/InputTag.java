@@ -4,14 +4,14 @@ import java.util.List;
 
 import org.w3c.dom.Node;
 
-import com.saxatus.aiml.api.factory.TagFactory;
 import com.saxatus.aiml.api.parsing.AIMLParseNode;
+import com.saxatus.aiml.api.parsing.AIMLParsingSession;
 import com.saxatus.aiml.api.tags.TagName;
 
 @TagName("input")
 public class InputTag extends AbstractBotTag
 {
-    public InputTag(Node node, TagFactory factory)
+    public InputTag(Node node, AIMLParsingSession factory)
     {
         super(node, factory);
     }

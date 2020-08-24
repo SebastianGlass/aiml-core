@@ -11,9 +11,8 @@ import org.apache.commons.logging.LogFactory;
 import org.reflections.Reflections;
 import org.w3c.dom.Node;
 
-import com.saxatus.aiml.api.factory.TagFactory;
+import com.saxatus.aiml.api.parsing.AIMLParsingSession;
 import com.saxatus.aiml.api.tags.TagName;
-import com.saxatus.aiml.internal.factory.TagSupplier;
 import com.saxatus.aiml.internal.tags.AbstractAIMLTag;
 
 public class TagRepository
@@ -62,7 +61,7 @@ public class TagRepository
         return (node, fac) -> {
             try
             {
-                return (AbstractAIMLTag)clazz.getConstructor(Node.class, TagFactory.class)
+                return (AbstractAIMLTag)clazz.getConstructor(Node.class, AIMLParsingSession.class)
                                 .newInstance(node, fac);
             }
             catch(Exception e)
@@ -95,6 +94,12 @@ public class TagRepository
 
         }
         return supplier;
+    }
+
+    @FunctionalInterface
+    interface TagSupplier
+    {
+        AbstractAIMLTag supply(Node node, AIMLParsingSession manager);
     }
 
 }

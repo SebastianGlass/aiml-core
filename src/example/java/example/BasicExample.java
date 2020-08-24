@@ -20,7 +20,6 @@ import com.saxatus.aiml.module.AIMLModule;
 
 public class BasicExample
 {
-
     @Inject
     AIMLHandlerBuilder aimlHandlerBuilder;
 

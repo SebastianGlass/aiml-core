@@ -12,17 +12,17 @@ import org.junit.jupiter.api.Test;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
-import com.saxatus.aiml.api.factory.TagFactory;
 import com.saxatus.aiml.api.parsing.AIMLParseNode;
+import com.saxatus.aiml.api.parsing.AIMLParsingSession;
 import com.saxatus.aiml.internal.AIMLHandlerImpl;
-import com.saxatus.aiml.internal.factory.TagFactoryImpl.TagParameterImpl;
+import com.saxatus.aiml.internal.parsing.AIMLParsingSessionImpl.TagParameterImpl;
 
 class ThatStarTagTest
 {
 
     private ThatStarTag tag;
     private Node node = mock(Node.class);
-    private TagFactory factory = mock(TagFactory.class);
+    private AIMLParsingSession factory = mock(AIMLParsingSession.class);
     private TagParameterImpl tagParameter = mock(TagParameterImpl.class);
     private NamedNodeMap namedNodeMap = mock(NamedNodeMap.class);
     private AIMLHandlerImpl aimlHandler = mock(AIMLHandlerImpl.class);

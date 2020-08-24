@@ -10,17 +10,17 @@ import javax.inject.Inject;
 
 import com.saxatus.aiml.api.AIMLHandler;
 import com.saxatus.aiml.api.AIMLHandlerBuilder;
-import com.saxatus.aiml.api.factory.AIMLHandlerProvider;
-import com.saxatus.aiml.api.factory.AIMLParserFactory;
 import com.saxatus.aiml.api.io.AIMLCreationException;
 import com.saxatus.aiml.api.io.AIMLProvider;
 import com.saxatus.aiml.api.parsing.AIML;
 import com.saxatus.aiml.api.parsing.AIMLParser;
+import com.saxatus.aiml.api.provider.AIMLHandlerProvider;
+import com.saxatus.aiml.api.provider.AIMLParserProvider;
 
 public class AIMLHandlerBuilderImpl implements AIMLHandlerBuilder
 {
     private AIMLHandlerProvider aimlHandlerFactory;
-    private AIMLParserFactory aimlParserFactory;
+    private AIMLParserProvider aimlParserFactory;
 
     private AIMLProvider aimlProvider;
 
@@ -29,7 +29,7 @@ public class AIMLHandlerBuilderImpl implements AIMLHandlerBuilder
     private File learnFile = new File("./temp.aiml");
 
     @Inject
-    public AIMLHandlerBuilderImpl(AIMLHandlerProvider aimlHandlerFactory, AIMLParserFactory aimlParserFactory)
+    public AIMLHandlerBuilderImpl(AIMLHandlerProvider aimlHandlerFactory, AIMLParserProvider aimlParserFactory)
     {
         this.aimlHandlerFactory = aimlHandlerFactory;
         this.aimlParserFactory = aimlParserFactory;
@@ -72,7 +72,7 @@ public class AIMLHandlerBuilderImpl implements AIMLHandlerBuilder
     {
         public AIMLHandler build() throws AIMLCreationException
         {
-            AIMLParser aimlParser = aimlParserFactory.createPatternParser(botMemory);
+            AIMLParser aimlParser = aimlParserFactory.providePatternParser(botMemory);
             List<AIML> aimls = aimlProvider.provide(aimlParser)
                             .stream()
                             .collect(Collectors.toList());

@@ -1,4 +1,4 @@
-package com.saxatus.aiml.api.factory;
+package com.saxatus.aiml.api.provider;
 
 import java.io.File;
 import java.util.List;

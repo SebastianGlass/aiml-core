@@ -1,4 +1,4 @@
-package com.saxatus.aiml.api.factory;
+package com.saxatus.aiml.api.parsing;
 
 import java.util.Map;
 
@@ -7,7 +7,7 @@ import org.w3c.dom.Node;
 import com.saxatus.aiml.api.AIMLHandler;
 import com.saxatus.aiml.api.tags.AIMLParseTag;
 
-public interface TagFactory
+public interface AIMLParsingSession
 {
     AIMLHandler getAIMLHandler();
 
