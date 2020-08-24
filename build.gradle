@@ -26,6 +26,25 @@ repositories {
   jcenter()
 }
 
+sourceSets {
+    main {
+        java {
+            srcDirs 'src/main/java'
+        }
+        resources {
+            srcDirs 'src/main/resources'
+        }
+    }
+    example {
+        java {
+            srcDirs 'src/example/java'
+        }
+        resources {
+            srcDirs 'src/example/resources'
+        }
+    }
+ }
+ 
 archivesBaseName = "aiml-core"
 version = "1.0-SNAPSHOT"
  
@@ -34,9 +53,7 @@ targetCompatibility = 1.8
 
 dependencies {
     
-  implementation "org.json:json:20160810"
   implementation "org.apache.commons:commons-lang3:3.1"
-  implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.4"
   implementation "commons-logging:commons-logging:1.2"
   implementation "org.reflections:reflections:0.9.10"
   implementation "com.google.inject:guice:4.2.3"
