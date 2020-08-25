@@ -12,8 +12,8 @@ import com.saxatus.aiml.api.parsing.AIMLParsingSession.TagParameter;
 import com.saxatus.aiml.api.provider.AIMLParserProvider;
 import com.saxatus.aiml.api.provider.AIMLParsingSessionProvider;
 import com.saxatus.aiml.internal.parsing.AIMLParsingSessionImpl.TagParameterImpl;
+import com.saxatus.aiml.internal.parsing.JaxbAIMLParserImpl;
 import com.saxatus.aiml.internal.parsing.parser.AIMLPatternParserImpl;
-import com.saxatus.aiml.internal.parsing.parser.AIMLTemplateParserImpl;
 
 public class AIMLParserProviderImpl implements AIMLParserProvider
 {
@@ -32,10 +32,11 @@ public class AIMLParserProviderImpl implements AIMLParserProvider
     public AIMLParser provideTemplateParser(String pattern, String input, String real, AIMLHandler aimlHandler,
                     AIMLParseNode parseNode)
     {
-        TagParameter tp = new TagParameterImpl(input, pattern, real, aimlHandler.getStaticMemory(),
-                        aimlHandler.getNonStaticMemory());
-        AIMLParsingSession session = aimlParsingSessionProvider.create(tp, aimlHandler);
-
-        return new AIMLTemplateParserImpl(session, parseNode);
+        return new JaxbAIMLParserImpl(pattern, input, real, aimlHandler);
+        /*
+         * TagParameter tp = new TagParameterImpl(input, pattern, real, aimlHandler.getStaticMemory(),
+         * aimlHandler.getNonStaticMemory()); AIMLParsingSession session = aimlParsingSessionProvider.create(tp,
+         * aimlHandler); return new AIMLTemplateParserImpl(session, parseNode);
+         */
     }
 }
