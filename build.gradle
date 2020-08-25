@@ -26,6 +26,25 @@ repositories {
   jcenter()
 }
 
+sourceSets {
+    main {
+        java {
+            srcDirs 'src/main/java'
+        }
+        resources {
+            srcDirs 'src/main/resources'
+        }
+    }
+    example {
+        java {
+            srcDirs 'src/example/java'
+        }
+        resources {
+            srcDirs 'src/example/resources'
+        }
+    }
+ }
+ 
 archivesBaseName = "aiml-core"
 version = "1.0-SNAPSHOT"
  
@@ -34,11 +53,13 @@ targetCompatibility = 1.8
 
 dependencies {
     
-  implementation "org.json:json:20160810"
   implementation "org.apache.commons:commons-lang3:3.1"
-  implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.4"
   implementation "commons-logging:commons-logging:1.2"
   implementation "org.reflections:reflections:0.9.10"
+  implementation "com.google.inject:guice:4.2.3"
+  implementation "com.google.inject.extensions:guice-assistedinject:4.2.3"
+  
+
   
   testImplementation "org.mockito:mockito-core:2.7.22"
   testImplementation "org.jacoco:org.jacoco.agent:0.7+"
@@ -82,7 +103,7 @@ jacocoTestReport {
 sonarqube {
   properties {
     property "sonar.organization", "sgla-bitbucket"
-    property "sonar.projectKey", "sgla_aiml"
+    property "sonar.projectKey", "sgla_aiml-core"
     property "sonar.core.codeCoveragePlugin", "jacoco"
     property "sonar.host.url", "https://sonarcloud.io"
     property "sonar.coverage.jacoco.xmlReportPaths", TestCoverageFile
