@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.saxatus.aiml.api.parsing.AIMLParseNode;
-import com.saxatus.aiml.internal.parsing.AIMLNotFoundException;
+import com.saxatus.aiml.api.parsing.AIMLNotFoundException;
 
 public interface AIMLHandler
 {

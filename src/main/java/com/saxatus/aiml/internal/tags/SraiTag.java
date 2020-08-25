@@ -8,9 +8,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.saxatus.aiml.api.AIMLHandler;
+import com.saxatus.aiml.api.parsing.AIMLNotFoundException;
 import com.saxatus.aiml.api.parsing.AIMLParsingSessionContext;
 import com.saxatus.aiml.api.tags.TagName;
-import com.saxatus.aiml.internal.parsing.AIMLNotFoundException;
 
 @TagName("srai")
 public class SraiTag extends SubNodeContainingTag

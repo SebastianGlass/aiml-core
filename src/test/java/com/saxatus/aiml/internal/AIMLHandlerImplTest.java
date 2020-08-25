@@ -19,10 +19,10 @@ import org.mockito.MockitoAnnotations;
 
 import com.saxatus.aiml.api.io.AIMLCreationException;
 import com.saxatus.aiml.api.parsing.AIML;
+import com.saxatus.aiml.api.parsing.AIMLNotFoundException;
 import com.saxatus.aiml.api.parsing.AIMLParseNode;
 import com.saxatus.aiml.api.parsing.AIMLParser;
 import com.saxatus.aiml.api.provider.AIMLParserProvider;
-import com.saxatus.aiml.internal.parsing.AIMLNotFoundException;
 
 class AIMLHandlerImplTest
 {
