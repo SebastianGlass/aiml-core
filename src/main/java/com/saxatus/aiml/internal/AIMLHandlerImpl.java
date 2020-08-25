@@ -18,12 +18,12 @@ import com.google.common.collect.Maps;
 import com.google.inject.assistedinject.Assisted;
 import com.saxatus.aiml.api.AIMLHandler;
 import com.saxatus.aiml.api.parsing.AIML;
+import com.saxatus.aiml.api.parsing.AIMLDictionaryFilter;
 import com.saxatus.aiml.api.parsing.AIMLNotFoundException;
 import com.saxatus.aiml.api.parsing.AIMLParseNode;
 import com.saxatus.aiml.api.parsing.AIMLParser;
 import com.saxatus.aiml.api.provider.AIMLParserProvider;
 import com.saxatus.aiml.api.utils.Dictionary;
-import com.saxatus.aiml.api.utils.DictionaryFilter;
 import com.saxatus.aiml.api.utils.StringUtils;
 import com.saxatus.aiml.api.utils.XMLUtils;
 import com.saxatus.aiml.internal.parsing.AIMLResolver;
@@ -134,8 +134,8 @@ public class AIMLHandlerImpl implements AIMLHandler
     public Dictionary<String, AIML> getTopicDict()
     {
         String topic = nonStaticMemory.get("topic");
-        return new DictionaryFilter(aimlDict).applyTopicFilter(topic)
-                        .getDict();
+        return new AIMLDictionaryFilter(aimlDict).applyTopicFilter(topic)
+                        .getDictionary();
     }
 
     @Override

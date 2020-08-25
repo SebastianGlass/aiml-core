@@ -1,4 +1,4 @@
-package com.saxatus.aiml.internal.utils;
+package com.saxatus.aiml.internal.parsing;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -6,13 +6,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.saxatus.aiml.api.parsing.AIML;
+import com.saxatus.aiml.api.parsing.AIMLDictionaryFilter;
 import com.saxatus.aiml.api.utils.Dictionary;
-import com.saxatus.aiml.api.utils.DictionaryFilter;
 
-class DictionaryFilterTest
+class AIMLDictionaryFilterTest
 {
 
-    DictionaryFilter filter;
+    AIMLDictionaryFilter filter;
 
     @BeforeEach
     void setup()
@@ -27,17 +27,17 @@ class DictionaryFilterTest
         dict.put("B", new AIML("b a", "", "c", "3", "", 7));
         dict.put("B", new AIML("_ _", "", "d", "4", "", 8));
 
-        filter = new DictionaryFilter(dict);
+        filter = new AIMLDictionaryFilter(dict);
     }
 
     @Test
     void testTopicFilter()
     {
         assertEquals(8, filter.applyTopicFilter(null)
-                        .getDict()
+                        .getDictionary()
                         .size());
         assertEquals(2, filter.applyTopicFilter("3")
-                        .getDict()
+                        .getDictionary()
                         .size());
     }
 
@@ -45,10 +45,10 @@ class DictionaryFilterTest
     void testThatFilter()
     {
         assertEquals(8, filter.applyThatFilter(null)
-                        .getDict()
+                        .getDictionary()
                         .size());
         assertEquals(2, filter.applyThatFilter("b")
-                        .getDict()
+                        .getDictionary()
                         .size());
     }
 
@@ -56,10 +56,10 @@ class DictionaryFilterTest
     void testPatternFilter()
     {
         assertEquals(8, filter.applyPatternFilter(null)
-                        .getDict()
+                        .getDictionary()
                         .size());
         assertEquals(4, filter.applyPatternFilter("a a")
-                        .getDict()
+                        .getDictionary()
                         .size());
     }
 

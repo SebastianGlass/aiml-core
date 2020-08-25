@@ -31,7 +31,8 @@ class AIMLHandlerImplTest
     @Mock
     AIMLParseNode node;
     @Mock
-    private AIMLParser aimlParser;
+    AIMLParser aimlParser;
+
     private Map<String, String> nonStatic;
     private AIMLHandlerImpl aimlHandler;
 
