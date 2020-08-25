@@ -5,21 +5,18 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.w3c.dom.Node;
-
-import com.saxatus.aiml.api.parsing.AIMLParseNode;
-import com.saxatus.aiml.api.parsing.AIMLParsingSession;
+import com.saxatus.aiml.api.parsing.AIMLParsingSessionContext;
+import com.saxatus.aiml.api.tags.StarReplacingTag;
 import com.saxatus.aiml.api.tags.TagName;
 
 @TagName("person")
-public class PersonTag extends StarTag
+public class PersonTag extends SubNodeContainingTag implements StarReplacingTag
 {
 
-    private final Map<String, String> map = new HashMap<>();
+    private static final Map<String, String> map = new HashMap<>();
 
-    public PersonTag(Node node, AIMLParsingSession session)
+    static
     {
-        super(node, session);
         map.put("i", "you");
         map.put("me", "you");
         map.put("my", "your");
@@ -30,33 +27,33 @@ public class PersonTag extends StarTag
     }
 
     @Override
-    public String handle(AIMLParseNode debugNode)
+    public String handle(AIMLParsingSessionContext context)
     {
-        super.handle(debugNode);
-        String context;
-        if (getNode().getChildNodes()
+        super.handle(context);
+        String result;
+        if (getXMLNode(context).getChildNodes()
                         .getLength() == 0)
         {
-            context = replaceStars();
+            result = replaceStars(context);
         }
         else
         {
-            context = handleSubNodes();
+            result = handleSubNodes(context);
         }
 
-        return Arrays.stream(context.split(" "))
+        return Arrays.stream(result.split(" "))
                         .map(c -> map.getOrDefault(c.toLowerCase(), c))
                         .collect(Collectors.joining(" "));
 
     }
 
     @Override
-    public String getDebugInformation()
+    public String getDebugInformation(AIMLParsingSessionContext context)
     {
-        if (getNode().getChildNodes()
+        if (getXMLNode(context).getChildNodes()
                         .getLength() == 0)
         {
-            return getTag() + " (" + replaceStars() + ")";
+            return getTag() + " (" + replaceStars(context) + ")";
         }
         else
         {

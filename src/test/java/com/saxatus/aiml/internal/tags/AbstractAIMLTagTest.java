@@ -13,10 +13,12 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
+import com.saxatus.aiml.api.parsing.AIMLParseNode;
 import com.saxatus.aiml.api.parsing.AIMLParsingSession;
 import com.saxatus.aiml.api.tags.AIMLParseTag;
 import com.saxatus.aiml.api.utils.XMLUtils;
 import com.saxatus.aiml.internal.AIMLHandlerImpl;
+import com.saxatus.aiml.internal.parsing.AIMLParsingSessionContextImpl;
 import com.saxatus.aiml.internal.parsing.AIMLParsingSessionImpl;
 import com.saxatus.aiml.internal.parsing.AIMLParsingSessionImpl.TagParameterImpl;
 
@@ -25,13 +27,24 @@ public abstract class AbstractAIMLTagTest
 
     protected AIMLHandlerImpl aimlHandlerMock = mock(AIMLHandlerImpl.class);
 
-    protected AIMLParseTag getAIMLTag(String template, String request, String pattern)
+    protected String handleAIMLTag(String template, String request, String pattern)
     {
-        return getAIMLTag(template, request, pattern, new HashMap<>(), new HashMap<>());
+        return handleAIMLTag(template, request, pattern, new HashMap<>(), new HashMap<>(), new AIMLParseNode("AIML"));
     }
 
-    protected AIMLParseTag getAIMLTag(String template, String request, String pattern, Map<String, String> botMemory,
+    protected String handleAIMLTag(String template, String request, String pattern, AIMLParseNode debugNode)
+    {
+        return handleAIMLTag(template, request, pattern, new HashMap<>(), new HashMap<>(), debugNode);
+    }
+
+    protected String handleAIMLTag(String template, String request, String pattern, Map<String, String> botMemory,
                     Map<String, String> nonStaticMeory)
+    {
+        return handleAIMLTag(template, request, pattern, botMemory, nonStaticMeory, new AIMLParseNode("AIML"));
+    }
+
+    protected String handleAIMLTag(String template, String request, String pattern, Map<String, String> botMemory,
+                    Map<String, String> nonStaticMeory, AIMLParseNode debugNode)
     {
         Node rootNode;
         AIMLParseTag tag = null;
@@ -41,14 +54,15 @@ public abstract class AbstractAIMLTagTest
             TagParameterImpl tp = new TagParameterImpl(request, pattern, "", botMemory, nonStaticMeory);
             AIMLParsingSession session = new AIMLParsingSessionImpl(tp, aimlHandlerMock);
             tag = session.createTag(rootNode);
+            assertNotNull(tag);
+            return tag.handle(new AIMLParsingSessionContextImpl(debugNode, rootNode, session));
         }
         catch(IOException | ParserConfigurationException | SAXException e)
         {
             e.printStackTrace();
             fail();
         }
-        assertNotNull(tag);
-        return tag;
+        return null;
     }
 
 }

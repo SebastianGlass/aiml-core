@@ -22,17 +22,20 @@ import org.xml.sax.SAXException;
 import com.saxatus.aiml.api.parsing.AIML;
 import com.saxatus.aiml.api.parsing.AIMLParsingSession;
 import com.saxatus.aiml.api.parsing.AIMLParsingSession.TagParameter;
+import com.saxatus.aiml.api.parsing.AIMLParsingSessionContext;
 import com.saxatus.aiml.api.tags.AIMLParseTag;
 import com.saxatus.aiml.api.utils.XMLUtils;
 
 class LearnTagTest
 {
 
-    LearnTag tag;
+    LearnTag tag = new LearnTag();
     @Mock
     AIMLParsingSession session;
     @Mock
     TagParameter tagParameter;
+    @Mock
+    AIMLParsingSessionContext context;
 
     @BeforeEach
     void setup() throws ParserConfigurationException, SAXException, IOException
@@ -41,8 +44,10 @@ class LearnTagTest
         when(session.getParameter()).thenReturn(tagParameter);
         when(tagParameter.getBotMemory()).thenReturn(Collections.emptyMap());
         when(tagParameter.getNonStaticMemory()).thenReturn(Collections.emptyMap());
-        tag = new LearnTag(newNode(), session);
+        tag = new LearnTag();
         when(session.createTag(any())).then(answer());
+        when(context.getSession()).thenReturn(session);
+        when(context.getXMLNode()).thenReturn(newNode());
 
     }
 
@@ -78,7 +83,7 @@ class LearnTagTest
     @Test
     void test()
     {
-        AIML result = tag.createAIML();
+        AIML result = tag.createAIML(context);
         assertEquals("template", result.getTemplate());
         assertEquals("pattern", result.getPattern());
     }

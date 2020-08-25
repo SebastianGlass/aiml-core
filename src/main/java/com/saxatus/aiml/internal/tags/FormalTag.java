@@ -1,27 +1,18 @@
 package com.saxatus.aiml.internal.tags;
 
 import org.apache.commons.lang3.text.WordUtils;
-import org.w3c.dom.Node;
 
-import com.saxatus.aiml.api.parsing.AIMLParseNode;
-import com.saxatus.aiml.api.parsing.AIMLParsingSession;
+import com.saxatus.aiml.api.parsing.AIMLParsingSessionContext;
 import com.saxatus.aiml.api.tags.TagName;
 
 @TagName("formal")
 public class FormalTag extends StarTag
 {
 
-    public FormalTag(Node node, AIMLParsingSession session)
-    {
-        super(node, session);
-
-    }
-
     @Override
-    public String handle(AIMLParseNode debugNode)
+    public String handle(AIMLParsingSessionContext context)
     {
-        super.handle(debugNode);
-        String context = replaceStars();
-        return (WordUtils.capitalize(context));
+        super.handle(context);
+        return (WordUtils.capitalize(replaceStars(context)));
     }
 }

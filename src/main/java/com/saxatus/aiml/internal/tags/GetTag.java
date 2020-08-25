@@ -1,34 +1,26 @@
 package com.saxatus.aiml.internal.tags;
 
-import org.w3c.dom.Node;
-
-import com.saxatus.aiml.api.parsing.AIMLParseNode;
-import com.saxatus.aiml.api.parsing.AIMLParsingSession;
+import com.saxatus.aiml.api.parsing.AIMLParsingSessionContext;
+import com.saxatus.aiml.api.tags.NonStaticMemoryUsingTag;
 import com.saxatus.aiml.api.tags.TagName;
 
 @TagName("get")
-public class GetTag extends AbstractBotTag
+public class GetTag extends AbstractAIMLTag implements NonStaticMemoryUsingTag
 {
 
-    private String key;
-
-    public GetTag(Node node, AIMLParsingSession session)
-    {
-        super(node, session);
-        key = getOptionalAttribute("name", "").toLowerCase();
-    }
-
     @Override
-    public String handle(AIMLParseNode debugNode)
+    public String handle(AIMLParsingSessionContext context)
     {
-        super.handle(debugNode);
-        String value = nonStaticMemory.getOrDefault(key, "Unknown");
+        super.handle(context);
+        String key = getOptionalAttribute(context, "name", "").toLowerCase();
+        String value = getNonStaticMemory(context).getOrDefault(key, "Unknown");
         return " " + value + " ";
     }
 
     @Override
-    public String getDebugInformation()
+    public String getDebugInformation(AIMLParsingSessionContext context)
     {
+        String key = getOptionalAttribute(context, "name", "").toLowerCase();
         return getTag() + " (" + key + ")";
     }
 

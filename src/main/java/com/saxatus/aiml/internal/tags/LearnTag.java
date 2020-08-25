@@ -17,29 +17,24 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import com.saxatus.aiml.api.parsing.AIML;
-import com.saxatus.aiml.api.parsing.AIMLParseNode;
-import com.saxatus.aiml.api.parsing.AIMLParsingSession;
+import com.saxatus.aiml.api.parsing.AIMLParsingSessionContext;
+import com.saxatus.aiml.api.tags.NonStaticMemoryUsingTag;
 import com.saxatus.aiml.api.tags.TagName;
 import com.saxatus.aiml.api.utils.XMLUtils;
 
 @TagName("learn")
-public class LearnTag extends AbstractBotTag
+public class LearnTag extends AbstractAIMLTag implements NonStaticMemoryUsingTag
 {
     private static final Log log = LogFactory.getLog(LearnTag.class);
 
-    public LearnTag(Node node, AIMLParsingSession session)
-    {
-        super(node, session);
-    }
-
     @Override
-    public String handle(AIMLParseNode debugNode)
+    public String handle(AIMLParsingSessionContext context)
     {
-        super.handle(debugNode);
-        AIML aiml = createAIML();
+        super.handle(context);
+        AIML aiml = createAIML(context);
         try
         {
-            updateLearnFile(aiml);
+            updateLearnFile(context, aiml);
         }
         catch(Exception e)
         {
@@ -48,11 +43,11 @@ public class LearnTag extends AbstractBotTag
         return "";
     }
 
-    AIML createAIML()
+    AIML createAIML(AIMLParsingSessionContext context)
     {
         String pattern = "";
         String template = "";
-        NodeList nodes = getNode().getChildNodes();
+        NodeList nodes = getXMLNode(context).getChildNodes();
         for (int i = 0; i < nodes.getLength(); i++)
         {
             Node categoriesNode = nodes.item(i);
@@ -66,13 +61,13 @@ public class LearnTag extends AbstractBotTag
                     String nodeName = patternOrTemplateNode.getNodeName();
                     if (nodeName.equals("pattern"))
                     {
-                        pattern = getSession().createTag(patternOrTemplateNode)
-                                        .handle(this.getAIMLParseNode());
+                        pattern = getSession(context).createTag(patternOrTemplateNode)
+                                        .handle(context.of(debugNode, patternOrTemplateNode));
                     }
                     else if (nodeName.equals("template"))
                     {
-                        template = getSession().createTag(patternOrTemplateNode)
-                                        .handle(this.getAIMLParseNode());
+                        template = getSession(context).createTag(patternOrTemplateNode)
+                                        .handle(context.of(debugNode, patternOrTemplateNode));
                     }
                 }
             }
@@ -80,10 +75,10 @@ public class LearnTag extends AbstractBotTag
         return new AIML(pattern, template, null, null, "learned", -1);
     }
 
-    private void updateLearnFile(AIML aiml)
+    private void updateLearnFile(AIMLParsingSessionContext context, AIML aiml)
                     throws IOException, ParserConfigurationException, SAXException, TransformerException
     {
-        File learnFile = getAIMLHandler().getLearnFile();
+        File learnFile = getAIMLHandler(context).getLearnFile();
         File parentFile = learnFile.getParentFile();
         if (!parentFile.exists())
         {
@@ -99,7 +94,7 @@ public class LearnTag extends AbstractBotTag
                         .appendChild(doc.createTextNode(aiml.getPattern()));
         node.appendChild(doc.createElement("template"))
                         .appendChild(doc.createTextNode(aiml.getTemplate()));
-        node.appendChild(doc.createComment("taught by " + nonStaticMemory.get("name")));
+        node.appendChild(doc.createComment("taught by " + getNonStaticMemory(context).get("name")));
         doc.getElementsByTagName("aiml")
                         .item(0)
                         .appendChild(node);

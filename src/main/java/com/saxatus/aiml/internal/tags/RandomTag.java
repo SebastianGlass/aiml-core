@@ -7,33 +7,26 @@ import java.util.Random;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.saxatus.aiml.api.parsing.AIMLParseNode;
-import com.saxatus.aiml.api.parsing.AIMLParsingSession;
+import com.saxatus.aiml.api.parsing.AIMLParsingSessionContext;
 import com.saxatus.aiml.api.tags.AIMLParseTag;
 import com.saxatus.aiml.api.tags.TagName;
 
 @TagName("random")
 public class RandomTag extends AbstractAIMLTag
 {
-
-    public RandomTag(Node node, AIMLParsingSession session)
-    {
-        super(node, session);
-    }
-
     @Override
-    public String handle(AIMLParseNode debugNode)
+    public String handle(AIMLParsingSessionContext context)
     {
-        super.handle(debugNode);
+        super.handle(context);
         List<AIMLParseTag> options = new ArrayList<>();
-        NodeList childNodes = getNode().getChildNodes();
+        NodeList childNodes = getXMLNode(context).getChildNodes();
         for (int i = 0; i < childNodes.getLength(); i++)
         {
             Node childNode = childNodes.item(i);
             if (childNode.getNodeName()
                             .equals("li"))
             {
-                AIMLParseTag liTag = getSession().createTag(childNode);
+                AIMLParseTag liTag = getSession(context).createTag(childNode);
                 options.add(liTag);
             }
             else
@@ -42,8 +35,9 @@ public class RandomTag extends AbstractAIMLTag
             }
         }
 
-        return options.get(getRandom().nextInt(options.size()))
-                        .handle(getAIMLParseNode());
+        int id = getRandom().nextInt(options.size());
+        return options.get(id)
+                        .handle(context.of(debugNode, childNodes.item(id)));
     }
 
     public Random getRandom()

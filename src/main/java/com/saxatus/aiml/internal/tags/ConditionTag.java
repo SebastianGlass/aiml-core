@@ -7,83 +7,65 @@ import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.saxatus.aiml.api.parsing.AIMLParseNode;
-import com.saxatus.aiml.api.parsing.AIMLParsingSession;
+import com.saxatus.aiml.api.parsing.AIMLParsingSessionContext;
 import com.saxatus.aiml.api.tags.AIMLParseTag;
+import com.saxatus.aiml.api.tags.NonStaticMemoryUsingTag;
 import com.saxatus.aiml.api.tags.TagName;
 
 @TagName("condition")
-public class ConditionTag extends AbstractBotTag
+public class ConditionTag extends AbstractAIMLTag implements NonStaticMemoryUsingTag
 {
 
-    private String key;
-    private String value;
-
-    public ConditionTag(Node node, AIMLParsingSession session)
+    @Override
+    public String handle(AIMLParsingSessionContext context)
     {
-        super(node, session);
-        key = Optional.ofNullable(getNode().getAttributes()
+        super.handle(context);
+        String key = Optional.ofNullable(getXMLNode(context).getAttributes()
                         .getNamedItem("name"))
                         .map(Node::getNodeValue)
                         .map(String::toLowerCase)
                         .orElse("");
-
-        value = Optional.ofNullable(getNode().getAttributes()
+        return Optional.ofNullable(getXMLNode(context).getAttributes()
                         .getNamedItem("value"))
                         .map(Node::getNodeValue)
-                        .orElse(null);
+                        .map(v -> handleIfTrue(context, key, v))
+                        .orElseGet(() -> handleSwitch(context, key));
 
     }
 
-    @Override
-    public String handle(AIMLParseNode debugNode)
+    public String handleIfTrue(AIMLParsingSessionContext context, String key, String value)
     {
-
-        if (value != null)
-        {
-            return handleIfTrue(debugNode);
-        }
-        else
-        {
-            return handleSwitch(debugNode);
-        }
-    }
-
-    public String handleIfTrue(AIMLParseNode debugNode)
-    {
-        super.handle(debugNode);
         String response = "";
 
-        if (value.equals(nonStaticMemory.get(key)))
+        if (value.equals(getNonStaticMemory(context).get(key)))
         {
-            return getNode().getTextContent();
+            return getXMLNode(context).getTextContent();
         }
         return response;
     }
 
-    public String handleSwitch(AIMLParseNode debugNode)
+    public String handleSwitch(AIMLParsingSessionContext context, String key)
     {
-        super.handle(debugNode);
-        return StringUtils.isEmpty(key) ? handleKeyValuePairs(debugNode) : handleValueForSetKey(debugNode);
+        return StringUtils.isEmpty(key) ? handleKeyValuePairs(context) : handleValueForSetKey(context, key);
 
     }
 
-    private String handleValueForSetKey(AIMLParseNode debugNode)
+    private String handleValueForSetKey(AIMLParsingSessionContext context, String key)
     {
-        return handleKeyValuePairs(debugNode, childNode -> Optional.of(key));
+        return handleKeyValuePairs(context, childNode -> Optional.of(key));
     }
 
-    private String handleKeyValuePairs(AIMLParseNode debugNode)
+    private String handleKeyValuePairs(AIMLParsingSessionContext context)
     {
-        return handleKeyValuePairs(debugNode, childNode -> Optional.ofNullable(childNode.getAttributes()
+        return handleKeyValuePairs(context, childNode -> Optional.ofNullable(childNode.getAttributes()
                         .getNamedItem("name"))
                         .map(Node::getNodeValue));
     }
 
-    private String handleKeyValuePairs(AIMLParseNode debugNode, Function<Node, Optional<String>> keyFunction)
+    private String handleKeyValuePairs(AIMLParsingSessionContext context, Function<Node, Optional<String>> keyFunction)
     {
-        NodeList childNodes = getNode().getChildNodes();
-        AIMLParseTag fallBack = null;
+        NodeList childNodes = getXMLNode(context).getChildNodes();
+        String fallBack = null;
         for (int i = 0; i < childNodes.getLength(); i++)
         {
             Node childNode = childNodes.item(i);
@@ -100,18 +82,19 @@ public class ConditionTag extends AbstractBotTag
                     String conditionKey = keyFunction.apply(childNode)
                                     .orElseThrow(() -> new IllegalArgumentException(
                                                     "Value provided but no key in condition-Tag"));
-                    String val = nonStaticMemory.get(conditionKey)
+                    String val = getNonStaticMemory(context).get(conditionKey)
                                     .trim();
 
                     if (cond.equals(val) || cond.equals("*"))
                     {
-                        AIMLParseTag liTag = getSession().createTag(childNode);
-                        return liTag.handle(debugNode);
+                        AIMLParseTag liTag = getSession(context).createTag(childNode);
+                        return liTag.handle(context.of(debugNode, childNode));
                     }
                 }
                 else
                 {
-                    fallBack = getSession().createTag(childNode);
+                    fallBack = getSession(context).createTag(childNode)
+                                    .handle(context.of(debugNode, childNode));
                 }
             }
 
@@ -120,7 +103,7 @@ public class ConditionTag extends AbstractBotTag
         {
             throw new IllegalArgumentException("No fallback was provided.");
         }
-        return fallBack.handle(debugNode);
+        return fallBack;
 
     }
 

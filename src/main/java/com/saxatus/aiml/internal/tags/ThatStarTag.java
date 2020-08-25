@@ -2,34 +2,25 @@ package com.saxatus.aiml.internal.tags;
 
 import java.util.List;
 
-import org.w3c.dom.Node;
-
-import com.saxatus.aiml.api.parsing.AIMLParseNode;
-import com.saxatus.aiml.api.parsing.AIMLParsingSession;
+import com.saxatus.aiml.api.parsing.AIMLParsingSessionContext;
 import com.saxatus.aiml.api.tags.TagName;
 
 @TagName("thatstar")
-public class ThatStarTag extends AbstractBotTag
+public class ThatStarTag extends AbstractAIMLTag
 {
 
-    public ThatStarTag(Node node, AIMLParsingSession session)
-    {
-        super(node, session);
-
-    }
-
     @Override
-    public String handle(AIMLParseNode debugNode)
+    public String handle(AIMLParsingSessionContext context)
     {
-        super.handle(debugNode);
-        return replaceStars();
+        super.handle(context);
+        return replaceStars(context);
     }
 
-    protected String replaceStars()
+    protected String replaceStars(AIMLParsingSessionContext context)
     {
-        int index = Integer.parseInt(super.getOptionalAttribute("index", "1"));
+        int index = Integer.parseInt(super.getOptionalAttribute(context, "index", "1"));
 
-        List<String> replacements = getAIMLHandler().getThatStar();
+        List<String> replacements = getAIMLHandler(context).getThatStar();
         String value;
         if (replacements.size() > index - 1)
         {

@@ -61,8 +61,8 @@ public class TagRepository
         return (node, fac) -> {
             try
             {
-                return (AbstractAIMLTag)clazz.getConstructor(Node.class, AIMLParsingSession.class)
-                                .newInstance(node, fac);
+                return (AbstractAIMLTag)clazz.getConstructor()
+                                .newInstance();
             }
             catch(Exception e)
             {

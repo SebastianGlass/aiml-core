@@ -2,26 +2,18 @@ package com.saxatus.aiml.internal.tags;
 
 import java.util.List;
 
-import org.w3c.dom.Node;
-
-import com.saxatus.aiml.api.parsing.AIMLParseNode;
-import com.saxatus.aiml.api.parsing.AIMLParsingSession;
+import com.saxatus.aiml.api.parsing.AIMLParsingSessionContext;
 import com.saxatus.aiml.api.tags.TagName;
 
 @TagName("that")
-public class ThatTag extends AbstractBotTag
+public class ThatTag extends AbstractAIMLTag
 {
 
-    public ThatTag(Node node, AIMLParsingSession session)
-    {
-        super(node, session);
-    }
-
     @Override
-    public String handle(AIMLParseNode debugNode)
+    public String handle(AIMLParsingSessionContext context)
     {
-        super.handle(debugNode);
-        String string = super.getOptionalAttribute("index", "1");
+        super.handle(context);
+        String string = super.getOptionalAttribute(context, "index", "1");
         if (string.contains(","))
         {
             // TODO: other behavior
@@ -29,7 +21,7 @@ public class ThatTag extends AbstractBotTag
         }
         int index = Integer.parseInt(string);
 
-        List<String> l = getAIMLHandler().getOutputHistory();
+        List<String> l = getAIMLHandler(context).getOutputHistory();
         if (l.size() >= index)
             return l.get(l.size() - index);
         return "";

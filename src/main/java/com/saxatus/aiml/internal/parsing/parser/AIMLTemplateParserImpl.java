@@ -5,6 +5,7 @@ import org.w3c.dom.Node;
 import com.saxatus.aiml.api.parsing.AIMLParseNode;
 import com.saxatus.aiml.api.parsing.AIMLParser;
 import com.saxatus.aiml.api.parsing.AIMLParsingSession;
+import com.saxatus.aiml.internal.parsing.AIMLParsingSessionContextImpl;
 
 public class AIMLTemplateParserImpl implements AIMLParser
 {
@@ -21,13 +22,7 @@ public class AIMLTemplateParserImpl implements AIMLParser
     public String parse(Node node)
     {
         return session.createTag(node)
-                        .handle(getParseNode());
-    }
-
-    @Override
-    public AIMLParseNode getParseNode()
-    {
-        return parseNode;
+                        .handle(new AIMLParsingSessionContextImpl(parseNode, node, session));
     }
 
 }

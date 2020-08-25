@@ -1,29 +1,20 @@
 package com.saxatus.aiml.internal.tags;
 
-import org.w3c.dom.Node;
-
-import com.saxatus.aiml.api.parsing.AIMLParseNode;
-import com.saxatus.aiml.api.parsing.AIMLParsingSession;
+import com.saxatus.aiml.api.parsing.AIMLParsingSessionContext;
+import com.saxatus.aiml.api.tags.BotMemoryUsingTag;
 import com.saxatus.aiml.api.tags.TagName;
 
 @TagName("bot")
-public class BotTag extends AbstractBotTag
+public class BotTag extends AbstractAIMLTag implements BotMemoryUsingTag
 {
 
-    private String key;
-
-    public BotTag(Node node, AIMLParsingSession session)
-    {
-        super(node, session);
-        key = getOptionalAttribute("name", "").toLowerCase();
-    }
-
     @Override
-    public String handle(AIMLParseNode debugNode)
+    public String handle(AIMLParsingSessionContext context)
     {
-        super.handle(debugNode);
+        super.handle(context);
 
-        String value = botMemory.get(key);
+        String key = getKey(context);
+        String value = getBotMemory(context).get(key);
         if (value == null || value.equals("") || value.equals("Unknown"))
         {
             return "'BOTPROPERTY." + key.toUpperCase() + "'";
@@ -32,9 +23,15 @@ public class BotTag extends AbstractBotTag
     }
 
     @Override
-    public String getDebugInformation()
+    public String getDebugInformation(AIMLParsingSessionContext context)
     {
-        return getTag() + " (" + key + ")";
+        return getTag() + " (" + getKey(context) + ")";
+    }
+
+    private String getKey(AIMLParsingSessionContext context)
+    {
+
+        return getOptionalAttribute(context, "name", "").toLowerCase();
     }
 
 }

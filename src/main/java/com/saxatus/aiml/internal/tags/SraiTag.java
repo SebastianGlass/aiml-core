@@ -6,33 +6,26 @@ import java.util.Vector;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.w3c.dom.Node;
 
 import com.saxatus.aiml.api.AIMLHandler;
-import com.saxatus.aiml.api.parsing.AIMLParseNode;
-import com.saxatus.aiml.api.parsing.AIMLParsingSession;
+import com.saxatus.aiml.api.parsing.AIMLParsingSessionContext;
 import com.saxatus.aiml.api.tags.TagName;
 import com.saxatus.aiml.internal.parsing.AIMLNotFoundException;
 
 @TagName("srai")
-public class SraiTag extends AbstractBotTag
+public class SraiTag extends SubNodeContainingTag
 {
     private static final Log log = LogFactory.getLog(SraiTag.class);
 
     private static List<String> handledPatterns = new LinkedList<>();
 
-    public SraiTag(Node node, AIMLParsingSession session)
-    {
-        super(node, session);
-    }
-
     @Override
-    public String handle(AIMLParseNode debugNode)
+    public String handle(AIMLParsingSessionContext context)
     {
-        super.handle(debugNode);
-        String input = handleSubNodes().replace("\n", "")
+        super.handle(context);
+        String input = handleSubNodes(context).replace("\n", "")
                         .replace("\t", "");
-        String pattern = getSession().getParameter()
+        String pattern = getSession(context).getParameter()
                         .getPattern();
 
         if (/* wasTraversed(pattern) || */ handledPatterns.size() > 30)
@@ -41,12 +34,12 @@ public class SraiTag extends AbstractBotTag
             return "";
         }
         addTraversed(pattern);
-        return resolvePattern(input, getAIMLParseNode());
+        return resolvePattern(context, input);
     }
 
-    private String resolvePattern(String pattern, AIMLParseNode debugNode)
+    private String resolvePattern(AIMLParsingSessionContext context, String pattern)
     {
-        AIMLHandler handler = getAIMLHandler();
+        AIMLHandler handler = getAIMLHandler(context);
         try
         {
             return handler.getAnswer(pattern, pattern, debugNode);

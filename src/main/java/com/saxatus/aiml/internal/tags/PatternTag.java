@@ -1,25 +1,16 @@
 package com.saxatus.aiml.internal.tags;
 
-import org.w3c.dom.Node;
-
-import com.saxatus.aiml.api.parsing.AIMLParseNode;
-import com.saxatus.aiml.api.parsing.AIMLParsingSession;
+import com.saxatus.aiml.api.parsing.AIMLParsingSessionContext;
 import com.saxatus.aiml.api.tags.TagName;
 
 @TagName("pattern")
 @TagName("template")
-public class PatternTag extends AbstractAIMLTag
+public class PatternTag extends SubNodeContainingTag
 {
-
-    public PatternTag(Node node, AIMLParsingSession session)
-    {
-        super(node, session);
-    }
-
     @Override
-    public String handle(AIMLParseNode debugNode)
+    public String handle(AIMLParsingSessionContext context)
     {
-        super.handle(debugNode);
-        return handleSubNodes();
+        super.handle(context);
+        return handleSubNodes(context).toUpperCase();
     }
 }

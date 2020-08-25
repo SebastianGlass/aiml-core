@@ -5,26 +5,20 @@ import javax.xml.transform.TransformerException;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.saxatus.aiml.api.parsing.AIMLParseNode;
-import com.saxatus.aiml.api.parsing.AIMLParsingSession;
+import com.saxatus.aiml.api.parsing.AIMLParsingSessionContext;
 import com.saxatus.aiml.api.tags.TagName;
 import com.saxatus.aiml.api.utils.XMLUtils;
 
 @TagName("unknown")
-public class UnknownTag extends AbstractAIMLTag
+public class UnknownTag extends SubNodeContainingTag
 {
 
-    public UnknownTag(Node node, AIMLParsingSession session)
-    {
-        super(node, session);
-    }
-
     @Override
-    public String handle(AIMLParseNode debugNode)
+    public String handle(AIMLParsingSessionContext context)
     {
-        super.handle(debugNode);
-        String result = handleSubNodes();
-        Node node = getNode();
+        super.handle(context);
+        String result = handleSubNodes(context);
+        Node node = getXMLNode(context);
 
         do
         {
@@ -41,7 +35,7 @@ public class UnknownTag extends AbstractAIMLTag
         String plainNode;
         try
         {
-            plainNode = XMLUtils.parseXMLToString(getNode());
+            plainNode = XMLUtils.parseXMLToString(node);
         }
         catch(TransformerException e)
         {
@@ -56,7 +50,7 @@ public class UnknownTag extends AbstractAIMLTag
         {
             openTag = plainNode.substring(0, plainNode.indexOf("/>")) + ">";
         }
-        String closeTag = "</" + getNode().getNodeName() + ">";
+        String closeTag = "</" + node.getNodeName() + ">";
         return openTag + result + closeTag;
     }
 

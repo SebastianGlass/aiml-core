@@ -1,103 +1,40 @@
 package com.saxatus.aiml.internal.tags;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
-import com.saxatus.aiml.api.AIMLHandler;
 import com.saxatus.aiml.api.parsing.AIMLParseNode;
-import com.saxatus.aiml.api.parsing.AIMLParsingSession;
-import com.saxatus.aiml.api.tags.AIMLParseTag;
+import com.saxatus.aiml.api.parsing.AIMLParsingSessionContext;
+import com.saxatus.aiml.api.tags.AttributeContainingTag;
 import com.saxatus.aiml.api.tags.TagName;
 
-public abstract class AbstractAIMLTag implements AIMLParseTag
+public abstract class AbstractAIMLTag implements AttributeContainingTag
 {
 
-    private final Node node;
-    private AIMLParseNode debugNode;
-    private final AIMLParsingSession session;
-
-    public AbstractAIMLTag(Node node, AIMLParsingSession session)
-    {
-        this.node = node;
-        this.session = session;
-    }
+    protected AIMLParseNode debugNode;
 
     @Override
-    public String handle(AIMLParseNode debugNode)
+    public String handle(AIMLParsingSessionContext context)
     {
         if (null == this.debugNode)
         {
-            this.debugNode = new AIMLParseNode(this.getDebugInformation());
+            this.debugNode = new AIMLParseNode(this.getDebugInformation(context));
         }
-        debugNode.addChild(this.debugNode);
+        getDebugNode(context).addChild(this.debugNode);
         return ("Exception: not overwritten!");
     }
 
-    protected String handleSubNodes()
+    public String getOptionalAttribute(AIMLParsingSessionContext context, String string, String i)
     {
-        StringBuilder result = new StringBuilder();
-        NodeList childNodes = node.getChildNodes();
-        for (int i = 0; i < childNodes.getLength(); i++)
-        {
-
-            Node childNode = childNodes.item(i);
-            AIMLParseTag tag = getSession().createTag(childNode);
-
-            result.append(" ")
-                            .append(tag.handle(debugNode))
-                            .append(" ");
-        }
-
-        String response = result.toString()
-                        .trim()
-                        .replace("  ", " ");
-        List<String> s = Arrays.asList(" ", "?", ",", "!", ".", ":", ";");
-        for (String string : s)
-        {
-            while(response.contains(" " + string))
-            {
-                response = response.replace(" " + string, string);
-            }
-        }
-        return response;
-    }
-
-    public Node getNode()
-    {
-        return node;
-    }
-
-    public AIMLParseNode getAIMLParseNode()
-    {
-        return debugNode;
-    }
-
-    public AIMLParsingSession getSession()
-    {
-        return session;
-    }
-
-    public String getOptionalAttribute(String string, String i)
-    {
-        NamedNodeMap attributes = getNode().getAttributes();
+        NamedNodeMap attributes = getXMLNode(context).getAttributes();
         String index = i;
         if (attributes.getLength() != 0)
         {
-            index = getNode().getAttributes()
+            index = getXMLNode(context).getAttributes()
                             .getNamedItem(string)
                             .getNodeValue();
         }
 
         return index;
-    }
-
-    protected AIMLHandler getAIMLHandler()
-    {
-        return getSession().getAIMLHandler();
     }
 
     @Override

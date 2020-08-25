@@ -6,5 +6,4 @@ public interface AIMLParser
 {
     String parse(Node node);
 
-    AIMLParseNode getParseNode();
 }

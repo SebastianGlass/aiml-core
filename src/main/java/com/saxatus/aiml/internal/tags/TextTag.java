@@ -1,32 +1,23 @@
 package com.saxatus.aiml.internal.tags;
 
-import org.w3c.dom.Node;
-
-import com.saxatus.aiml.api.parsing.AIMLParseNode;
-import com.saxatus.aiml.api.parsing.AIMLParsingSession;
+import com.saxatus.aiml.api.parsing.AIMLParsingSessionContext;
 import com.saxatus.aiml.api.tags.TagName;
 import com.saxatus.aiml.api.utils.StringUtils;
 
 @TagName("#text")
 public class TextTag extends AbstractAIMLTag
 {
-
-    public TextTag(Node node, AIMLParsingSession session)
+    @Override
+    public String handle(AIMLParsingSessionContext context)
     {
-        super(node, session);
+        super.handle(context);
+        return getXMLNode(context).getTextContent();
     }
 
     @Override
-    public String handle(AIMLParseNode debugNode)
+    public String getDebugInformation(AIMLParsingSessionContext context)
     {
-        super.handle(debugNode);
-        return getNode().getTextContent();
-    }
-
-    @Override
-    public String getDebugInformation()
-    {
-        return getTag() + " (" + StringUtils.clearString(getNode().getTextContent()) + ")";
+        return getTag() + " (" + StringUtils.clearString(getXMLNode(context).getTextContent()) + ")";
     }
 
 }

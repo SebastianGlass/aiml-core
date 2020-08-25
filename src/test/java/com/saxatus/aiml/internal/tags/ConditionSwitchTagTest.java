@@ -8,14 +8,12 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 import com.saxatus.aiml.api.parsing.AIMLParseNode;
-import com.saxatus.aiml.api.tags.AIMLParseTag;
 
 class ConditionSwitchTagTest extends AbstractAIMLTagTest
 {
     @Test
     void testSwitchTag()
     {
-        String response;
         String template = "<think>" //
                         + "<set name=\"branch\">" //
                         + "<get name=\"birthday\"/>" //
@@ -28,13 +26,12 @@ class ConditionSwitchTagTest extends AbstractAIMLTagTest
                         + "</condition>";
 
         Map<String, String> botMemory = new HashMap<>();
-        AIMLParseTag tag = getAIMLTag(template, "", "", new HashMap<>(), botMemory);
+        String response = handleAIMLTag(template, "", "", new HashMap<>(), botMemory, new AIMLParseNode("AIML"));
 
-        response = tag.handle(new AIMLParseNode("AIML"));
         assertEquals("When is your birthday?", response);
 
         botMemory.put("birthday", "now");
-        response = tag.handle(new AIMLParseNode("AIML"));
+        response = handleAIMLTag(template, "", "", new HashMap<>(), botMemory, new AIMLParseNode("AIML"));
         assertEquals("now", response);
 
     }
@@ -55,13 +52,11 @@ class ConditionSwitchTagTest extends AbstractAIMLTagTest
                         + "</condition>";
 
         Map<String, String> botMemory = new HashMap<>();
-        AIMLParseTag tag = getAIMLTag(template, "", "", new HashMap<>(), botMemory);
-
-        response = tag.handle(new AIMLParseNode("AIML"));
+        response = handleAIMLTag(template, "", "", new HashMap<>(), botMemory, new AIMLParseNode("AIML"));
         assertEquals("When is your birthday?", response);
 
         botMemory.put("birthday", "now");
-        response = tag.handle(new AIMLParseNode("AIML"));
+        response = handleAIMLTag(template, "", "", new HashMap<>(), botMemory, new AIMLParseNode("AIML"));
         assertEquals("now", response);
 
     }

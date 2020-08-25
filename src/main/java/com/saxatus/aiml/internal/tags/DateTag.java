@@ -3,32 +3,19 @@ package com.saxatus.aiml.internal.tags;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.w3c.dom.Node;
-
-import com.saxatus.aiml.api.parsing.AIMLParseNode;
-import com.saxatus.aiml.api.parsing.AIMLParsingSession;
+import com.saxatus.aiml.api.parsing.AIMLParsingSessionContext;
 import com.saxatus.aiml.api.tags.TagName;
 
 @TagName("date")
-public class DateTag extends AbstractBotTag
+public class DateTag extends AbstractAIMLTag
 {
-    private String format;
-
-    public DateTag(Node node, AIMLParsingSession session)
-    {
-        super(node, session);
-        format = getOptionalAttribute("format", "").replace("%Y", "yyyy")
-                        .replace("%B", "MM")
-                        .replace("%A", "EEE")
-                        .replace("%p", "a")
-                        .replace("%I", "h");
-    }
 
     @Override
-    public String handle(AIMLParseNode debugNode)
+    public String handle(AIMLParsingSessionContext context)
     {
-        super.handle(debugNode);
 
+        super.handle(context);
+        String format = getFormat(context);
         SimpleDateFormat df = new SimpleDateFormat(format);
 
         Date dt = new Date();
@@ -37,9 +24,18 @@ public class DateTag extends AbstractBotTag
     }
 
     @Override
-    public String getDebugInformation()
+    public String getDebugInformation(AIMLParsingSessionContext context)
     {
-        return getTag() + " (" + format + ")";
+        return getTag() + " (" + getFormat(context) + ")";
+    }
+
+    private String getFormat(AIMLParsingSessionContext context)
+    {
+        return getOptionalAttribute(context, "format", "").replace("%Y", "yyyy")
+                        .replace("%B", "MM")
+                        .replace("%A", "EEE")
+                        .replace("%p", "a")
+                        .replace("%I", "h");
     }
 
 }
