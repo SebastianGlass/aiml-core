@@ -68,7 +68,7 @@ public class AIMLHandlerBuilderImpl implements AIMLHandlerBuilder
     {
         public AIMLHandler build() throws AIMLCreationException
         {
-          
+
             List<AIML> aimls = aimlProvider.provide()
                             .stream()
                             .collect(Collectors.toList());

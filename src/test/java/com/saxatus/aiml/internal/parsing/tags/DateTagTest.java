@@ -41,8 +41,6 @@ class DateTagTest
         assertEquals(new Strftime("%x").format(new Date()), tag.getText());
     }
 
-    
-
     @Test
     void testToString()
     {

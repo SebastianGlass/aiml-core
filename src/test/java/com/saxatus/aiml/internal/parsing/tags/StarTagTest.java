@@ -34,7 +34,7 @@ class StarTagTest
     @Test
     void testGetText()
     {
-        tag.setStars(Arrays.asList("A","B","C"));
+        tag.setStars(Arrays.asList("A", "B", "C"));
         assertEquals("A", tag.getText());
     }
 
@@ -42,7 +42,7 @@ class StarTagTest
     void testGetTextSetIndex()
     {
         tag.setIndex(2);
-        tag.setStars(Arrays.asList("A","B","C"));
+        tag.setStars(Arrays.asList("A", "B", "C"));
         assertEquals("B", tag.getText());
     }
 
@@ -51,6 +51,5 @@ class StarTagTest
     {
         assertEquals("<star index=\"1\"/>", tag.toString());
     }
-
 
 }

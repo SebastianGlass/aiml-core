@@ -55,5 +55,4 @@ class GetTagTest
         assertEquals("<get name=\"foo\"/>", tag.toString());
     }
 
-
 }

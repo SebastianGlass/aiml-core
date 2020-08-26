@@ -23,10 +23,10 @@ public class SrTag extends AbstractAIMLTag implements StarReplacingTag
 
     private String resolvePattern(AIMLParsingSessionContext context, String pattern)
     {
-      /*  if (SraiTag.wasTraversed(pattern))
-            return ":(";
-        SraiTag.addTraversed(pattern);
-        return getAIMLHandler(context).getAnswer(pattern, debugNode);*/
+        /*
+         * if (SraiTag.wasTraversed(pattern)) return ":("; SraiTag.addTraversed(pattern); return
+         * getAIMLHandler(context).getAnswer(pattern, debugNode);
+         */
         return null;
     }
 

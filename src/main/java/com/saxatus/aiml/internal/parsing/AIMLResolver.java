@@ -21,7 +21,7 @@ public class AIMLResolver
     {
         this.nonStaticMemory = nonStaticMemory;
         this.list = aimlList;
-        
+
     }
 
     public AIML getAIML(String input)

@@ -39,5 +39,4 @@ class BrTagTest
         assertEquals("<br/>", tag.toString());
     }
 
-
 }

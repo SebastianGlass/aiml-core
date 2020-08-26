@@ -22,9 +22,9 @@ class LiTagTest
     void setup()
     {
         tag = new LiTag();
-        
+
     }
-    
+
     @Test
     void testInterfaces()
     {
@@ -52,19 +52,19 @@ class LiTagTest
         tag.setContent(Collections.singletonList(node));
         assertEquals("<li>content</li>", tag.toString());
     }
-    
+
     @Test
     void testToStringWithValue()
     {
         tag.setValue("val");
         assertEquals("<li value=\"val\"></li>", tag.toString());
     }
-    
+
     @Test
     void testGetValue()
     {
         tag.setValue("val");
-        assertEquals("val",tag.getValue());
+        assertEquals("val", tag.getValue());
     }
 
     @Test

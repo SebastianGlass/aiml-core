@@ -11,13 +11,13 @@ import com.saxatus.aiml.internal.parsing.tags.abstracts.AbstractOptionsTag;
 @XmlRootElement(name = "random")
 public class RandomTag extends AbstractOptionsTag implements DecisionMakingNode
 {
-   
+
     Random random = new Random();
 
     @Override
     public LiNode getDecision()
     {
-        if(getContent() == null)
+        if (getContent() == null)
         {
             return FALLBACK_LITAG;
         }

@@ -23,7 +23,7 @@ class ThinkTagTest
     {
         tag = new ThinkTag();
     }
-    
+
     @Test
     void testInterfaces()
     {

@@ -24,7 +24,7 @@ class SraiTagTest
     {
         tag = new SraiTag();
     }
-    
+
     @Test
     void testInterfaces()
     {

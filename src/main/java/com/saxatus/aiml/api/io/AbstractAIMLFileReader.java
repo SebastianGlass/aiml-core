@@ -95,7 +95,8 @@ public abstract class AbstractAIMLFileReader implements AIMLProvider
         try
         {
             pattern = XMLUtils.parseXMLToString(eElement.getElementsByTagName("pattern")
-                            .item(0).getChildNodes());
+                            .item(0)
+                            .getChildNodes());
         }
         catch(TransformerException e1)
         {

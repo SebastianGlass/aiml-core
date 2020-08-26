@@ -9,18 +9,18 @@ public class AbstractOptionsTagTest
 
     AbstractOptionsTag tag = new AbstractOptionsTag()
     {
-        
+
         @Override
         public String getWrappedText(String childContent)
         {
             return childContent;
         }
     };
-    
+
     @Test
     void testGetContentToStringNoChildren()
     {
         assertEquals("", tag.contentToString());
     }
-    
+
 }

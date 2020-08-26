@@ -56,21 +56,18 @@ class RandomTagTest
         assertEquals(node1, tag.getDecision());
     }
 
-
-
     @Test
     void testFallbackGetWrappingText()
     {
         assertEquals("", ConditionTag.FALLBACK_LITAG.getWrappedText("content"));
     }
-    
+
     @Test
     void testGetDecisionFallbackSaveForCorruptStructure()
     {
         tag.setContent(null);
         assertEquals(ConditionTag.FALLBACK_LITAG, tag.getDecision());
     }
-
 
     @Test
     void testGetWrappedText()

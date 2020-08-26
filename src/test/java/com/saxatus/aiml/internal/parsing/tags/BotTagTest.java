@@ -55,5 +55,4 @@ class BotTagTest
         assertEquals("<bot name=\"foo\"/>", tag.toString());
     }
 
-
 }

@@ -69,13 +69,12 @@ class ConditionTagTest
         assertEquals(node3, tag.getDecision());
     }
 
-
     @Test
     void testFallbackGetWrappingText()
     {
         assertEquals("", ConditionTag.FALLBACK_LITAG.getWrappedText("content"));
     }
-    
+
     @Test
     void testGetDecisionFallbackSaveForCorruptStructure()
     {

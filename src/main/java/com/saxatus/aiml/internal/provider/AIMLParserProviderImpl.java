@@ -14,7 +14,6 @@ public class AIMLParserProviderImpl implements AIMLParserProvider
     @Inject
     AIMLParsingSessionProvider aimlParsingSessionProvider;
 
-
     @Override
     public AIMLParser provideTemplateParser(String pattern, String input, String real, AIMLHandler aimlHandler,
                     AIMLParseNode parseNode)

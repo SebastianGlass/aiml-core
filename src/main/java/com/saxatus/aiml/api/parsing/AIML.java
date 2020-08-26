@@ -50,7 +50,7 @@ public class AIML implements Serializable, Comparable<AIML>
         s += ", line=" + line + "]";
         return s;
     }
-    
+
     public AIML withPattern(String newPattern)
     {
         return new AIML(newPattern, template, that, topic, source, line);

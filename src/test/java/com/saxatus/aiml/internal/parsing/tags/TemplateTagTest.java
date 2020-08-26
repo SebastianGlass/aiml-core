@@ -23,7 +23,7 @@ class TemplateTagTest
     {
         tag = new TemplateTag();
     }
-    
+
     @Test
     void testInterfaces()
     {

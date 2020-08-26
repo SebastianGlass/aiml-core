@@ -47,13 +47,12 @@ class SetTagTest
         assertEquals("content", memory.get("foo"));
     }
 
-
     @Test
     void testToString()
     {
         assertEquals("<set name=\"foo\"></set>", tag.toString());
     }
-    
+
     @Test
     void testToStringWithContent()
     {
@@ -62,6 +61,5 @@ class SetTagTest
         tag.setContent(Collections.singletonList(node));
         assertEquals("<set name=\"foo\">content</set>", tag.toString());
     }
-
 
 }
