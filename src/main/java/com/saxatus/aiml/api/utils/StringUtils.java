@@ -20,6 +20,7 @@ public class StringUtils
         return input.replace("  ", " ")
                         .trim();
     }
+
     public static String toRegex(String s)
     {
         return "^" + s.replace("?", "\\?")

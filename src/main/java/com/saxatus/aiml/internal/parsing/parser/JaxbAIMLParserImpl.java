@@ -137,8 +137,9 @@ public class JaxbAIMLParserImpl implements AIMLParser
         {
             String childContent = parse((ContentEnclosingNode<?>)s).trim()
                             .toUpperCase();
-            
-            return handler.increaseDepth().getAnswer(childContent);
+
+            return handler.increaseDepth()
+                            .getAnswer(childContent);
         }
         if (s instanceof String)
         {

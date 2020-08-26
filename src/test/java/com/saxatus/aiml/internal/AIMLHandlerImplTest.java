@@ -20,7 +20,6 @@ import org.mockito.MockitoAnnotations;
 import com.saxatus.aiml.api.io.AIMLCreationException;
 import com.saxatus.aiml.api.parsing.AIML;
 import com.saxatus.aiml.api.parsing.AIMLNotFoundException;
-import com.saxatus.aiml.api.parsing.AIMLParseNode;
 import com.saxatus.aiml.api.parsing.AIMLParser;
 import com.saxatus.aiml.api.provider.AIMLParserProvider;
 
@@ -28,8 +27,6 @@ class AIMLHandlerImplTest
 {
     @Mock
     AIMLParserProvider aimlParserProvider;
-    @Mock
-    AIMLParseNode node;
     @Mock
     AIMLParser aimlParser;
 
@@ -46,7 +43,7 @@ class AIMLHandlerImplTest
                         new AIML("BRO KEN", "<>", null, null, "", 2), new AIML("A B", "", "that", "topic", "", 3));
         aimlHandler = new AIMLHandlerImpl(list, nonStatic, Collections.emptyMap(), null, aimlParserProvider);
 
-        when(aimlParserProvider.provideTemplateParser(any(), any(), any(), any(), any())).thenReturn(aimlParser);
+        when(aimlParserProvider.provideTemplateParser(any(), any(), any(), any())).thenReturn(aimlParser);
 
     }
 
@@ -77,7 +74,7 @@ class AIMLHandlerImplTest
     @Test
     void getAnswer2() throws AIMLNotFoundException, IOException
     {
-        assertEquals("it worked", aimlHandler.getAnswer("a b", node));
+        assertEquals("it worked", aimlHandler.getAnswer("a b"));
         assertEquals("a b", aimlHandler.getInputHistory()
                         .get(0));
         assertEquals("it worked", aimlHandler.getOutputHistory()
@@ -88,28 +85,28 @@ class AIMLHandlerImplTest
     @Test
     void getAnswer3() throws AIMLNotFoundException, IOException
     {
-        assertEquals("it worked", aimlHandler.getAnswer("a b", "a b", node));
+        assertEquals("it worked", aimlHandler.getAnswer("a b", "a b"));
 
     }
 
     @Test
     void getAnswer3InternalException() throws AIMLNotFoundException, IOException
     {
-        assertEquals("I've lost track, sorry.", aimlHandler.getAnswer("bro ken", "bro ken", node));
+        assertEquals("I've lost track, sorry.", aimlHandler.getAnswer("bro ken", "bro ken"));
     }
 
     @Test
     void getAnswer2InternalException() throws AIMLNotFoundException, IOException
     {
         when(aimlParser.parse(any())).thenReturn("it worked");
-        assertEquals("it worked", aimlHandler.getAnswer("NOT THERE", node));
+        assertEquals("it worked", aimlHandler.getAnswer("NOT THERE"));
 
     }
 
     @Test
     void getAnswer3NoAIMLException() throws AIMLNotFoundException, IOException
     {
-        assertThrows(AIMLNotFoundException.class, () -> aimlHandler.getAnswer("NOT THERE", "NOT THERE", node));
+        assertThrows(AIMLNotFoundException.class, () -> aimlHandler.getAnswer("NOT THERE", "NOT THERE"));
     }
 
 }

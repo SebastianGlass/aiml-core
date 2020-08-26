@@ -22,7 +22,6 @@ import com.saxatus.aiml.api.AIMLHandler;
 import com.saxatus.aiml.api.parsing.AIML;
 import com.saxatus.aiml.api.parsing.AIMLDictionaryFilter;
 import com.saxatus.aiml.api.parsing.AIMLNotFoundException;
-import com.saxatus.aiml.api.parsing.AIMLParseNode;
 import com.saxatus.aiml.api.parsing.AIMLParser;
 import com.saxatus.aiml.api.provider.AIMLParserProvider;
 import com.saxatus.aiml.api.utils.Dictionary;
@@ -88,12 +87,12 @@ public class AIMLHandlerImpl implements AIMLHandler
     }
 
     @Override
-    public String getAnswer(String input, AIMLParseNode node)
+    public String getAnswer(String input)
     {
         inputs.add(input);
         try
         {
-            String answer = getAnswer(StringUtils.clearString(input), input, node);
+            String answer = getAnswer(StringUtils.clearString(input), input);
             nonStaticMemory.put("that", answer);
             outputs.add(answer);
             return answer;
@@ -102,14 +101,14 @@ public class AIMLHandlerImpl implements AIMLHandler
         {
             log.warn(e);
             AIML aiml = new AIML("", "<srai>RANDOM PICKUP LINE</srai>", "", "", "", 1);
-            return aimltoString(aiml, "", input, node);
+            return aimltoString(aiml, "", input);
         }
     }
 
     @Override
-    public String getAnswer(String input, String real, AIMLParseNode node) throws AIMLNotFoundException
+    public String getAnswer(String input, String real) throws AIMLNotFoundException
     {
-        if(this.depth >= 30)
+        if (this.depth >= 30)
         {
             return "To deep senpai uwu";
         }
@@ -118,15 +117,15 @@ public class AIMLHandlerImpl implements AIMLHandler
         {
             throw new AIMLNotFoundException(input);
         }
-        return aimltoString(aiml, input, real, node);
+        return aimltoString(aiml, input, real);
     }
 
-    private String aimltoString(AIML aiml, String input, String real, AIMLParseNode node)
+    private String aimltoString(AIML aiml, String input, String real)
     {
         try
         {
             Node rootNode = XMLUtils.parseStringToXMLNode(aiml.getTemplate(), "template");
-            AIMLParser parser = aimlParserProvider.provideTemplateParser(aiml.getPattern(), input, real, this, node);
+            AIMLParser parser = aimlParserProvider.provideTemplateParser(aiml.getPattern(), input, real, this);
             return parser.parse(rootNode)
                             .trim();
         }
