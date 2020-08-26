@@ -12,6 +12,7 @@ import com.saxatus.aiml.internal.parsing.tags.abstracts.AbstractOptionsTag;
 public class RandomTag extends AbstractOptionsTag implements DecisionMakingNode
 {
    
+    Random random = new Random();
 
     @Override
     public LiNode getDecision()
@@ -20,7 +21,7 @@ public class RandomTag extends AbstractOptionsTag implements DecisionMakingNode
         {
             return FALLBACK_LITAG;
         }
-        int id = new Random().nextInt(getContent().size());
+        int id = random.nextInt(getContent().size());
         return getContent().get(id);
     }
 

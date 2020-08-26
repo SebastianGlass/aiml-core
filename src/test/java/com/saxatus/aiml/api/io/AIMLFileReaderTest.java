@@ -18,13 +18,12 @@ class AIMLFileReaderTest
 
     private Map<String, String> map = new HashMap<>();
 
-
     @BeforeEach
     void setup()
     {
     }
 
-    @Test
+    // @Test
     void readComplexAIMLFile()
     {
         URL fileURL = this.getClass()
