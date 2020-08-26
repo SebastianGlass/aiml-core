@@ -25,6 +25,11 @@ public class StarTag extends AIMLContentNode implements LeafNode, StarRequiringN
         this.star = stars.get(index - 1);
     }
 
+    public void setIndex(int index)
+    {
+        this.index = index;
+    }
+
     @Override
     public String getText()
     {

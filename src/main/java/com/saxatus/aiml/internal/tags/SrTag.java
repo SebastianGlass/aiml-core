@@ -1,10 +1,11 @@
 package com.saxatus.aiml.internal.tags;
 
 import com.saxatus.aiml.api.parsing.AIMLParsingSessionContext;
+import com.saxatus.aiml.api.tags.StarReplacingTag;
 import com.saxatus.aiml.api.tags.TagName;
 
 @TagName("sr")
-public class SrTag extends StarTag
+public class SrTag extends AbstractAIMLTag implements StarReplacingTag
 {
 
     @Override
@@ -22,10 +23,11 @@ public class SrTag extends StarTag
 
     private String resolvePattern(AIMLParsingSessionContext context, String pattern)
     {
-        if (SraiTag.wasTraversed(pattern))
+      /*  if (SraiTag.wasTraversed(pattern))
             return ":(";
         SraiTag.addTraversed(pattern);
-        return getAIMLHandler(context).getAnswer(pattern, debugNode);
+        return getAIMLHandler(context).getAnswer(pattern, debugNode);*/
+        return null;
     }
 
 }
