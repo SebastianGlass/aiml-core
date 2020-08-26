@@ -23,7 +23,6 @@ public abstract class AbstractOptionsTag extends AbstractAIMLContentTag implemen
     };
 
     @XmlElementRef
-    @XmlMixed
     private List<LiTag> content;
 
     public List<LiTag> getContent()

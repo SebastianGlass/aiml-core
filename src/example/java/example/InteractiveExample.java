@@ -58,6 +58,7 @@ public class InteractiveExample
             {
                 System.out.print("Input: \t");
                 input = sc.nextLine();
+                handler.resetDepth();
                 String response = handler.getAnswer(input);
                 System.out.println("Result:\t" + response);
             }

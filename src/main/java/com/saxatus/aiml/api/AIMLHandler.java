@@ -33,4 +33,7 @@ public interface AIMLHandler
 
     List<String> getOutputHistory();
 
+    AIMLHandler increaseDepth();
+    void resetDepth();
+
 }

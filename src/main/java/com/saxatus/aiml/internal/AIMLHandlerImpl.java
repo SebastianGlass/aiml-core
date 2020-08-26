@@ -51,6 +51,8 @@ public class AIMLHandlerImpl implements AIMLHandler
 
     private final AIMLParserProvider aimlParserProvider;
 
+    private int depth = 0;
+
     @Inject
     public AIMLHandlerImpl(@Assisted List<AIML> aimls, @Assisted("non-static") Map<String, String> nonStaticMemory,
                     @Assisted("static") Map<String, String> botMemory, @Assisted File learnfile,
@@ -78,7 +80,8 @@ public class AIMLHandlerImpl implements AIMLHandler
         if (matcher.find())
         {
             return StringUtils.innerTrim(string.replaceAll(regex, " " + botMemory.get(matcher.group(1)
-                            .toLowerCase()).toUpperCase()));
+                            .toLowerCase())
+                            .toUpperCase()));
         }
         return string;
 
@@ -106,6 +109,10 @@ public class AIMLHandlerImpl implements AIMLHandler
     @Override
     public String getAnswer(String input, String real, AIMLParseNode node) throws AIMLNotFoundException
     {
+        if(this.depth >= 30)
+        {
+            return "To deep senpai uwu";
+        }
         AIML aiml = new AIMLResolver(aimlDict, nonStaticMemory).getAIML(input);
         if (aiml == null)
         {
@@ -181,6 +188,19 @@ public class AIMLHandlerImpl implements AIMLHandler
     public Map<String, String> getNonStaticMemory()
     {
         return nonStaticMemory;
+    }
+
+    @Override
+    public AIMLHandler increaseDepth()
+    {
+        this.depth++;
+        return this;
+    }
+
+    @Override
+    public void resetDepth()
+    {
+        this.depth = 0;
     }
 
 }
