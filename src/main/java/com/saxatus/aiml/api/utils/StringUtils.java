@@ -12,12 +12,14 @@ public class StringUtils
         {
             that = that.replaceAll(s, "");
         }
-        String trim = that.replace("  ", " ")
-                        .trim();
-
-        return trim.replace(" />", "/>");
+        return innerTrim(that).replace(" />", "/>");
     }
 
+    public static String innerTrim(String input)
+    {
+        return input.replace("  ", " ")
+                        .trim();
+    }
     public static String toRegex(String s)
     {
         return "^" + s.replace("?", "\\?")

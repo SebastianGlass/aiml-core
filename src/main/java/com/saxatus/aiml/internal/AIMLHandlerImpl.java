@@ -77,8 +77,8 @@ public class AIMLHandlerImpl implements AIMLHandler
 
         if (matcher.find())
         {
-            return string.replaceAll(regex, " " + botMemory.get(matcher.group(1)
-                            .toLowerCase()));
+            return StringUtils.innerTrim(string.replaceAll(regex, " " + botMemory.get(matcher.group(1)
+                            .toLowerCase()).toUpperCase()));
         }
         return string;
 
