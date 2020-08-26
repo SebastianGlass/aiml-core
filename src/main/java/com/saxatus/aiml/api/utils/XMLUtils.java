@@ -18,6 +18,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -33,6 +34,16 @@ public class XMLUtils
         documentFactory = DocumentBuilderFactory.newInstance();
         documentFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
         documentFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+    }
+
+    public static String parseXMLToString(NodeList nodeList) throws TransformerException
+    {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < nodeList.getLength(); i++)
+        {
+            sb.append(parseXMLToString(nodeList.item(i)));
+        }
+        return sb.toString();
     }
 
     public static String parseXMLToString(Node node) throws TransformerException

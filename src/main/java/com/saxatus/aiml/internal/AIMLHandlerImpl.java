@@ -97,7 +97,7 @@ public class AIMLHandlerImpl implements AIMLHandler
     {
         try
         {
-            Node rootNode = XMLUtils.parseStringToXMLNode(aiml.getTemplate(), "aiml");
+            Node rootNode = XMLUtils.parseStringToXMLNode(aiml.getTemplate(), "template");
             AIMLParser parser = aimlParserProvider.provideTemplateParser(aiml.getPattern(), input, real, this, node);
             return parser.parse(rootNode);
         }

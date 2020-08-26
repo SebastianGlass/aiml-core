@@ -24,6 +24,11 @@ public class GetTag extends AIMLContentNode implements LeafNode, NonStaticMemory
         this.memory = memory;
     }
 
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
     @Override
     public String getText()
     {

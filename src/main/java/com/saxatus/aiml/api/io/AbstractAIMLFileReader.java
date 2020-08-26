@@ -98,8 +98,8 @@ public abstract class AbstractAIMLFileReader implements AIMLProvider
         String template;
         try
         {
-            Node templateNode = eElement.getElementsByTagName("template")
-                            .item(0);
+            NodeList templateNode = eElement.getElementsByTagName("template")
+                            .item(0).getChildNodes();
             template = purify(XMLUtils.parseXMLToString(templateNode));
         }
         catch(TransformerException e)

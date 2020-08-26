@@ -16,7 +16,13 @@ public class BotTag extends AIMLContentNode implements LeafNode, StaticMemoryUsi
 
     @XmlAttribute(name = "name")
     private String name;
+
     private Map<String, String> memory;
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
 
     @Override
     public void setStaticMemory(Map<String, String> memory)

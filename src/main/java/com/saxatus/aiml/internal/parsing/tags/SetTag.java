@@ -22,6 +22,11 @@ public class SetTag extends AbstractContentEnclosingTag implements NonStaticMemo
         this.memory = memory;
     }
 
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
     @Override
     public String getWrappedText(String childContent)
     {
@@ -32,7 +37,7 @@ public class SetTag extends AbstractContentEnclosingTag implements NonStaticMemo
     @Override
     public String toString()
     {
-        return String.format("<set name=\"%s\"/>%s</set>", name, contentToString());
+        return String.format("<set name=\"%s\">%s</set>", name, contentToString());
     }
 
 }

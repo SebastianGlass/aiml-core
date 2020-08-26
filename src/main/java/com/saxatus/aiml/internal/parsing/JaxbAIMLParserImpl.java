@@ -25,8 +25,8 @@ import com.saxatus.aiml.api.parsing.tags.NonStaticMemoryUsingNode;
 import com.saxatus.aiml.api.parsing.tags.StarRequiringNode;
 import com.saxatus.aiml.api.parsing.tags.StaticMemoryUsingNode;
 import com.saxatus.aiml.api.utils.StringUtils;
-import com.saxatus.aiml.internal.parsing.tags.AIMLRootTag;
 import com.saxatus.aiml.internal.parsing.tags.SraiTag;
+import com.saxatus.aiml.internal.parsing.tags.TemplateTag;
 
 public class JaxbAIMLParserImpl implements AIMLParser
 {
@@ -67,10 +67,10 @@ public class JaxbAIMLParserImpl implements AIMLParser
     @Override
     public String parse(Node node)
     {
-        AIMLRootTag aiml;
+        TemplateTag aiml;
         try
         {
-            aiml = (AIMLRootTag)jaxbUnmarshaller.unmarshal(node);
+            aiml = (TemplateTag)jaxbUnmarshaller.unmarshal(node);
             log.info(aiml.toString());
             return parse(aiml);
         }

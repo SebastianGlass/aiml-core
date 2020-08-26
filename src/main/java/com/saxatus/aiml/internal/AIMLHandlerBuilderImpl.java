@@ -13,14 +13,11 @@ import com.saxatus.aiml.api.AIMLHandlerBuilder;
 import com.saxatus.aiml.api.io.AIMLCreationException;
 import com.saxatus.aiml.api.io.AIMLProvider;
 import com.saxatus.aiml.api.parsing.AIML;
-import com.saxatus.aiml.api.parsing.AIMLParser;
 import com.saxatus.aiml.api.provider.AIMLHandlerProvider;
-import com.saxatus.aiml.api.provider.AIMLParserProvider;
 
 public class AIMLHandlerBuilderImpl implements AIMLHandlerBuilder
 {
     private AIMLHandlerProvider aimlHandlerProvider;
-    private AIMLParserProvider aimlParserProvider;
 
     private AIMLProvider aimlProvider;
 
@@ -29,10 +26,9 @@ public class AIMLHandlerBuilderImpl implements AIMLHandlerBuilder
     private File learnFile = new File("./temp.aiml");
 
     @Inject
-    public AIMLHandlerBuilderImpl(AIMLHandlerProvider aimlHandlerProvider, AIMLParserProvider aimlParserProvider)
+    public AIMLHandlerBuilderImpl(AIMLHandlerProvider aimlHandlerProvider)
     {
         this.aimlHandlerProvider = aimlHandlerProvider;
-        this.aimlParserProvider = aimlParserProvider;
     }
 
     public AIMLHandlerBuilderImpl withLearnFile(File file)
@@ -72,8 +68,8 @@ public class AIMLHandlerBuilderImpl implements AIMLHandlerBuilder
     {
         public AIMLHandler build() throws AIMLCreationException
         {
-            AIMLParser aimlParser = aimlParserProvider.providePatternParser(botMemory);
-            List<AIML> aimls = aimlProvider.provide(aimlParser)
+          
+            List<AIML> aimls = aimlProvider.provide()
                             .stream()
                             .collect(Collectors.toList());
             return aimlHandlerProvider.provide(aimls, nonStaticMemory, botMemory, learnFile);
