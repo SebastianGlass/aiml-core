@@ -54,8 +54,7 @@ public abstract class AbstractAIMLFileReader implements AIMLProvider
         this.file = aimlFileReader.file;
     }
 
-    protected Collection<AIML> loadFromFile(File file)
-                    throws ParserConfigurationException, SAXException, IOException
+    protected Collection<AIML> loadFromFile(File file) throws ParserConfigurationException, SAXException, IOException
     {
         doc = XMLUtils.parseFileToXMLDocument(file);
         readingLine = 1;
@@ -92,14 +91,24 @@ public abstract class AbstractAIMLFileReader implements AIMLProvider
 
     private void addCategory(Element eElement, String topic, Collection<AIML> subList)
     {
-        String pattern = eElement.getElementsByTagName("pattern")
-                        .item(0).getTextContent();
+        String pattern;
+        try
+        {
+            pattern = XMLUtils.parseXMLToString(eElement.getElementsByTagName("pattern")
+                            .item(0).getChildNodes());
+        }
+        catch(TransformerException e1)
+        {
+            return;
+        }
+
         pattern = purify(pattern).toUpperCase();
         String template;
         try
         {
             NodeList templateNode = eElement.getElementsByTagName("template")
-                            .item(0).getChildNodes();
+                            .item(0)
+                            .getChildNodes();
             template = purify(XMLUtils.parseXMLToString(templateNode));
         }
         catch(TransformerException e)

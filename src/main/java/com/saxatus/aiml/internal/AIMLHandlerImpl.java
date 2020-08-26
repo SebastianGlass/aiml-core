@@ -57,7 +57,21 @@ public class AIMLHandlerImpl implements AIMLHandler
         this.outputs = new ArrayList<>();
         this.learnFile = learnfile;
 
+        // TODO: more elegant solution
         this.aimlDict = aimls.stream()
+                        .map(a -> {
+                            if (a.getPattern()
+                                            .contains("<BOT NAME=\"NAME\"/>"))
+                            {
+                                return new AIML(a.getPattern()
+                                                .replace("<BOT NAME=\"NAME\"/>", botMemory.get("name")),
+                                                a.getTemplate(), a.getThat(), a.getTopic(), a.getSource(), a.getLine());
+                            }
+                            else
+                            {
+                                return a;
+                            }
+                        })
                         .collect(Dictionary::new, (dict, aiml) -> dict.put(aiml.getPattern()
                                         .split(" ")[0], aiml), (dict, dict2) -> dict.putAll(dict2));
 
@@ -99,7 +113,8 @@ public class AIMLHandlerImpl implements AIMLHandler
         {
             Node rootNode = XMLUtils.parseStringToXMLNode(aiml.getTemplate(), "template");
             AIMLParser parser = aimlParserProvider.provideTemplateParser(aiml.getPattern(), input, real, this, node);
-            return parser.parse(rootNode).trim();
+            return parser.parse(rootNode)
+                            .trim();
         }
         catch(IOException | ParserConfigurationException | SAXException e)
         {

@@ -17,10 +17,11 @@ public class AIMLResolver
     private final Map<String, String> nonStaticMemory;
     private final Dictionary<String, AIML> list;
 
-    public AIMLResolver(Dictionary<String, AIML> alimList, Map<String, String> nonStaticMemory)
+    public AIMLResolver(Dictionary<String, AIML> aimlList, Map<String, String> nonStaticMemory)
     {
         this.nonStaticMemory = nonStaticMemory;
-        this.list = alimList;
+        this.list = aimlList;
+        
     }
 
     public AIML getAIML(String input)

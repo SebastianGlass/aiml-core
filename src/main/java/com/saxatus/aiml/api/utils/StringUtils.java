@@ -12,8 +12,10 @@ public class StringUtils
         {
             that = that.replaceAll(s, "");
         }
-        return that.replace("  ", " ")
+        String trim = that.replace("  ", " ")
                         .trim();
+
+        return trim.replace(" />", "/>");
     }
 
     public static String toRegex(String s)
