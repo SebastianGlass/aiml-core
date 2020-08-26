@@ -7,7 +7,7 @@ import com.saxatus.aiml.api.parsing.AIMLParseNode;
 import com.saxatus.aiml.api.parsing.AIMLParser;
 import com.saxatus.aiml.api.provider.AIMLParserProvider;
 import com.saxatus.aiml.api.provider.AIMLParsingSessionProvider;
-import com.saxatus.aiml.internal.parsing.JaxbAIMLParserImpl;
+import com.saxatus.aiml.internal.parsing.parser.JaxbAIMLParserImpl;
 
 public class AIMLParserProviderImpl implements AIMLParserProvider
 {

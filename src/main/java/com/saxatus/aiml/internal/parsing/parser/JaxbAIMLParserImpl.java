@@ -1,4 +1,4 @@
-package com.saxatus.aiml.internal.parsing;
+package com.saxatus.aiml.internal.parsing.parser;
 
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
