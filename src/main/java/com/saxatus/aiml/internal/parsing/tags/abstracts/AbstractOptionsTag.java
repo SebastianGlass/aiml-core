@@ -13,6 +13,15 @@ import com.saxatus.aiml.internal.parsing.tags.LiTag;
 public abstract class AbstractOptionsTag extends AbstractAIMLContentTag implements OptionEnclosingNode<LiTag>
 {
 
+    public static final LiTag FALLBACK_LITAG = new LiTag()
+    {
+        @Override
+        public String getWrappedText(String childContent)
+        {
+            return "";
+        }
+    };
+
     @XmlElementRef
     @XmlMixed
     private List<LiTag> content;

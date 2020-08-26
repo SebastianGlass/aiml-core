@@ -13,15 +13,7 @@ import com.saxatus.aiml.internal.parsing.tags.abstracts.AbstractOptionsTag;
 @XmlRootElement(name = "condition")
 public class ConditionTag extends AbstractOptionsTag implements NonStaticMemoryUsingNode, DecisionMakingNode
 {
-    static final LiTag FALLBACK_LITAG = new LiTag()
-    {
-
-        @Override
-        public String getWrappedText(String childContent)
-        {
-            return "";
-        }
-    };
+   
 
     @XmlAttribute(name = "name")
     private String name;

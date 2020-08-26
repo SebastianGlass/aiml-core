@@ -30,7 +30,7 @@ public class SetTag extends AbstractContentEnclosingTag implements NonStaticMemo
     @Override
     public String getWrappedText(String childContent)
     {
-        this.memory.put(name, childContent);
+        this.memory.put(name.toLowerCase(), childContent);
         return childContent;
     }
 

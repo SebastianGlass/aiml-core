@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 import javax.xml.parsers.ParserConfigurationException;
@@ -30,6 +32,10 @@ import com.saxatus.aiml.internal.parsing.AIMLResolver;
 
 public class AIMLHandlerImpl implements AIMLHandler
 {
+
+    private final static String regex = "<BOT NAME=\"(.*)\"\\/>";
+
+    private final static Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
 
     private static final Log log = LogFactory.getLog(AIMLHandlerImpl.class);
 
@@ -57,23 +63,24 @@ public class AIMLHandlerImpl implements AIMLHandler
         this.outputs = new ArrayList<>();
         this.learnFile = learnfile;
 
-        // TODO: more elegant solution
         this.aimlDict = aimls.stream()
-                        .map(a -> {
-                            if (a.getPattern()
-                                            .contains("<BOT NAME=\"NAME\"/>"))
-                            {
-                                return new AIML(a.getPattern()
-                                                .replace("<BOT NAME=\"NAME\"/>", botMemory.get("name")),
-                                                a.getTemplate(), a.getThat(), a.getTopic(), a.getSource(), a.getLine());
-                            }
-                            else
-                            {
-                                return a;
-                            }
-                        })
+                        .map(aiml -> aiml.withPattern(replaceBotTagsInPattern(aiml.getPattern(), botMemory)))
                         .collect(Dictionary::new, (dict, aiml) -> dict.put(aiml.getPattern()
                                         .split(" ")[0], aiml), (dict, dict2) -> dict.putAll(dict2));
+
+    }
+
+    static String replaceBotTagsInPattern(String string, Map<String, String> botMemory)
+    {
+
+        final Matcher matcher = pattern.matcher(string);
+
+        if (matcher.find())
+        {
+            return string.replaceAll(regex, " " + botMemory.get(matcher.group(1)
+                            .toLowerCase()));
+        }
+        return string;
 
     }
 

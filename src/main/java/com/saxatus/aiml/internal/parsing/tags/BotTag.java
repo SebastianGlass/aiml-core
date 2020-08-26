@@ -32,7 +32,7 @@ public class BotTag extends AbstractAIMLContentTag implements LeafNode, StaticMe
     @Override
     public String getText()
     {
-        return memory.getOrDefault(name, "Unknown");
+        return memory.getOrDefault(name.toLowerCase(), "Unknown");
     }
 
     @Override

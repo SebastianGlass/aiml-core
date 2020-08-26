@@ -31,7 +31,7 @@ public class GetTag extends AbstractAIMLContentTag implements LeafNode, NonStati
     @Override
     public String getText()
     {
-        return memory.getOrDefault(name, "Unknown");
+        return memory.getOrDefault(name.toLowerCase(), "Unknown");
     }
 
     @Override

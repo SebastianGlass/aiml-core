@@ -73,8 +73,7 @@ public class JaxbAIMLParserImpl implements AIMLParser
         try
         {
             aiml = (TemplateTag)jaxbUnmarshaller.unmarshal(node);
-            log.info(aiml.toString());
-            return parse(aiml);
+            return parse(aiml).trim();
         }
         catch(JAXBException e)
         {
@@ -87,7 +86,7 @@ public class JaxbAIMLParserImpl implements AIMLParser
 
     private String parse(String s)
     {
-        return s;
+        return s.trim();
     }
 
     private String parse(LeafNode s)
