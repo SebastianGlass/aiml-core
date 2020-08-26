@@ -18,15 +18,17 @@ import org.w3c.dom.Node;
 
 import com.saxatus.aiml.api.AIMLHandler;
 import com.saxatus.aiml.api.parsing.AIMLParser;
-import com.saxatus.aiml.api.parsing.tags.AIMLContentNode;
 import com.saxatus.aiml.api.parsing.tags.ContentEnclosingNode;
+import com.saxatus.aiml.api.parsing.tags.DecisionMakingNode;
 import com.saxatus.aiml.api.parsing.tags.LeafNode;
+import com.saxatus.aiml.api.parsing.tags.LiNode;
 import com.saxatus.aiml.api.parsing.tags.NonStaticMemoryUsingNode;
 import com.saxatus.aiml.api.parsing.tags.StarRequiringNode;
 import com.saxatus.aiml.api.parsing.tags.StaticMemoryUsingNode;
 import com.saxatus.aiml.api.utils.StringUtils;
 import com.saxatus.aiml.internal.parsing.tags.SraiTag;
 import com.saxatus.aiml.internal.parsing.tags.TemplateTag;
+import com.saxatus.aiml.internal.parsing.tags.abstracts.AbstractAIMLContentTag;
 
 public class JaxbAIMLParserImpl implements AIMLParser
 {
@@ -47,10 +49,10 @@ public class JaxbAIMLParserImpl implements AIMLParser
         this.handler = handler;
 
         Reflections reflections = new Reflections("com.saxatus");
-        List<Class<? extends AIMLContentNode>> classes = reflections.getSubTypesOf(AIMLContentNode.class)
+        List<Class<? extends AbstractAIMLContentTag>> classes = reflections.getSubTypesOf(AbstractAIMLContentTag.class)
                         .stream()
                         .filter(clazz -> !Modifier.isAbstract(clazz.getModifiers())
-                                        && AIMLContentNode.class.isAssignableFrom(clazz))
+                                        && AbstractAIMLContentTag.class.isAssignableFrom(clazz))
                         .collect(Collectors.toList());
         try
         {
@@ -93,7 +95,15 @@ public class JaxbAIMLParserImpl implements AIMLParser
         return s.getText();
     }
 
-    private String parse(ContentEnclosingNode s)
+    private String parse(DecisionMakingNode s)
+    {
+        LiNode node = s.getDecision();
+        String childContent = this.parse(node);
+
+        return s.getWrappedText(childContent);
+    }
+
+    private String parse(ContentEnclosingNode<?> s)
     {
         if (s.getContent() != null)
         {
@@ -126,7 +136,7 @@ public class JaxbAIMLParserImpl implements AIMLParser
 
         if (s instanceof SraiTag)
         {
-            String childContent = parse((ContentEnclosingNode)s).trim()
+            String childContent = parse((ContentEnclosingNode<?>)s).trim()
                             .toUpperCase();
 
             return handler.getAnswer(childContent);
@@ -135,9 +145,13 @@ public class JaxbAIMLParserImpl implements AIMLParser
         {
             return parse((String)s).trim();
         }
-        else if (s instanceof ContentEnclosingNode)
+        else if (s instanceof ContentEnclosingNode<?>)
         {
-            return parse((ContentEnclosingNode)s).trim();
+            return parse((ContentEnclosingNode<?>)s).trim();
+        }
+        else if (s instanceof DecisionMakingNode)
+        {
+            return parse((DecisionMakingNode)s).trim();
         }
         else if (s instanceof LeafNode)
         {

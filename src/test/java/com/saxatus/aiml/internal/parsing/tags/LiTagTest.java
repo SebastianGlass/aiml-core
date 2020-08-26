@@ -13,15 +13,16 @@ import org.junit.jupiter.api.Test;
 import com.saxatus.aiml.api.parsing.tags.ContentEnclosingNode;
 import com.saxatus.aiml.internal.parsing.tags.abstracts.AbstractAIMLContentTag;
 
-class TemplateTagTest
+class LiTagTest
 {
 
-    TemplateTag tag;
+    LiTag tag;
 
     @BeforeEach
     void setup()
     {
-        tag = new TemplateTag();
+        tag = new LiTag();
+        
     }
     
     @Test
@@ -40,7 +41,7 @@ class TemplateTagTest
     @Test
     void testToString()
     {
-        assertEquals("<template></template>", tag.toString());
+        assertEquals("<li></li>", tag.toString());
     }
 
     @Test
@@ -49,7 +50,31 @@ class TemplateTagTest
         AbstractAIMLContentTag node = mock(AbstractAIMLContentTag.class);
         when(node.toString()).thenReturn("content");
         tag.setContent(Collections.singletonList(node));
-        assertEquals("<template>content</template>", tag.toString());
+        assertEquals("<li>content</li>", tag.toString());
+    }
+    
+    @Test
+    void testToStringWithValue()
+    {
+        tag.setValue("val");
+        assertEquals("<li value=\"val\"></li>", tag.toString());
+    }
+    
+    @Test
+    void testGetValue()
+    {
+        tag.setValue("val");
+        assertEquals("val",tag.getValue());
+    }
+
+    @Test
+    void testToStringWithContentWithValue()
+    {
+        tag.setValue("val");
+        AbstractAIMLContentTag node = mock(AbstractAIMLContentTag.class);
+        when(node.toString()).thenReturn("content");
+        tag.setContent(Collections.singletonList(node));
+        assertEquals("<li value=\"val\">content</li>", tag.toString());
     }
 
 }

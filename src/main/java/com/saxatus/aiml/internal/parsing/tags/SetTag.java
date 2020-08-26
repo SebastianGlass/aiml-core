@@ -6,11 +6,11 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.saxatus.aiml.api.parsing.tags.NonStaticMemoryUsingNode;
+import com.saxatus.aiml.internal.parsing.tags.abstracts.AbstractContentEnclosingTag;
 
 @XmlRootElement(name = "set")
 public class SetTag extends AbstractContentEnclosingTag implements NonStaticMemoryUsingNode
 {
-    private static final long serialVersionUID = -5936529124810587625L;
 
     @XmlAttribute(name = "name")
     private String name;

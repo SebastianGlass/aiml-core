@@ -5,14 +5,13 @@ import java.util.Map;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.saxatus.aiml.api.parsing.tags.AIMLContentNode;
 import com.saxatus.aiml.api.parsing.tags.LeafNode;
 import com.saxatus.aiml.api.parsing.tags.NonStaticMemoryUsingNode;
+import com.saxatus.aiml.internal.parsing.tags.abstracts.AbstractAIMLContentTag;
 
 @XmlRootElement(name = "get")
-public class GetTag extends AIMLContentNode implements LeafNode, NonStaticMemoryUsingNode
+public class GetTag extends AbstractAIMLContentTag implements LeafNode, NonStaticMemoryUsingNode
 {
-    private static final long serialVersionUID = -9177243850221155782L;
 
     @XmlAttribute(name = "name")
     private String name;

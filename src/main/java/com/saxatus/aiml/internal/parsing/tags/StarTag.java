@@ -5,14 +5,13 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.saxatus.aiml.api.parsing.tags.AIMLContentNode;
 import com.saxatus.aiml.api.parsing.tags.LeafNode;
 import com.saxatus.aiml.api.parsing.tags.StarRequiringNode;
+import com.saxatus.aiml.internal.parsing.tags.abstracts.AbstractAIMLContentTag;
 
 @XmlRootElement(name = "star")
-public class StarTag extends AIMLContentNode implements LeafNode, StarRequiringNode
+public class StarTag extends AbstractAIMLContentTag implements LeafNode, StarRequiringNode
 {
-    private static final long serialVersionUID = 8946690111917249297L;
 
     @XmlAttribute(name = "index")
     private int index = 1;

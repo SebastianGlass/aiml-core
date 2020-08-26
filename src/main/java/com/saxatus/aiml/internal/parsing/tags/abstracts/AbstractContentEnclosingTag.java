@@ -1,4 +1,4 @@
-package com.saxatus.aiml.internal.parsing.tags;
+package com.saxatus.aiml.internal.parsing.tags.abstracts;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,25 +7,24 @@ import java.util.stream.Collectors;
 import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlMixed;
 
-import com.saxatus.aiml.api.parsing.tags.AIMLContentNode;
 import com.saxatus.aiml.api.parsing.tags.ContentEnclosingNode;
 
-public abstract class AbstractContentEnclosingTag extends AIMLContentNode implements ContentEnclosingNode
+public abstract class AbstractContentEnclosingTag extends AbstractAIMLContentTag
+                implements ContentEnclosingNode<AbstractAIMLContentTag>
 {
-    private static final long serialVersionUID = 6997878431517691832L;
 
     @XmlElementRef
     @XmlMixed
-    private List<AIMLContentNode> content;
+    private List<AbstractAIMLContentTag> content;
 
     @Override
-    public List<AIMLContentNode> getContent()
+    public List<AbstractAIMLContentTag> getContent()
     {
         return content;
     }
 
     @Override
-    public void setContent(List<AIMLContentNode> content)
+    public void setContent(List<AbstractAIMLContentTag> content)
     {
         this.content = content;
     }

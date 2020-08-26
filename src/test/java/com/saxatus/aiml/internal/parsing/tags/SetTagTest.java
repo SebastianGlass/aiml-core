@@ -12,9 +12,9 @@ import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.saxatus.aiml.api.parsing.tags.AIMLContentNode;
 import com.saxatus.aiml.api.parsing.tags.ContentEnclosingNode;
 import com.saxatus.aiml.api.parsing.tags.NonStaticMemoryUsingNode;
+import com.saxatus.aiml.internal.parsing.tags.abstracts.AbstractAIMLContentTag;
 
 class SetTagTest
 {
@@ -34,7 +34,7 @@ class SetTagTest
     @Test
     void testInterfaces()
     {
-        assertTrue(tag instanceof AIMLContentNode);
+        assertTrue(tag instanceof AbstractAIMLContentTag);
         assertTrue(tag instanceof ContentEnclosingNode);
         assertTrue(tag instanceof NonStaticMemoryUsingNode);
     }
@@ -57,7 +57,7 @@ class SetTagTest
     @Test
     void testToStringWithContent()
     {
-        AIMLContentNode node = mock(AIMLContentNode.class);
+        AbstractAIMLContentTag node = mock(AbstractAIMLContentTag.class);
         when(node.toString()).thenReturn("content");
         tag.setContent(Collections.singletonList(node));
         assertEquals("<set name=\"foo\">content</set>", tag.toString());

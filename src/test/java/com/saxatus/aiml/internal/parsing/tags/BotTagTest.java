@@ -9,9 +9,9 @@ import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.saxatus.aiml.api.parsing.tags.AIMLContentNode;
 import com.saxatus.aiml.api.parsing.tags.LeafNode;
 import com.saxatus.aiml.api.parsing.tags.StaticMemoryUsingNode;
+import com.saxatus.aiml.internal.parsing.tags.abstracts.AbstractAIMLContentTag;
 
 class BotTagTest
 {
@@ -31,7 +31,7 @@ class BotTagTest
     @Test
     void testInterfaces()
     {
-        assertTrue(tag instanceof AIMLContentNode);
+        assertTrue(tag instanceof AbstractAIMLContentTag);
         assertTrue(tag instanceof LeafNode);
         assertTrue(tag instanceof StaticMemoryUsingNode);
     }

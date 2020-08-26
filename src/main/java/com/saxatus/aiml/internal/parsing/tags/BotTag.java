@@ -5,14 +5,13 @@ import java.util.Map;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.saxatus.aiml.api.parsing.tags.AIMLContentNode;
 import com.saxatus.aiml.api.parsing.tags.LeafNode;
 import com.saxatus.aiml.api.parsing.tags.StaticMemoryUsingNode;
+import com.saxatus.aiml.internal.parsing.tags.abstracts.AbstractAIMLContentTag;
 
 @XmlRootElement(name = "bot")
-public class BotTag extends AIMLContentNode implements LeafNode, StaticMemoryUsingNode
+public class BotTag extends AbstractAIMLContentTag implements LeafNode, StaticMemoryUsingNode
 {
-    private static final long serialVersionUID = -9133149714765429183L;
 
     @XmlAttribute(name = "name")
     private String name;

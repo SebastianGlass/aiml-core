@@ -2,7 +2,7 @@ package com.saxatus.aiml.api.parsing.tags;
 
 import java.util.List;
 
-public interface ContentEnclosingNode<T extends AIMLContentNode> 
+public interface OptionEnclosingNode<T extends LiNode>
 {
 
     List<T> getContent();

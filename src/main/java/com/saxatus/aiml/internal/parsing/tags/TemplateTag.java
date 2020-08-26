@@ -2,10 +2,11 @@ package com.saxatus.aiml.internal.parsing.tags;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.saxatus.aiml.internal.parsing.tags.abstracts.AbstractContentEnclosingTag;
+
 @XmlRootElement(name = "template")
 public class TemplateTag extends AbstractContentEnclosingTag
 {
-    private static final long serialVersionUID = -8562727905947839855L;
 
     /**
      * The {@code <template>} tag is only the entrypoint for AIML parsing. There is no specific logic behind this tag.

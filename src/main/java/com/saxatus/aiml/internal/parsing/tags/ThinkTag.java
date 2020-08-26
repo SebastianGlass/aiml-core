@@ -2,10 +2,11 @@ package com.saxatus.aiml.internal.parsing.tags;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.saxatus.aiml.internal.parsing.tags.abstracts.AbstractContentEnclosingTag;
+
 @XmlRootElement(name = "think")
 public class ThinkTag extends AbstractContentEnclosingTag
 {
-    private static final long serialVersionUID = 1844041133983012597L;
 
     /**
      * The {@code <think>} tag hides the results of its body.

@@ -10,8 +10,8 @@ import java.util.Collections;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.saxatus.aiml.api.parsing.tags.AIMLContentNode;
 import com.saxatus.aiml.api.parsing.tags.ContentEnclosingNode;
+import com.saxatus.aiml.internal.parsing.tags.abstracts.AbstractAIMLContentTag;
 
 class ThinkTagTest
 {
@@ -27,7 +27,7 @@ class ThinkTagTest
     @Test
     void testInterfaces()
     {
-        assertTrue(tag instanceof AIMLContentNode);
+        assertTrue(tag instanceof AbstractAIMLContentTag);
         assertTrue(tag instanceof ContentEnclosingNode);
     }
 
@@ -46,7 +46,7 @@ class ThinkTagTest
     @Test
     void testToStringWithContent()
     {
-        AIMLContentNode node = mock(AIMLContentNode.class);
+        AbstractAIMLContentTag node = mock(AbstractAIMLContentTag.class);
         when(node.toString()).thenReturn("content");
         tag.setContent(Collections.singletonList(node));
         assertEquals("<think>content</think>", tag.toString());

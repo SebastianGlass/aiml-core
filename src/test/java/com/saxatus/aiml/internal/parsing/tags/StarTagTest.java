@@ -8,9 +8,9 @@ import java.util.Arrays;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.saxatus.aiml.api.parsing.tags.AIMLContentNode;
 import com.saxatus.aiml.api.parsing.tags.LeafNode;
 import com.saxatus.aiml.api.parsing.tags.StarRequiringNode;
+import com.saxatus.aiml.internal.parsing.tags.abstracts.AbstractAIMLContentTag;
 
 class StarTagTest
 {
@@ -26,7 +26,7 @@ class StarTagTest
     @Test
     void testInterfaces()
     {
-        assertTrue(tag instanceof AIMLContentNode);
+        assertTrue(tag instanceof AbstractAIMLContentTag);
         assertTrue(tag instanceof LeafNode);
         assertTrue(tag instanceof StarRequiringNode);
     }
