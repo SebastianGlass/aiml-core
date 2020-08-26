@@ -14,7 +14,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 import com.saxatus.aiml.api.parsing.AIML;
-import com.saxatus.aiml.api.parsing.AIMLParser;
 
 public class AIMLDirectoryReader extends AbstractAIMLFileReader
 {
@@ -33,23 +32,23 @@ public class AIMLDirectoryReader extends AbstractAIMLFileReader
     }
 
     @Override
-    public Collection<AIML> provide(AIMLParser aimlParser) throws AIMLCreationException
+    public Collection<AIML> provide() throws AIMLCreationException
     {
         if (!this.file.isDirectory())
         {
             throw new AIMLCreationException("Can't read file " + file.getAbsolutePath());
         }
-        return getFilesRecursive(this.file, isAIMLFile).map(file -> loadFromFileOrDoNothing(file, aimlParser))
+        return getFilesRecursive(this.file, isAIMLFile).map(file -> loadFromFileOrDoNothing(file))
                         .flatMap(Collection::stream)
                         .collect(Collectors.toList());
 
     }
 
-    private Collection<AIML> loadFromFileOrDoNothing(File t, AIMLParser aimlParser)
+    private Collection<AIML> loadFromFileOrDoNothing(File t)
     {
         try
         {
-            return loadFromFile(t, aimlParser);
+            return loadFromFile(t);
         }
         catch(ParserConfigurationException | SAXException | IOException e)
         {

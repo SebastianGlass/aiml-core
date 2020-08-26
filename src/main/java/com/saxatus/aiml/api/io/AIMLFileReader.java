@@ -9,7 +9,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 import com.saxatus.aiml.api.parsing.AIML;
-import com.saxatus.aiml.api.parsing.AIMLParser;
 
 public class AIMLFileReader extends AbstractAIMLFileReader
 {
@@ -25,7 +24,7 @@ public class AIMLFileReader extends AbstractAIMLFileReader
     }
 
     @Override
-    public Collection<AIML> provide(AIMLParser aimlParser) throws AIMLCreationException
+    public Collection<AIML> provide() throws AIMLCreationException
     {
         if (!this.file.isFile() || !this.file.canRead())
         {
@@ -33,7 +32,7 @@ public class AIMLFileReader extends AbstractAIMLFileReader
         }
         try
         {
-            return loadFromFile(this.file, aimlParser);
+            return loadFromFile(this.file);
         }
         catch(ParserConfigurationException | SAXException | IOException e)
         {

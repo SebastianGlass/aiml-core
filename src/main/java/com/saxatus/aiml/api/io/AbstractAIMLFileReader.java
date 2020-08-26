@@ -17,7 +17,6 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import com.saxatus.aiml.api.parsing.AIML;
-import com.saxatus.aiml.api.parsing.AIMLParser;
 import com.saxatus.aiml.api.utils.XMLUtils;
 
 public abstract class AbstractAIMLFileReader implements AIMLProvider
@@ -55,7 +54,7 @@ public abstract class AbstractAIMLFileReader implements AIMLProvider
         this.file = aimlFileReader.file;
     }
 
-    protected Collection<AIML> loadFromFile(File file, AIMLParser aimlParser)
+    protected Collection<AIML> loadFromFile(File file)
                     throws ParserConfigurationException, SAXException, IOException
     {
         doc = XMLUtils.parseFileToXMLDocument(file);
@@ -76,26 +75,25 @@ public abstract class AbstractAIMLFileReader implements AIMLProvider
             String nodeName = nNode.getNodeName();
             if ("category".equals(nodeName))
             {
-                addCategory((Element)nNode, dict, aimlParser);
+                addCategory((Element)nNode, dict);
             }
             else if ("topic".equals(nodeName))
             {
-                handleTopicTag(dict, nNode, aimlParser);
+                handleTopicTag(dict, nNode);
             }
         }
         return dict;
     }
 
-    private void addCategory(Element eElement, Collection<AIML> subList, AIMLParser aimlParser)
+    private void addCategory(Element eElement, Collection<AIML> subList)
     {
-        addCategory(eElement, null, subList, aimlParser);
+        addCategory(eElement, null, subList);
     }
 
-    private void addCategory(Element eElement, String topic, Collection<AIML> subList, AIMLParser aimlParser)
+    private void addCategory(Element eElement, String topic, Collection<AIML> subList)
     {
-        Node patternNode = eElement.getElementsByTagName("pattern")
-                        .item(0);
-        String pattern = aimlParser.parse(patternNode);
+        String pattern = eElement.getElementsByTagName("pattern")
+                        .item(0).getTextContent();
         pattern = purify(pattern).toUpperCase();
         String template;
         try
@@ -129,7 +127,7 @@ public abstract class AbstractAIMLFileReader implements AIMLProvider
         subList.add(aiml);
     }
 
-    private void handleTopicTag(Collection<AIML> dict, Node nNode, AIMLParser aimlParser)
+    private void handleTopicTag(Collection<AIML> dict, Node nNode)
     {
         NodeList sub = nNode.getChildNodes();
         for (int i = 0; i < sub.getLength(); i++)
@@ -140,7 +138,7 @@ public abstract class AbstractAIMLFileReader implements AIMLProvider
                 String topic = nNode.getAttributes()
                                 .item(0)
                                 .getNodeValue();
-                addCategory((Element)sNode, topic, dict, aimlParser);
+                addCategory((Element)sNode, topic, dict);
             }
         }
     }
