@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.TreeSet;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -58,7 +59,7 @@ public abstract class AbstractAIMLFileReader implements AIMLProvider
     {
         doc = XMLUtils.parseFileToXMLDocument(file);
         readingLine = 1;
-        Collection<AIML> dict = new HashSet<>();
+        Collection<AIML> dict = new TreeSet<>();
 
         NodeList nodeList = doc.getElementsByTagName("aiml")
                         .item(0)
@@ -74,22 +75,23 @@ public abstract class AbstractAIMLFileReader implements AIMLProvider
             String nodeName = nNode.getNodeName();
             if ("category".equals(nodeName))
             {
-                addCategory((Element)nNode, dict);
+                addCategory((Element)nNode, dict, file);
             }
             else if ("topic".equals(nodeName))
             {
-                handleTopicTag(dict, nNode);
+                handleTopicTag(dict, nNode, file);
             }
         }
+        System.out.println("Loading from file " + file.getAbsolutePath() + ": " + dict.size());
         return dict;
     }
 
-    private void addCategory(Element eElement, Collection<AIML> subList)
+    private void addCategory(Element eElement, Collection<AIML> subList, File f)
     {
-        addCategory(eElement, null, subList);
+        addCategory(eElement, null, subList, f);
     }
 
-    private void addCategory(Element eElement, String topic, Collection<AIML> subList)
+    private void addCategory(Element eElement, String topic, Collection<AIML> subList, File f)
     {
         String pattern;
         try
@@ -133,11 +135,11 @@ public abstract class AbstractAIMLFileReader implements AIMLProvider
             }
 
         }
-        AIML aiml = new AIML(pattern, template, that, topic, fileName, readingLine++);
+        AIML aiml = new AIML(pattern, template, that, topic, f.getAbsolutePath(), readingLine++);
         subList.add(aiml);
     }
 
-    private void handleTopicTag(Collection<AIML> dict, Node nNode)
+    private void handleTopicTag(Collection<AIML> dict, Node nNode, File f)
     {
         NodeList sub = nNode.getChildNodes();
         for (int i = 0; i < sub.getLength(); i++)
@@ -148,7 +150,7 @@ public abstract class AbstractAIMLFileReader implements AIMLProvider
                 String topic = nNode.getAttributes()
                                 .item(0)
                                 .getNodeValue();
-                addCategory((Element)sNode, topic, dict);
+                addCategory((Element)sNode, topic, dict, f);
             }
         }
     }

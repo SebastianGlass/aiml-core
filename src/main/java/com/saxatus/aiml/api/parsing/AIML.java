@@ -96,7 +96,7 @@ public class AIML implements Serializable, Comparable<AIML>
 
     public boolean hasMatchingTopic(String topic)
     {
-        if (topic.equalsIgnoreCase("Unknown") && getTopic() == null)
+        if (topic.equalsIgnoreCase("unknown") && getTopic() == null)
             return true;
 
         return getTopic() != null && topic.equalsIgnoreCase(getTopic());
@@ -105,9 +105,10 @@ public class AIML implements Serializable, Comparable<AIML>
 
     public boolean hasMatchingThat(String that)
     {
-        if (that == null && getThat() == null)
+        if (that.equalsIgnoreCase("unknown") && getThat() == null)
             return true;
-        if (that != null && getThat() != null)
+
+        if (!that.equalsIgnoreCase("unknown") && getThat() != null)
         {
             String regex = StringUtils.toRegex(getThat());
             that = StringUtils.clearString(that);

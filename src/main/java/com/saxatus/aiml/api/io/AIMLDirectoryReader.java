@@ -38,7 +38,7 @@ public class AIMLDirectoryReader extends AbstractAIMLFileReader
         {
             throw new AIMLCreationException("Can't read file " + file.getAbsolutePath());
         }
-        return getFilesRecursive(this.file, isAIMLFile).map(file -> loadFromFileOrDoNothing(file))
+        return getFilesRecursive(this.file, isAIMLFile).map(this::loadFromFileOrDoNothing)
                         .flatMap(Collection::stream)
                         .collect(Collectors.toList());
 

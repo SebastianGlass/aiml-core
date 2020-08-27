@@ -113,6 +113,7 @@ public class AIMLHandlerImpl implements AIMLHandler
             return "To deep senpai uwu";
         }
         AIML aiml = new AIMLResolver(aimlDict, nonStaticMemory).getAIML(input);
+        log.info(aiml);
         if (aiml == null)
         {
             throw new AIMLNotFoundException(input);

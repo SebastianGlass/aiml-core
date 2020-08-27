@@ -37,9 +37,9 @@ public class AIMLResolver
         for (Set<AIML> set : aimlSubLists)
         {
             AIML currentAIML = getAIML(input, topic, that, set);
-            currentAIML = (currentAIML != null) ? currentAIML : getAIML(input, topic, null, set);
-            currentAIML = (currentAIML != null) ? currentAIML : getAIML(input, null, that, set);
-            currentAIML = (currentAIML != null) ? currentAIML : getAIML(input, null, null, set);
+            currentAIML = (currentAIML != null) ? currentAIML : getAIML(input, topic, "unknown", set);
+            currentAIML = (currentAIML != null) ? currentAIML : getAIML(input, "unknown", that, set);
+            currentAIML = (currentAIML != null) ? currentAIML : getAIML(input, "unknown", "unknown", set);
             if (currentAIML != null)
                 return currentAIML;
         }
@@ -52,7 +52,7 @@ public class AIMLResolver
             return null;
         for (AIML aiml : list)
         {
-            if (!hasMatchingTopic(topic, aiml) || !aiml.hasMatchingThat(that))
+            if (!aiml.hasMatchingTopic(topic) || !aiml.hasMatchingThat(that))
             {
                 continue;
             }
@@ -70,15 +70,6 @@ public class AIMLResolver
         String regex = StringUtils.toRegex(aiml.getPattern());
         Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
         return p.matcher(input);
-    }
-
-    private boolean hasMatchingTopic(String topic, AIML aiml)
-    {
-        if (topic == null && aiml.getTopic() == null)
-        {
-            return true;
-        }
-        return (topic != null) && topic.equalsIgnoreCase(aiml.getTopic());
     }
 
 }

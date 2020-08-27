@@ -12,13 +12,17 @@ import com.saxatus.aiml.api.utils.StringUtils;
 
 public class AIMLComparator implements Comparator<AIML>
 {
-    private static final String STAR_REPLACEMENT = "\u1d11e"; // Needs to be a char behind all letters and numbers
+    // Needs to be a char behind all letters and numbers
+    private static final String STAR_REPLACEMENT = "\u1d11e";
+
+    // Needs to be a char before all letters and numbers
+    private static final String UNDERSCORE_REPLACEMENT = "\u0001";
 
     private static final Log log = LogFactory.getLog(AIMLComparator.class);
 
     private static List<BiFunction<AIML, AIML, Integer>> filterChain = Arrays.asList(AIMLComparator::compareTopic,
-                    AIMLComparator::compareThat, AIMLComparator::comparePatternEnding,
-                    AIMLComparator::comparePatternRegex, AIMLComparator::compareLearnedState);
+                    AIMLComparator::compareThat, AIMLComparator::comparePatternRegex,
+                    AIMLComparator::comparePatternEnding, AIMLComparator::compareLearnedState);
 
     @Override
     public int compare(AIML aiml1, AIML aiml2)
@@ -33,7 +37,7 @@ public class AIMLComparator implements Comparator<AIML>
                         .filter(r -> r != 0)
                         .findFirst()
                         .orElseGet(() -> {
-                            log.warn("Duplicated AIML Signature: " + aiml1 + "," + aiml2);
+                            log.warn("Duplicated AIML Signature: \n\t" + aiml1 + ",\n\t" + aiml2);
                             return aiml2.getLine() - aiml1.getLine();
                         });
 
@@ -51,7 +55,8 @@ public class AIMLComparator implements Comparator<AIML>
     private static String getPatternWithReplacement(AIML a)
     {
         return a.getPattern()
-                        .replace("*", STAR_REPLACEMENT) + STAR_REPLACEMENT;
+                        .replace("*", STAR_REPLACEMENT)
+                        .replace("_", UNDERSCORE_REPLACEMENT) + STAR_REPLACEMENT;
     }
 
     private static int comparePatternRegex(AIML aiml1, AIML aiml2)

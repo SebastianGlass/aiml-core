@@ -19,6 +19,7 @@ import org.w3c.dom.Node;
 import com.saxatus.aiml.api.AIMLHandler;
 import com.saxatus.aiml.api.parsing.AIMLParser;
 import com.saxatus.aiml.api.parsing.tags.ContentEnclosingNode;
+import com.saxatus.aiml.api.parsing.tags.ContentNeedsOwnRequestNode;
 import com.saxatus.aiml.api.parsing.tags.DecisionMakingNode;
 import com.saxatus.aiml.api.parsing.tags.LeafNode;
 import com.saxatus.aiml.api.parsing.tags.LiNode;
@@ -26,7 +27,6 @@ import com.saxatus.aiml.api.parsing.tags.NonStaticMemoryUsingNode;
 import com.saxatus.aiml.api.parsing.tags.StarRequiringNode;
 import com.saxatus.aiml.api.parsing.tags.StaticMemoryUsingNode;
 import com.saxatus.aiml.api.utils.StringUtils;
-import com.saxatus.aiml.internal.parsing.tags.SraiTag;
 import com.saxatus.aiml.internal.parsing.tags.TemplateTag;
 import com.saxatus.aiml.internal.parsing.tags.abstracts.AbstractAIMLContentTag;
 
@@ -133,11 +133,24 @@ public class JaxbAIMLParserImpl implements AIMLParser
             ((NonStaticMemoryUsingNode)s).setNonStaticMemory(handler.getNonStaticMemory());
         }
 
-        if (s instanceof SraiTag)
+        if (s instanceof ContentNeedsOwnRequestNode)
         {
-            String childContent = parse((ContentEnclosingNode<?>)s).trim()
-                            .toUpperCase();
+            String childContent;
+            if (s instanceof ContentEnclosingNode<?>)
+            {
+                childContent = parse((ContentEnclosingNode<?>)s).trim()
+                                .toUpperCase();
+            }
+            else if (s instanceof LeafNode)
+            {
+                childContent = parse((LeafNode)s).trim()
+                                .toUpperCase();
+            }
+            else
+            {
+                childContent = "RANDOM PICKUP LINE";
 
+            }
             return handler.increaseDepth()
                             .getAnswer(childContent);
         }
