@@ -11,8 +11,6 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.reflections.Reflections;
 import org.w3c.dom.Node;
 
@@ -33,19 +31,15 @@ import com.saxatus.aiml.internal.parsing.tags.abstracts.AbstractAIMLContentTag;
 public class JaxbAIMLParserImpl implements AIMLParser
 {
 
-    private static final Log log = LogFactory.getLog(JaxbAIMLParserImpl.class);
-
     private Unmarshaller jaxbUnmarshaller;
     private String pattern;
     private String request;
-    private String real;
     private AIMLHandler handler;
 
-    public JaxbAIMLParserImpl(String pattern, String request, String real, AIMLHandler handler)
+    public JaxbAIMLParserImpl(String pattern, String request, AIMLHandler handler)
     {
         this.pattern = pattern;
         this.request = request;
-        this.real = real;
         this.handler = handler;
 
         Reflections reflections = new Reflections("com.saxatus");
@@ -77,7 +71,6 @@ public class JaxbAIMLParserImpl implements AIMLParser
         }
         catch(JAXBException e)
         {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return null;

@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.xml.bind.annotation.XmlElementRef;
-import javax.xml.bind.annotation.XmlMixed;
 
 import com.saxatus.aiml.api.parsing.tags.OptionEnclosingNode;
 import com.saxatus.aiml.internal.parsing.tags.LiTag;

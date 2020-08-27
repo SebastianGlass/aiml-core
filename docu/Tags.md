@@ -15,15 +15,17 @@
  - <sentence>
  - <sraix>
  
-## needed
+## Learn support
+ - <learn>
+ - <request>
+ - <eval>
+ - <input>
+
+## needed 
 
  - <person>
- - <request>
  - <response>
- - <eval>
- - <learn>
  - <size>	
  - <thatstar>
  - <topicstar>
- - <input>
  

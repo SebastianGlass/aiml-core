@@ -11,7 +11,7 @@ public class AIMLParserProviderImpl implements AIMLParserProvider
     @Override
     public AIMLParser provideTemplateParser(String pattern, String input, String real, AIMLHandler aimlHandler)
     {
-        return new JaxbAIMLParserImpl(pattern, input, real, aimlHandler);
+        return new JaxbAIMLParserImpl(pattern, input, aimlHandler);
 
     }
 }

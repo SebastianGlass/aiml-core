@@ -3,7 +3,6 @@ package com.saxatus.aiml.api.io;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.TreeSet;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -82,7 +81,6 @@ public abstract class AbstractAIMLFileReader implements AIMLProvider
                 handleTopicTag(dict, nNode, file);
             }
         }
-        System.out.println("Loading from file " + file.getAbsolutePath() + ": " + dict.size());
         return dict;
     }
 
