@@ -1,21 +1,21 @@
 package com.saxatus.aiml.internal.parsing.parser;
 
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
+import javax.inject.Inject;
 
-import org.reflections.Reflections;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Node;
 
+import com.google.inject.assistedinject.Assisted;
 import com.saxatus.aiml.api.AIMLHandler;
 import com.saxatus.aiml.api.parsing.AIMLParser;
+import com.saxatus.aiml.api.parsing.parser.AIMLTransformException;
 import com.saxatus.aiml.api.parsing.tags.ContentEnclosingNode;
 import com.saxatus.aiml.api.parsing.tags.ContentNeedsOwnRequestNode;
 import com.saxatus.aiml.api.parsing.tags.DecisionMakingNode;
@@ -26,52 +26,39 @@ import com.saxatus.aiml.api.parsing.tags.StarRequiringNode;
 import com.saxatus.aiml.api.parsing.tags.StaticMemoryUsingNode;
 import com.saxatus.aiml.api.utils.StringUtils;
 import com.saxatus.aiml.internal.parsing.tags.TemplateTag;
-import com.saxatus.aiml.internal.parsing.tags.abstracts.AbstractAIMLContentTag;
 
 public class JaxbAIMLParserImpl implements AIMLParser
 {
 
-    private Unmarshaller jaxbUnmarshaller;
+    private static final Log log = LogFactory.getLog(JaxbAIMLParserImpl.class);
+
+    private JaxbAIMLTransformer<TemplateTag> transformer;
     private String pattern;
     private String request;
     private AIMLHandler handler;
 
-    public JaxbAIMLParserImpl(String pattern, String request, AIMLHandler handler)
+    @Inject
+    public JaxbAIMLParserImpl(@Assisted("pattern") String pattern, @Assisted("input") String request,
+                    @Assisted("handler") AIMLHandler handler, JaxbAIMLTransformer<TemplateTag> transformer)
     {
         this.pattern = pattern;
         this.request = request;
         this.handler = handler;
-
-        Reflections reflections = new Reflections("com.saxatus");
-        List<Class<? extends AbstractAIMLContentTag>> classes = reflections.getSubTypesOf(AbstractAIMLContentTag.class)
-                        .stream()
-                        .filter(clazz -> !Modifier.isAbstract(clazz.getModifiers())
-                                        && AbstractAIMLContentTag.class.isAssignableFrom(clazz))
-                        .collect(Collectors.toList());
-        try
-        {
-            JAXBContext jaxbContext = JAXBContext.newInstance(classes.toArray(new Class[0]));
-            jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-        }
-        catch(JAXBException e)
-        {
-            throw new RuntimeException("Problems with loading AIMLTags", e);
-        }
+        this.transformer = transformer;
 
     }
 
     @Override
     public String parse(Node node)
     {
-        TemplateTag aiml;
         try
         {
-            aiml = (TemplateTag)jaxbUnmarshaller.unmarshal(node);
+            TemplateTag aiml = transformer.transform(node);
             return parse(aiml).trim();
         }
-        catch(JAXBException e)
+        catch(AIMLTransformException e)
         {
-            e.printStackTrace();
+            log.error("Error parsing template to Jaxb AIML", e);
         }
         return null;
 
@@ -177,19 +164,17 @@ public class JaxbAIMLParserImpl implements AIMLParser
     private List<String> resolveStars(String request, String input)
     {
         String regex = StringUtils.toRegex(input);
-        Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(request);
+        Pattern regexPattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = regexPattern.matcher(request);
 
         List<String> l = new ArrayList<>();
         if (matcher.find())
         {
             for (int i = 1; i <= matcher.groupCount(); i++)
             {
-                String r = matcher.group(i);
-                l.add(r);
+                l.add(matcher.group(i));
             }
         }
-
         return l;
     }
 }

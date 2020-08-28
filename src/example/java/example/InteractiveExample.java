@@ -24,7 +24,6 @@ public class InteractiveExample
     @Inject
     AIMLHandlerBuilder aimlHandlerBuilder;
 
-    private static final Log log = LogFactory.getLog(InteractiveExample.class);
 
     private Map<String, String> botMem = new HashMap<>();
 

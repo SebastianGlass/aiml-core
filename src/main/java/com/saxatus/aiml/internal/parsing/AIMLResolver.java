@@ -26,9 +26,9 @@ public class AIMLResolver
 
     public AIML getAIML(String input)
     {
-        String topic = nonStaticMemory.getOrDefault("topic", "unknown")
+        String topic = nonStaticMemory.getOrDefault("topic", AIML.UNKNOWN)
                         .toUpperCase();
-        String that = nonStaticMemory.getOrDefault("that", "unknown")
+        String that = nonStaticMemory.getOrDefault("that", AIML.UNKNOWN)
                         .toUpperCase();
 
         List<Set<AIML>> aimlSubLists = Arrays.asList(list.get("_"), list.get(input.split(" ")[0].toUpperCase()),
@@ -37,9 +37,9 @@ public class AIMLResolver
         for (Set<AIML> set : aimlSubLists)
         {
             AIML currentAIML = getAIML(input, topic, that, set);
-            currentAIML = (currentAIML != null) ? currentAIML : getAIML(input, topic, "unknown", set);
-            currentAIML = (currentAIML != null) ? currentAIML : getAIML(input, "unknown", that, set);
-            currentAIML = (currentAIML != null) ? currentAIML : getAIML(input, "unknown", "unknown", set);
+            currentAIML = (currentAIML != null) ? currentAIML : getAIML(input, topic, AIML.UNKNOWN, set);
+            currentAIML = (currentAIML != null) ? currentAIML : getAIML(input, AIML.UNKNOWN, that, set);
+            currentAIML = (currentAIML != null) ? currentAIML : getAIML(input, AIML.UNKNOWN, AIML.UNKNOWN, set);
             if (currentAIML != null)
                 return currentAIML;
         }

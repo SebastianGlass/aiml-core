@@ -32,9 +32,9 @@ import com.saxatus.aiml.internal.parsing.AIMLResolver;
 public class AIMLHandlerImpl implements AIMLHandler
 {
 
-    private final static String regex = "<BOT NAME=\"(.*)\"\\/>";
+    private static final String BOT_TAG_REGEX = "<BOT NAME=\"(.*)\"\\/>";
 
-    private final static Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
+    private static final Pattern pattern = Pattern.compile(BOT_TAG_REGEX, Pattern.MULTILINE);
 
     private static final Log log = LogFactory.getLog(AIMLHandlerImpl.class);
 
@@ -78,7 +78,7 @@ public class AIMLHandlerImpl implements AIMLHandler
 
         if (matcher.find())
         {
-            return StringUtils.innerTrim(string.replaceAll(regex, " " + botMemory.get(matcher.group(1)
+            return StringUtils.innerTrim(string.replaceAll(BOT_TAG_REGEX, " " + botMemory.get(matcher.group(1)
                             .toLowerCase())
                             .toUpperCase()));
         }
@@ -101,7 +101,7 @@ public class AIMLHandlerImpl implements AIMLHandler
         {
             log.warn(e);
             AIML aiml = new AIML("", "<srai>RANDOM PICKUP LINE</srai>", "", "", "", 1);
-            return aimltoString(aiml, "", input);
+            return aimltoString(aiml, "");
         }
     }
 
@@ -118,15 +118,15 @@ public class AIMLHandlerImpl implements AIMLHandler
         {
             throw new AIMLNotFoundException(input);
         }
-        return aimltoString(aiml, input, real);
+        return aimltoString(aiml, input);
     }
 
-    private String aimltoString(AIML aiml, String input, String real)
+    private String aimltoString(AIML aiml, String input)
     {
         try
         {
             Node rootNode = XMLUtils.parseStringToXMLNode(aiml.getTemplate(), "template");
-            AIMLParser parser = aimlParserProvider.provideTemplateParser(aiml.getPattern(), input, real, this);
+            AIMLParser parser = aimlParserProvider.provideTemplateParser(aiml.getPattern(), input, this);
             return parser.parse(rootNode)
                             .trim();
         }
