@@ -8,9 +8,6 @@ import java.util.Scanner;
 
 import javax.inject.Inject;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.saxatus.aiml.api.AIMLHandler;
@@ -23,7 +20,6 @@ public class InteractiveExample
 {
     @Inject
     AIMLHandlerBuilder aimlHandlerBuilder;
-
 
     private Map<String, String> botMem = new HashMap<>();
 

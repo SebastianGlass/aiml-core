@@ -52,7 +52,7 @@ public class JaxbAIMLTransformer<T extends AIMLContentNode> implements AIMLTrans
         }
         catch(JAXBException e)
         {
-           throw new AIMLTransformException(e);
+            throw new AIMLTransformException(e);
         }
 
     }

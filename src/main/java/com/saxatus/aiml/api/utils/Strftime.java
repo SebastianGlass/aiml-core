@@ -41,9 +41,6 @@ public class Strftime
         translate.put("B", "MMMM");
         translate.put("c", "EEE MMM d HH:mm:ss yyyy");
 
-        // There's no way to specify the century in SimpleDateFormat. We don't want to hard-code
-        // 20 since this could be wrong for the pre-2000 files.
-        // translate.put("C", "20");
         translate.put("d", "dd");
         translate.put("D", "MM/dd/yy");
         translate.put("e", "dd"); // will show as '03' instead of ' 3'
@@ -63,24 +60,13 @@ public class Strftime
         translate.put("P", "a"); // will show as pm instead of PM
         translate.put("r", "hh:mm:ss a");
         translate.put("R", "HH:mm");
-        // There's no way to specify this with SimpleDateFormat
-        // translate.put("s","seconds since ecpoch");
+
         translate.put("S", "ss");
         translate.put("t", "\t");
         translate.put("T", "HH:mm:ss");
-        // There's no way to specify this with SimpleDateFormat
-        // translate.put("u","day of week ( 1-7 )");
-
-        // There's no way to specify this with SimpleDateFormat
-        // translate.put("U","week in year with first sunday as first day...");
 
         translate.put("V", "ww"); // I'm not sure this is always exactly the same
 
-        // There's no way to specify this with SimpleDateFormat
-        // translate.put("W","week in year with first monday as first day...");
-
-        // There's no way to specify this with SimpleDateFormat
-        // translate.put("w","E");
         translate.put("X", "HH:mm:ss");
         translate.put("x", "MM/dd/yy");
         translate.put("y", "yy");
@@ -147,6 +133,26 @@ public class Strftime
         simpleDateFormat.setTimeZone(timeZone);
     }
 
+    class ConvertionState
+    {
+        private boolean inside;
+        private boolean mark;
+        private boolean modifiedCommand;
+
+        public ConvertionState()
+        {
+            this(false, false, false);
+        }
+
+        public ConvertionState(boolean inside, boolean mark, boolean modifiedCommand)
+        {
+            this.inside = inside;
+            this.mark = mark;
+            this.modifiedCommand = modifiedCommand;
+
+        }
+    }
+
     /**
      * Search the provided pattern and get the C standard Date/Time formatting rules and convert them to the Java
      * equivalent.
@@ -157,55 +163,20 @@ public class Strftime
      */
     protected String convertDateFormat(String pattern)
     {
-        boolean inside = false;
-        boolean mark = false;
-        boolean modifiedCommand = false;
-
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
+        ConvertionState convertionState = new ConvertionState();
 
         for (int i = 0; i < pattern.length(); i++)
         {
             char c = pattern.charAt(i);
 
-            if (c == '%' && !mark)
+            if (c == '%' && !convertionState.mark)
             {
-                mark = true;
+                convertionState.mark = true;
             }
             else
             {
-                if (mark)
-                {
-                    if (modifiedCommand)
-                    {
-                        // don't do anything--we just wanted to skip a char
-                        modifiedCommand = false;
-                        mark = false;
-                    }
-                    else
-                    {
-                        inside = translateCommand(buf, pattern, i, inside);
-                        // It's a modifier code
-                        if (c == 'O' || c == 'E')
-                        {
-                            modifiedCommand = true;
-                        }
-                        else
-                        {
-                            mark = false;
-                        }
-                    }
-                }
-                else
-                {
-                    if (!inside && c != ' ')
-                    {
-                        // We start a literal, which we need to quote
-                        buf.append("'");
-                        inside = true;
-                    }
-
-                    buf.append(c);
-                }
+                convertionState = parseMark(pattern, buf, convertionState, i, c);
             }
         }
 
@@ -213,12 +184,47 @@ public class Strftime
         {
             char lastChar = buf.charAt(buf.length() - 1);
 
-            if (lastChar != '\'' && inside)
+            if (lastChar != '\'' && convertionState.inside)
             {
                 buf.append('\'');
             }
         }
         return buf.toString();
+    }
+
+    private ConvertionState parseMark(String pattern, StringBuilder buf, ConvertionState convertionState, int i, char c)
+    {
+        if (convertionState.mark)
+        {
+            if (convertionState.modifiedCommand)
+            {
+                // don't do anything--we just wanted to skip a char
+                return new ConvertionState(convertionState.inside, false, false);
+            }
+
+            convertionState.inside = translateCommand(buf, pattern, i, convertionState.inside);
+            // It's a modifier code
+            if (c == 'O' || c == 'E')
+            {
+                convertionState.modifiedCommand = true;
+            }
+            else
+            {
+                convertionState.mark = false;
+            }
+        }
+        else
+        {
+            if (!convertionState.inside && c != ' ')
+            {
+                // We start a literal, which we need to quote
+                buf.append("'");
+                convertionState.inside = true;
+            }
+
+            buf.append(c);
+        }
+        return convertionState;
     }
 
     protected String quote(String str, boolean insideQuotes)
@@ -244,7 +250,7 @@ public class Strftime
      *            Flag value
      * @return True if new is inside buffer
      */
-    protected boolean translateCommand(StringBuffer buf, String pattern, int index, boolean oldInside)
+    protected boolean translateCommand(StringBuilder buf, String pattern, int index, boolean oldInside)
     {
         char firstChar = pattern.charAt(index);
         boolean newInside = oldInside;
