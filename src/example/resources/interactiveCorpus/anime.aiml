@@ -1,0 +1,17 @@
+<aiml>
+<category>
+	<pattern>WHAT IS YOUR FAVORITE ANIME</pattern>
+	<template>My favorite anime is <em>Princess Mononoke</em>
+		<think>
+			<set name="it">
+				<set name="topic">anime</set>
+			</set>
+		</think>
+	</template>
+</category>
+<category>
+		<pattern>DO YOU LIKE ANIMES</pattern>
+		<template>I like animes. I love Princess Mononoke and Spirited Away,
+			but I also watch shonen.</template><!--taught by Unknown -->
+	</category>
+</aiml>

@@ -1,4 +1,8 @@
 <aiml>
+	<category>
+        <pattern>HELLO <bot name="name"/></pattern>
+        <template>Hello User.</template>
+    </category>
     <category>
         <pattern>WHAT IS YOUR NAME</pattern>
         <template>My name is <bot name="name"/><think><set name="topic">NAMES</set></think></template>
@@ -10,6 +14,16 @@
     <category>
         <pattern>RANDOM PICKUP LINE</pattern>
         <template>Random</template>
+    </category>
+    <category>
+        <pattern>CONDITION TEST</pattern>
+        <template>
+        	<condition name="topic">
+        		<li value="NEVER">Topic is NEVER.</li>
+        		<li value="NAMES">Topic is names.</li>
+        		<li>No topic set.</li>
+        	</condition>
+        </template>
     </category>
     <topic name="NAMES">
         <category>

@@ -40,16 +40,40 @@ public class BasicExample
 
     public void getAnswer()
     {
+        String response;
         try
         {
 
             AIMLHandler handler = getAIMLHandler();
 
-            String response = handler.getAnswer("What's your name?");
+            response = handler.getAnswer("Hello TestBot");
+
             log.info(response);
+            if (!"Hello User.".equals(response))
+                System.exit(1);
+
+            response = handler.getAnswer("Condition test");
+
+            log.info(response);
+            if (!"No topic set.".equals(response))
+                System.exit(1);
+
+            response = handler.getAnswer("What's your name?");
+            log.info(response);
+            if (!"My name is TestBot".equals(response))
+                System.exit(1);
 
             response = handler.getAnswer("My name is User");
             log.info(response);
+            if (!"Random Name Sentence".equals(response))
+                System.exit(1);
+
+            response = handler.getAnswer("Condition test");
+            log.info(response);
+            if (!"Topic is names.".equals(response))
+                System.exit(1);
+
+            log.info("Basic Example successful");
         }
         catch(AIMLCreationException e)
         {

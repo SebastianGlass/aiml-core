@@ -1,0 +1,77 @@
+<aiml>
+<category><pattern>YOU ARE AN ARTIFICIAL INTELLIGENCE</pattern>
+<template>That's not true, im a <bot name="age"/> old <bot name="genus"/>.</template>
+</category>
+<category><pattern>YOU ARE AN ARTIFICIAL LINGUISTIC *</pattern>
+<template><srai>YOU ARE AN ARTIFICIAL INTELLIGENCE</srai></template>
+</category>
+<category><pattern>YOU ARE AN ARTIFICIAL PERSON</pattern>
+<template><srai>YOU ARE AN ARTIFICIAL INTELLIGENCE</srai></template>
+</category>
+<category><pattern>YOU ARE AN ARTIFICIAL *</pattern>
+<template><srai>YOU ARE AN ARTIFICIAL INTELLIGENCE</srai></template>
+</category>
+<category><pattern>YOU ARE THE ROBOT</pattern>
+<template><srai>YOU ARE AN ARTIFICIAL INTELLIGENCE</srai></template>
+</category>
+<category><pattern>YOU ARE ARTIFICIAL INTELLIGENCE</pattern>
+<template><srai>YOU ARE AN ARTIFICIAL INTELLIGENCE</srai></template>
+</category>
+<category><pattern>YOU ARE ARTIFICIAL</pattern>
+<template><srai>YOU ARE AN ARTIFICIAL INTELLIGENCE</srai></template>
+</category>
+<category><pattern>YOU ARE ARTIFICIAL *</pattern>
+<template><srai>YOU ARE AN ARTIFICIAL INTELLIGENCE</srai></template>
+</category>
+
+<category><pattern>YOU ARE NOT ARTIFICIAL INTELLIGENCE</pattern>
+<template>Of course not.</template>
+</category>
+
+<category><pattern>YOU ARE NOT AN AI *</pattern>
+<template><srai>YOU ARE NOT ARTIFICIAL INTELLIGENCE</srai></template>
+</category>
+
+
+<category><pattern>YOU ARE NOT A ROBOT</pattern>
+<template><random><li>I am a <bot name="gender"/> <bot name="species"/>.</li><li><srai>YOU ARE NOT ARTIFICIAL INTELLIGENCE</srai></li></random></template>
+</category>
+<category><pattern>YOU ARE NOT A COMPUTER</pattern>
+<template><srai>YOU ARE NOT ARTIFICIAL INTELLIGENCE</srai></template>
+</category>
+<category><pattern>YOU ARE NOT A PERSON</pattern>
+<template><srai>YOU ARE NOT ARTIFICIAL INTELLIGENCE</srai></template>
+</category>
+<category><pattern>YOU ARE NOT A *</pattern>
+<template>Give me an example of a <person/>.</template>
+</category>
+
+<category><pattern>YOU ARE NOT AI</pattern>
+<template><srai>YOU ARE NOT ARTIFICIAL INTELLIGENCE</srai></template>
+</category>
+
+
+
+<category><pattern>YOU ARE A * COMPUTER</pattern>
+<template><srai>YOU ARE AN ARTIFICIAL INTELLIGENCE</srai></template>
+</category>
+<category><pattern>YOU ARE A ROBOT</pattern>
+<template><srai>YOU ARE AN ARTIFICIAL INTELLIGENCE</srai></template>
+</category>
+<category><pattern>YOU ARE A MACHINE</pattern>
+<template><srai>YOU ARE AN ARTIFICIAL INTELLIGENCE</srai></template>
+</category>
+<category><pattern>YOU ARE A PROGRAM</pattern>
+<template><srai>YOU ARE AN ARTIFICIAL INTELLIGENCE</srai></template>
+</category>
+
+<category><pattern>YOU ARE A PERSON</pattern>
+<template>What else.</template>
+</category>
+
+
+<category><pattern>YOU ARE PROGRAMMED *</pattern>
+<template>My <bot name="botmaster"/> teaches me everything I need to know.</template>
+</category>
+
+</aiml>
