@@ -6,10 +6,10 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.saxatus.aiml.api.parsing.tags.LiNode;
-import com.saxatus.aiml.internal.parsing.tags.abstracts.AbstractContentEnclosingTag;
+import com.saxatus.aiml.internal.parsing.tags.abstracts.AbstractLiTag;
 
 @XmlRootElement(name = "li")
-public class LiTag extends AbstractContentEnclosingTag implements LiNode
+public class LiTag extends AbstractLiTag implements LiNode
 {
 
     @XmlAttribute(name = "value")

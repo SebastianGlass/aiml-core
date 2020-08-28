@@ -112,38 +112,11 @@ public class JaxbAIMLParserImpl implements AIMLParser
     private String parse(Object s)
     {
         // preprocessing
-        if (s instanceof StarRequiringNode)
-        {
-            List<String> stars = resolveStars(request, pattern);
-            ((StarRequiringNode)s).setStars(stars);
-        }
-        if (s instanceof StaticMemoryUsingNode)
-        {
-            ((StaticMemoryUsingNode)s).setStaticMemory(handler.getStaticMemory());
-        }
-        if (s instanceof NonStaticMemoryUsingNode)
-        {
-            ((NonStaticMemoryUsingNode)s).setNonStaticMemory(handler.getNonStaticMemory());
-        }
+        preprocessNodes(s);
 
         if (s instanceof ContentNeedsOwnRequestNode)
         {
-            String childContent;
-            if (s instanceof ContentEnclosingNode<?>)
-            {
-                childContent = parse((ContentEnclosingNode<?>)s).trim()
-                                .toUpperCase();
-            }
-            else if (s instanceof LeafNode)
-            {
-                childContent = parse((LeafNode)s).trim()
-                                .toUpperCase();
-            }
-            else
-            {
-                childContent = "RANDOM PICKUP LINE";
-
-            }
+            String childContent = resolveChildPattern(s).toUpperCase();
             return handler.increaseDepth()
                             .getAnswer(childContent);
         }
@@ -167,7 +140,40 @@ public class JaxbAIMLParserImpl implements AIMLParser
         return "?";
     }
 
-    // helper
+    private String resolveChildPattern(Object s)
+    {
+        String childContent;
+        if (s instanceof ContentEnclosingNode<?>)
+        {
+            childContent = parse((ContentEnclosingNode<?>)s).trim();
+        }
+        else if (s instanceof LeafNode)
+        {
+            childContent = parse((LeafNode)s).trim();
+        }
+        else
+        {
+            childContent = "RANDOM PICKUP LINE";
+        }
+        return childContent;
+    }
+
+    private void preprocessNodes(Object s)
+    {
+        if (s instanceof StarRequiringNode)
+        {
+            ((StarRequiringNode)s).setStars(resolveStars(request, pattern));
+        }
+        if (s instanceof StaticMemoryUsingNode)
+        {
+            ((StaticMemoryUsingNode)s).setStaticMemory(handler.getStaticMemory());
+        }
+        if (s instanceof NonStaticMemoryUsingNode)
+        {
+            ((NonStaticMemoryUsingNode)s).setNonStaticMemory(handler.getNonStaticMemory());
+        }
+    }
+
     private List<String> resolveStars(String request, String input)
     {
         String regex = StringUtils.toRegex(input);

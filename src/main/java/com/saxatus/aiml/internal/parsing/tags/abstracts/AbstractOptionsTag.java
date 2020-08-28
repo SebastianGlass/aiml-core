@@ -7,13 +7,19 @@ import java.util.stream.Collectors;
 import javax.xml.bind.annotation.XmlElementRef;
 
 import com.saxatus.aiml.api.parsing.tags.OptionEnclosingNode;
-import com.saxatus.aiml.internal.parsing.tags.LiTag;
 
-public abstract class AbstractOptionsTag extends AbstractAIMLContentTag implements OptionEnclosingNode<LiTag>
+public abstract class AbstractOptionsTag extends AbstractAIMLContentTag implements OptionEnclosingNode<AbstractLiTag>
 {
 
-    public static final LiTag FALLBACK_LITAG = new LiTag()
+    public static final AbstractLiTag FALLBACK_LITAG = new AbstractLiTag()
     {
+
+        @Override
+        public String getValue()
+        {
+            return "";
+        }
+
         @Override
         public String getWrappedText(String childContent)
         {
@@ -22,14 +28,14 @@ public abstract class AbstractOptionsTag extends AbstractAIMLContentTag implemen
     };
 
     @XmlElementRef
-    private List<LiTag> content;
+    private List<AbstractLiTag> content;
 
-    public List<LiTag> getContent()
+    public List<AbstractLiTag> getContent()
     {
         return content;
     }
 
-    public void setContent(List<LiTag> content)
+    public void setContent(List<AbstractLiTag> content)
     {
         this.content = content;
     }

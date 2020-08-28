@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-public class AbstractOptionsTagTest
+class AbstractOptionsTagTest
 {
 
     AbstractOptionsTag tag = new AbstractOptionsTag()
@@ -21,6 +21,13 @@ public class AbstractOptionsTagTest
     void testGetContentToStringNoChildren()
     {
         assertEquals("", tag.contentToString());
+    }
+
+    @Test
+    void testFallback()
+    {
+        assertEquals("", AbstractOptionsTag.FALLBACK_LITAG.getWrappedText("content"));
+        assertEquals("", AbstractOptionsTag.FALLBACK_LITAG.getValue());
     }
 
 }
