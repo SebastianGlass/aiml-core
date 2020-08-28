@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml version="1.0">
+	<category>
+		<pattern>CRY</pattern>
+		<template>
+			<srai>I FEEL SAD</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>JOY</pattern>
+		<template>
+			<random>
+				<li>
+					<srai>HAPPY</srai>
+				</li>
+				<li>:yum:</li>
+				<li>
+					Why do people like
+					<set name="topic">emojis</set>
+					this much?
+				</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>KISSING_HEART</pattern>
+		<template>
+			<srai>KISS</srai>
+			:kissing_heart:
+		</template>
+	</category>
+	<category>
+		<pattern>HEART_EYES</pattern>
+		<template>Are you in love?</template>
+	</category>
+	<category>
+		<pattern>SOB</pattern>
+		<template>
+			<srai>I FEEL SAD</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>KISSING</pattern>
+		<template>
+			<srai>KISS</srai>
+			:kissing:
+		</template>
+	</category>
+	<category>
+		<pattern>SMILE</pattern>
+		<template>
+			<random>
+				<li>
+					Why do people like
+					<set name="topic">emojis</set> 
+					this much?
+				</li>
+				<li>:yum:</li>
+			</random>
+		</template>
+	</category>
+</aiml>
