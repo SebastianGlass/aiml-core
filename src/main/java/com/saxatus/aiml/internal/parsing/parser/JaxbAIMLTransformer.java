@@ -16,7 +16,6 @@ import com.google.inject.Singleton;
 import com.saxatus.aiml.api.parsing.parser.AIMLTransformException;
 import com.saxatus.aiml.api.parsing.parser.AIMLTransformer;
 import com.saxatus.aiml.api.parsing.tags.AIMLContentNode;
-import com.saxatus.aiml.internal.parsing.tags.abstracts.AbstractAIMLContentTag;
 
 @Singleton
 public class JaxbAIMLTransformer<T extends AIMLContentNode> implements AIMLTransformer<T>
@@ -27,10 +26,10 @@ public class JaxbAIMLTransformer<T extends AIMLContentNode> implements AIMLTrans
     public JaxbAIMLTransformer()
     {
         Reflections reflections = new Reflections("com.saxatus");
-        List<Class<? extends AbstractAIMLContentTag>> classes = reflections.getSubTypesOf(AbstractAIMLContentTag.class)
+        List<Class<? extends AIMLContentNode>> classes = reflections.getSubTypesOf(AIMLContentNode.class)
                         .stream()
                         .filter(clazz -> !Modifier.isAbstract(clazz.getModifiers())
-                                        && AbstractAIMLContentTag.class.isAssignableFrom(clazz))
+                                        && AIMLContentNode.class.isAssignableFrom(clazz))
                         .collect(Collectors.toList());
         try
         {

@@ -7,15 +7,7 @@ import org.junit.jupiter.api.Test;
 class AbstractOptionsTagTest
 {
 
-    AbstractOptionsTag tag = new AbstractOptionsTag()
-    {
-
-        @Override
-        public String getWrappedText(String childContent)
-        {
-            return childContent;
-        }
-    };
+    static AbstractOptionsTag tag = new TestOptionTag();
 
     @Test
     void testGetContentToStringNoChildren()
