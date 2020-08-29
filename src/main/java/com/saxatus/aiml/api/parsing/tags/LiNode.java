@@ -1,6 +1,6 @@
 package com.saxatus.aiml.api.parsing.tags;
 
-public interface LiNode
+public interface LiNode extends AIMLContentNode
 {
 
 }

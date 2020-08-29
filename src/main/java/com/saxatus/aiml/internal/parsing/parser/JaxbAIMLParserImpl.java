@@ -16,6 +16,8 @@ import com.google.inject.assistedinject.Assisted;
 import com.saxatus.aiml.api.AIMLHandler;
 import com.saxatus.aiml.api.parsing.AIMLParser;
 import com.saxatus.aiml.api.parsing.parser.AIMLTransformException;
+import com.saxatus.aiml.api.parsing.parser.ResolverMap;
+import com.saxatus.aiml.api.parsing.tags.AIMLContentNode;
 import com.saxatus.aiml.api.parsing.tags.ContentEnclosingNode;
 import com.saxatus.aiml.api.parsing.tags.ContentNeedsOwnRequestNode;
 import com.saxatus.aiml.api.parsing.tags.DecisionMakingNode;
@@ -26,11 +28,15 @@ import com.saxatus.aiml.api.parsing.tags.StarRequiringNode;
 import com.saxatus.aiml.api.parsing.tags.StaticMemoryUsingNode;
 import com.saxatus.aiml.api.utils.StringUtils;
 import com.saxatus.aiml.internal.parsing.tags.TemplateTag;
+import com.saxatus.aiml.internal.parsing.tags.TextNode;
+import com.saxatus.aiml.internal.parsing.tags.abstracts.AbstractAIMLContentTag;
 
 public class JaxbAIMLParserImpl implements AIMLParser
 {
 
     private static final Log log = LogFactory.getLog(JaxbAIMLParserImpl.class);
+
+    private ResolverMap resolverByClass = new ResolverMap();
 
     private JaxbAIMLTransformer<TemplateTag> transformer;
     private String pattern;
@@ -46,6 +52,21 @@ public class JaxbAIMLParserImpl implements AIMLParser
         this.handler = handler;
         this.transformer = transformer;
 
+        init();
+
+    }
+
+    void init()
+    {
+        resolverByClass.put(ContentNeedsOwnRequestNode.class, s -> {
+            String childContent = resolveChildPattern(s).toUpperCase();
+            return handler.increaseDepth()
+                            .getAnswer(childContent);
+        });
+        resolverByClass.put(ContentEnclosingNode.class, this::parseContentEnclosing);
+        resolverByClass.put(DecisionMakingNode.class, this::parseDecision);
+        resolverByClass.put(LeafNode.class, LeafNode::getText);
+
     }
 
     @Override
@@ -54,7 +75,7 @@ public class JaxbAIMLParserImpl implements AIMLParser
         try
         {
             TemplateTag aiml = transformer.transform(node);
-            return parse(aiml).trim();
+            return parseContentEnclosing(aiml).trim();
         }
         catch(AIMLTransformException e)
         {
@@ -64,30 +85,23 @@ public class JaxbAIMLParserImpl implements AIMLParser
 
     }
 
-    private String parse(String s)
-    {
-        return s.trim();
-    }
-
-    private String parse(LeafNode s)
-    {
-        return s.getText();
-    }
-
-    private String parse(DecisionMakingNode s)
+    private String parseDecision(DecisionMakingNode s)
     {
         LiNode node = s.getDecision();
-        String childContent = this.parse(node);
+        String childContent = resolverByClass.getResolverFor(ContentEnclosingNode.class)
+                        .apply(node);
 
         return s.getWrappedText(childContent);
     }
 
-    private String parse(ContentEnclosingNode<?> s)
+    private String parseContentEnclosing(ContentEnclosingNode<?> s)
     {
         if (s.getContent() != null)
         {
             List<?> o = new ArrayList<>(s.getContent());
             String childContent = o.stream()
+                            .map(a -> a instanceof String ? new TextNode((String)a) : a)
+                            .map(AbstractAIMLContentTag.class::cast)
                             .map(this::parse)
                             .collect(Collectors.joining(" "));
             return s.getWrappedText(childContent);
@@ -96,34 +110,16 @@ public class JaxbAIMLParserImpl implements AIMLParser
         return s.getWrappedText("");
     }
 
-    private String parse(Object s)
+    private String parse(AIMLContentNode s)
     {
         // preprocessing
         preprocessNodes(s);
 
-        if (s instanceof ContentNeedsOwnRequestNode)
-        {
-            String childContent = resolveChildPattern(s).toUpperCase();
-            return handler.increaseDepth()
-                            .getAnswer(childContent);
-        }
-        if (s instanceof String)
-        {
-            return parse((String)s).trim();
-        }
-        else if (s instanceof ContentEnclosingNode<?>)
-        {
-            return parse((ContentEnclosingNode<?>)s).trim();
-        }
-        else if (s instanceof DecisionMakingNode)
-        {
-            return parse((DecisionMakingNode)s).trim();
-        }
-        else if (s instanceof LeafNode)
-        {
-            return parse((LeafNode)s).trim();
-        }
-
+        String content = resolverByClass.getResolverFor(s.getClass())
+                        .apply(s)
+                        .trim();
+        if (content != null)
+            return content;
         return "?";
     }
 
@@ -132,11 +128,15 @@ public class JaxbAIMLParserImpl implements AIMLParser
         String childContent;
         if (s instanceof ContentEnclosingNode<?>)
         {
-            childContent = parse((ContentEnclosingNode<?>)s).trim();
+            childContent = resolverByClass.getResolverFor(ContentEnclosingNode.class)
+                            .apply(s)
+                            .trim();
         }
         else if (s instanceof LeafNode)
         {
-            childContent = parse((LeafNode)s).trim();
+            childContent = resolverByClass.getResolverFor(LeafNode.class)
+                            .apply(s)
+                            .trim();
         }
         else
         {
