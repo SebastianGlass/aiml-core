@@ -10,11 +10,11 @@ import javax.inject.Inject;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.saxatus.aiml.api.AIMLHandler;
-import com.saxatus.aiml.api.AIMLHandlerBuilder;
-import com.saxatus.aiml.api.io.AIMLCreationException;
-import com.saxatus.aiml.api.io.AIMLDirectoryReader;
-import com.saxatus.aiml.module.AIMLModule;
+import ai.saxatus.aiml.api.AIMLHandler;
+import ai.saxatus.aiml.api.AIMLHandlerBuilder;
+import ai.saxatus.aiml.api.io.AIMLCreationException;
+import ai.saxatus.aiml.api.io.AIMLDirectoryReader;
+import ai.saxatus.aiml.module.AIMLModule;
 
 public class InteractiveExample
 {
