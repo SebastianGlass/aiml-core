@@ -4,20 +4,14 @@ import java.io.File;
 import java.util.List;
 import java.util.Map;
 
-import com.saxatus.aiml.api.parsing.AIMLParseNode;
 import com.saxatus.aiml.api.parsing.AIMLNotFoundException;
 
 public interface AIMLHandler
 {
 
-    default String getAnswer(String input)
-    {
-        return getAnswer(input, new AIMLParseNode("root"));
-    }
+    String getAnswer(String input);
 
-    String getAnswer(String input, AIMLParseNode debugNode);
-
-    String getAnswer(String input, String real, AIMLParseNode debugNode) throws AIMLNotFoundException;
+    String getAnswer(String input, String real) throws AIMLNotFoundException;
 
     Map<String, String> getStaticMemory();
 
@@ -32,5 +26,9 @@ public interface AIMLHandler
     List<String> getThatStar();
 
     List<String> getOutputHistory();
+
+    AIMLHandler increaseDepth();
+
+    void resetDepth();
 
 }

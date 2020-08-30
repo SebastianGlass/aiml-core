@@ -4,14 +4,14 @@ import com.google.inject.AbstractModule;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.saxatus.aiml.api.AIMLHandler;
 import com.saxatus.aiml.api.AIMLHandlerBuilder;
-import com.saxatus.aiml.api.parsing.AIMLParsingSession;
+import com.saxatus.aiml.api.parsing.AIMLParser;
+import com.saxatus.aiml.api.parsing.parser.AIMLTransformer;
 import com.saxatus.aiml.api.provider.AIMLHandlerProvider;
 import com.saxatus.aiml.api.provider.AIMLParserProvider;
-import com.saxatus.aiml.api.provider.AIMLParsingSessionProvider;
 import com.saxatus.aiml.internal.AIMLHandlerBuilderImpl;
 import com.saxatus.aiml.internal.AIMLHandlerImpl;
-import com.saxatus.aiml.internal.parsing.AIMLParsingSessionImpl;
-import com.saxatus.aiml.internal.provider.AIMLParserProviderImpl;
+import com.saxatus.aiml.internal.parsing.parser.JaxbAIMLParserImpl;
+import com.saxatus.aiml.internal.parsing.parser.JaxbAIMLTransformer;
 
 public class AIMLModule extends AbstractModule
 {
@@ -20,12 +20,15 @@ public class AIMLModule extends AbstractModule
     protected void configure()
     {
         bind(AIMLHandlerBuilder.class).to(AIMLHandlerBuilderImpl.class);
-        bind(AIMLParserProvider.class).to(AIMLParserProviderImpl.class);
+
+        bind(AIMLTransformer.class).to(JaxbAIMLTransformer.class);
+
         install(new FactoryModuleBuilder().implement(AIMLHandler.class, AIMLHandlerImpl.class)
                         .build(AIMLHandlerProvider.class));
 
-        install(new FactoryModuleBuilder().implement(AIMLParsingSession.class, AIMLParsingSessionImpl.class)
-                        .build(AIMLParsingSessionProvider.class));
+        install(new FactoryModuleBuilder().implement(AIMLParser.class, JaxbAIMLParserImpl.class)
+                        .build(AIMLParserProvider.class));
+
     }
 
 }

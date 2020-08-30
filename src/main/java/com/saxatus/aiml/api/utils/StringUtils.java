@@ -12,7 +12,12 @@ public class StringUtils
         {
             that = that.replaceAll(s, "");
         }
-        return that.replace("  ", " ")
+        return innerTrim(that).replace(" />", "/>");
+    }
+
+    public static String innerTrim(String input)
+    {
+        return input.replace("  ", " ")
                         .trim();
     }
 

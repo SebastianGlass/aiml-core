@@ -17,17 +17,18 @@ public class AIMLResolver
     private final Map<String, String> nonStaticMemory;
     private final Dictionary<String, AIML> list;
 
-    public AIMLResolver(Dictionary<String, AIML> alimList, Map<String, String> nonStaticMemory)
+    public AIMLResolver(Dictionary<String, AIML> aimlList, Map<String, String> nonStaticMemory)
     {
         this.nonStaticMemory = nonStaticMemory;
-        this.list = alimList;
+        this.list = aimlList;
+
     }
 
     public AIML getAIML(String input)
     {
-        String topic = nonStaticMemory.getOrDefault("topic", "unknown")
+        String topic = nonStaticMemory.getOrDefault("topic", AIML.UNKNOWN)
                         .toUpperCase();
-        String that = nonStaticMemory.getOrDefault("that", "unknown")
+        String that = nonStaticMemory.getOrDefault("that", AIML.UNKNOWN)
                         .toUpperCase();
 
         List<Set<AIML>> aimlSubLists = Arrays.asList(list.get("_"), list.get(input.split(" ")[0].toUpperCase()),
@@ -36,9 +37,9 @@ public class AIMLResolver
         for (Set<AIML> set : aimlSubLists)
         {
             AIML currentAIML = getAIML(input, topic, that, set);
-            currentAIML = (currentAIML != null) ? currentAIML : getAIML(input, topic, null, set);
-            currentAIML = (currentAIML != null) ? currentAIML : getAIML(input, null, that, set);
-            currentAIML = (currentAIML != null) ? currentAIML : getAIML(input, null, null, set);
+            currentAIML = (currentAIML != null) ? currentAIML : getAIML(input, topic, AIML.UNKNOWN, set);
+            currentAIML = (currentAIML != null) ? currentAIML : getAIML(input, AIML.UNKNOWN, that, set);
+            currentAIML = (currentAIML != null) ? currentAIML : getAIML(input, AIML.UNKNOWN, AIML.UNKNOWN, set);
             if (currentAIML != null)
                 return currentAIML;
         }
@@ -51,7 +52,7 @@ public class AIMLResolver
             return null;
         for (AIML aiml : list)
         {
-            if (!hasMatchingTopic(topic, aiml) || !aiml.hasMatchingThat(that))
+            if (!aiml.hasMatchingTopic(topic) || !aiml.hasMatchingThat(that))
             {
                 continue;
             }
@@ -69,15 +70,6 @@ public class AIMLResolver
         String regex = StringUtils.toRegex(aiml.getPattern());
         Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
         return p.matcher(input);
-    }
-
-    private boolean hasMatchingTopic(String topic, AIML aiml)
-    {
-        if (topic == null && aiml.getTopic() == null)
-        {
-            return true;
-        }
-        return (topic != null) && topic.equalsIgnoreCase(aiml.getTopic());
     }
 
 }

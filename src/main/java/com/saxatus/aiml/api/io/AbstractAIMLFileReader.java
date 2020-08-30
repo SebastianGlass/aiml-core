@@ -3,7 +3,7 @@ package com.saxatus.aiml.api.io;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.TreeSet;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -17,7 +17,6 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import com.saxatus.aiml.api.parsing.AIML;
-import com.saxatus.aiml.api.parsing.AIMLParser;
 import com.saxatus.aiml.api.utils.XMLUtils;
 
 public abstract class AbstractAIMLFileReader implements AIMLProvider
@@ -55,12 +54,11 @@ public abstract class AbstractAIMLFileReader implements AIMLProvider
         this.file = aimlFileReader.file;
     }
 
-    protected Collection<AIML> loadFromFile(File file, AIMLParser aimlParser)
-                    throws ParserConfigurationException, SAXException, IOException
+    protected Collection<AIML> loadFromFile(File file) throws ParserConfigurationException, SAXException, IOException
     {
         doc = XMLUtils.parseFileToXMLDocument(file);
         readingLine = 1;
-        Collection<AIML> dict = new HashSet<>();
+        Collection<AIML> dict = new TreeSet<>();
 
         NodeList nodeList = doc.getElementsByTagName("aiml")
                         .item(0)
@@ -76,32 +74,42 @@ public abstract class AbstractAIMLFileReader implements AIMLProvider
             String nodeName = nNode.getNodeName();
             if ("category".equals(nodeName))
             {
-                addCategory((Element)nNode, dict, aimlParser);
+                addCategory((Element)nNode, dict, file);
             }
             else if ("topic".equals(nodeName))
             {
-                handleTopicTag(dict, nNode, aimlParser);
+                handleTopicTag(dict, nNode, file);
             }
         }
         return dict;
     }
 
-    private void addCategory(Element eElement, Collection<AIML> subList, AIMLParser aimlParser)
+    private void addCategory(Element eElement, Collection<AIML> subList, File f)
     {
-        addCategory(eElement, null, subList, aimlParser);
+        addCategory(eElement, null, subList, f);
     }
 
-    private void addCategory(Element eElement, String topic, Collection<AIML> subList, AIMLParser aimlParser)
+    private void addCategory(Element eElement, String topic, Collection<AIML> subList, File f)
     {
-        Node patternNode = eElement.getElementsByTagName("pattern")
-                        .item(0);
-        String pattern = aimlParser.parse(patternNode);
+        String pattern;
+        try
+        {
+            pattern = XMLUtils.parseXMLToString(eElement.getElementsByTagName("pattern")
+                            .item(0)
+                            .getChildNodes());
+        }
+        catch(TransformerException e1)
+        {
+            return;
+        }
+
         pattern = purify(pattern).toUpperCase();
         String template;
         try
         {
-            Node templateNode = eElement.getElementsByTagName("template")
-                            .item(0);
+            NodeList templateNode = eElement.getElementsByTagName("template")
+                            .item(0)
+                            .getChildNodes();
             template = purify(XMLUtils.parseXMLToString(templateNode));
         }
         catch(TransformerException e)
@@ -125,11 +133,11 @@ public abstract class AbstractAIMLFileReader implements AIMLProvider
             }
 
         }
-        AIML aiml = new AIML(pattern, template, that, topic, fileName, readingLine++);
+        AIML aiml = new AIML(pattern, template, that, topic, f.getAbsolutePath(), readingLine++);
         subList.add(aiml);
     }
 
-    private void handleTopicTag(Collection<AIML> dict, Node nNode, AIMLParser aimlParser)
+    private void handleTopicTag(Collection<AIML> dict, Node nNode, File f)
     {
         NodeList sub = nNode.getChildNodes();
         for (int i = 0; i < sub.getLength(); i++)
@@ -140,7 +148,7 @@ public abstract class AbstractAIMLFileReader implements AIMLProvider
                 String topic = nNode.getAttributes()
                                 .item(0)
                                 .getNodeValue();
-                addCategory((Element)sNode, topic, dict, aimlParser);
+                addCategory((Element)sNode, topic, dict, f);
             }
         }
     }

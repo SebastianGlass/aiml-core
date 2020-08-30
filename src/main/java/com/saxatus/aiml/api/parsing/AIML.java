@@ -9,6 +9,8 @@ import com.saxatus.aiml.api.utils.StringUtils;
 
 public class AIML implements Serializable, Comparable<AIML>
 {
+    public static final String UNKNOWN = "unknown";
+
     private static final long serialVersionUID = 6143514919411255637L;
 
     private final String pattern;
@@ -51,6 +53,11 @@ public class AIML implements Serializable, Comparable<AIML>
         return s;
     }
 
+    public AIML withPattern(String newPattern)
+    {
+        return new AIML(newPattern, template, that, topic, source, line);
+    }
+
     public String getPattern()
     {
         return pattern;
@@ -91,7 +98,7 @@ public class AIML implements Serializable, Comparable<AIML>
 
     public boolean hasMatchingTopic(String topic)
     {
-        if (topic.equalsIgnoreCase("Unknown") && getTopic() == null)
+        if (topic.equalsIgnoreCase(UNKNOWN) && getTopic() == null)
             return true;
 
         return getTopic() != null && topic.equalsIgnoreCase(getTopic());
@@ -100,9 +107,10 @@ public class AIML implements Serializable, Comparable<AIML>
 
     public boolean hasMatchingThat(String that)
     {
-        if (that == null && getThat() == null)
+        if (that.equalsIgnoreCase(UNKNOWN) && getThat() == null)
             return true;
-        if (that != null && getThat() != null)
+
+        if (!that.equalsIgnoreCase(UNKNOWN) && getThat() != null)
         {
             String regex = StringUtils.toRegex(getThat());
             that = StringUtils.clearString(that);

@@ -14,7 +14,7 @@ class DictionaryTest
     Dictionary<String, String> d;
 
     @BeforeEach
-    void setup()
+    void setUp()
     {
         d = new Dictionary<>();
 
