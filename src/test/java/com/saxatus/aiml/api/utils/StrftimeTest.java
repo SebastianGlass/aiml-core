@@ -3,6 +3,7 @@ package com.saxatus.aiml.api.utils;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import org.junit.jupiter.api.Test;
@@ -32,13 +33,12 @@ class StrftimeTest
     {
         assertEquals("Thu Jan 1 00:00:00 1970", strftime("%c").format(DATE));
         assertEquals("Thu Jan 1 00:00:00 1970", strftime("%Ec").format(DATE));
-        assertEquals("Thu Jan 1 00:00:00 1970", strftime("%Oc").format(DATE));
 
     }
 
     private Strftime strftime(String s)
     {
-        Strftime strftime = new Strftime(s);
+        Strftime strftime = new Strftime(s, Locale.ENGLISH);
 
         strftime.setTimeZone(TimeZone.getTimeZone("UTC"));
         return strftime;
