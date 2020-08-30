@@ -1,13 +1,12 @@
 # AIML-core
 
-This project is a Java 1.8 library that implements [AIML 1.0](https://pandorabots.com/docs/aiml/aiml-basics.html) and its handler.
+This project is a Java 11 library that implements [AIML 2.0](https://callmom.pandorabots.com/static/reference/) and its handler.
 
 ## Getting Started
 
 To run this project you will need the following:
 
-- Gradle
-- Java 1.8
+- Java 11
 
 Simply checkout this repository to get started.
 
@@ -23,34 +22,11 @@ This task will compile the sources, run the tests and publish the compiled versi
 
 
 ## Usage
-You can use the AIMLFileReader to parse and load AIML Files which mathces the AIML 1.0 definition.
-```java
-List<AIML> aimlFiles = new ArrayList<>();
+You can use the AIMLHandlerBuilder to parse handle AIMLs. See 
+<i>src/examples/java/examples/BasicExample.java</i>
 
-try (AIMLFileReader reader = new AIMLFileReader(file))
-{
-    aimlFiles = reader
-        .withBotMemory(botMem)
-        .stream()
-        .collect(Collectors.toList());
-}
-catch(Exception e)
-{
-    // TODO: handle exception
-}
-```
-This files can be used to feed the AIMLHandlerBuilder to create an AIMLHandler.
-```java
-AIMLHandler handler = new AIMLHandlerBuilder()
-    .nonStaticMemory(new HashMap<>())
-    .withBotMemory(botMem)
-    .withAiml(aimlFiles)
-    .build();                      
-```
- After creation it is possible to request answers.
-```java
-String response = handler.getAnswer(input);
-```
+If you just want to play around with the libary there is a command line client in <i>src/examples/java/examples/InteractiveExample.java</i>.
+Just Enter a line and get an answer. To stop the Example, send `q` as a request.
 
 ## Running the tests
 
