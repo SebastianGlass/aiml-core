@@ -3,6 +3,8 @@ buildscript {
     sonarVersion = "2.7.1"
     spotlessVersion= "3.25.0"
     junit5Version = "5.6.2"
+    guiceVersion = "4.2.3"
+    jaxbVersion = "2.3.1"
   }
   repositories {
     maven { url "https://plugins.gradle.org/m2/" }
@@ -45,21 +47,21 @@ sourceSets {
     }
  }
  
-archivesBaseName = "aiml-core"
-version = "1.0-SNAPSHOT"
+archivesBaseName = "ai.saxatus.aiml"
+version = "1.0.0"
  
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = 11
+targetCompatibility = 11
 
 dependencies {
     
   implementation "org.apache.commons:commons-lang3:3.1"
   implementation "commons-logging:commons-logging:1.2"
   implementation "org.reflections:reflections:0.9.10"
-  implementation "com.google.inject:guice:4.2.3"
-  implementation "com.google.inject.extensions:guice-assistedinject:4.2.3"
-  
-
+  implementation "com.google.inject:guice:${guiceVersion}"
+  implementation "com.google.inject.extensions:guice-assistedinject:${guiceVersion}"
+  implementation "javax.xml.bind:jaxb-api:${jaxbVersion}"
+  runtimeOnly "org.glassfish.jaxb:jaxb-runtime:${jaxbVersion}"
   
   testImplementation "org.mockito:mockito-core:2.7.22"
   testImplementation "org.jacoco:org.jacoco.agent:0.7+"
@@ -102,6 +104,7 @@ jacocoTestReport {
 
 sonarqube {
   properties {
+    property "sonar.projectName", "ai.saxatus.aiml"
     property "sonar.organization", "sgla-bitbucket"
     property "sonar.projectKey", "sgla_aiml-core"
     property "sonar.core.codeCoveragePlugin", "jacoco"
