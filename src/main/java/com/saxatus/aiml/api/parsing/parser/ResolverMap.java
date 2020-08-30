@@ -29,4 +29,9 @@ public class ResolverMap
         this.keys.add(clazz);
         this.values.add(resolver);
     }
+
+    public int size()
+    {
+        return keys.size();
+    }
 }

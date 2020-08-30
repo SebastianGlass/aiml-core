@@ -36,7 +36,7 @@ public class JaxbAIMLParserImpl implements AIMLParser
 
     private static final Log log = LogFactory.getLog(JaxbAIMLParserImpl.class);
 
-    private ResolverMap resolverByClass = new ResolverMap();
+    ResolverMap resolverByClass = new ResolverMap();
 
     private JaxbAIMLTransformer<TemplateTag> transformer;
     private String pattern;
@@ -96,18 +96,17 @@ public class JaxbAIMLParserImpl implements AIMLParser
 
     private String parseContentEnclosing(ContentEnclosingNode<?> s)
     {
-        if (s.getContent() != null)
+        if (s.getContent() == null)
         {
-            List<?> o = new ArrayList<>(s.getContent());
-            String childContent = o.stream()
-                            .map(a -> a instanceof String ? new TextNode((String)a) : a)
-                            .map(AbstractAIMLContentTag.class::cast)
-                            .map(this::parse)
-                            .collect(Collectors.joining(" "));
-            return s.getWrappedText(childContent);
+            return s.getWrappedText("");
         }
-
-        return s.getWrappedText("");
+        List<?> o = new ArrayList<>(s.getContent());
+        String childContent = o.stream()
+                        .map(a -> a instanceof String ? new TextNode((String)a) : a)
+                        .map(AbstractAIMLContentTag.class::cast)
+                        .map(this::parse)
+                        .collect(Collectors.joining(" "));
+        return s.getWrappedText(childContent);
     }
 
     private String parse(AIMLContentNode s)
@@ -116,16 +115,15 @@ public class JaxbAIMLParserImpl implements AIMLParser
         preprocessNodes(s);
 
         String content = resolverByClass.getResolverFor(s.getClass())
-                        .apply(s)
-                        .trim();
+                        .apply(s);
         if (content != null)
-            return content;
+            return content.trim();
         return "?";
     }
 
     private String resolveChildPattern(Object s)
     {
-        String childContent;
+        String childContent = "RANDOM PICKUP LINE";
         if (s instanceof ContentEnclosingNode<?>)
         {
             childContent = resolverByClass.getResolverFor(ContentEnclosingNode.class)
@@ -137,10 +135,6 @@ public class JaxbAIMLParserImpl implements AIMLParser
             childContent = resolverByClass.getResolverFor(LeafNode.class)
                             .apply(s)
                             .trim();
-        }
-        else
-        {
-            childContent = "RANDOM PICKUP LINE";
         }
         return childContent;
     }
