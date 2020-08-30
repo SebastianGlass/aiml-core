@@ -47,8 +47,8 @@ sourceSets {
     }
  }
  
-archivesBaseName = "aiml-core"
-version = "1.0-SNAPSHOT"
+archivesBaseName = "com.saxatus.aiml"
+version = "1.0.0"
  
 sourceCompatibility = 11
 targetCompatibility = 11
@@ -104,6 +104,7 @@ jacocoTestReport {
 
 sonarqube {
   properties {
+    property "sonar.projectName", "com.saxatus.aiml"
     property "sonar.organization", "sgla-bitbucket"
     property "sonar.projectKey", "sgla_aiml-core"
     property "sonar.core.codeCoveragePlugin", "jacoco"
