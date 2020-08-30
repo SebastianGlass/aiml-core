@@ -30,7 +30,7 @@ class RandomTagTest
     LiTag node3;
 
     @BeforeEach
-    void setup()
+    void setUp()
     {
         tag = new RandomTag();
         MockitoAnnotations.initMocks(this);

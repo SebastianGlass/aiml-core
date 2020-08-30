@@ -19,7 +19,7 @@ class TemplateTagTest
     TemplateTag tag;
 
     @BeforeEach
-    void setup()
+    void setUp()
     {
         tag = new TemplateTag();
     }

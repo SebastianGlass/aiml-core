@@ -18,7 +18,7 @@ class StarTagTest
     StarTag tag;
 
     @BeforeEach
-    void setup()
+    void setUp()
     {
         tag = new StarTag();
     }

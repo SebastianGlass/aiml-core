@@ -19,7 +19,7 @@ class LowercaseTagTest
     LowercaseTag tag;
 
     @BeforeEach
-    void setup()
+    void setUp()
     {
         tag = new LowercaseTag();
     }

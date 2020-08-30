@@ -19,7 +19,7 @@ class FormalTagTest
     FormalTag tag;
 
     @BeforeEach
-    void setup()
+    void setUp()
     {
         tag = new FormalTag();
     }

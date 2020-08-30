@@ -20,7 +20,7 @@ class GetTagTest
     Map<String, String> memory;
 
     @BeforeEach
-    void setup()
+    void setUp()
     {
         memory = new HashMap<>();
         tag = new GetTag();

@@ -34,7 +34,7 @@ class AIMLHandlerImplTest
     private AIMLHandlerImpl aimlHandler;
 
     @BeforeEach
-    void setup()
+    void setUp()
     {
         nonStatic = new HashMap<String, String>();
         MockitoAnnotations.initMocks(this);

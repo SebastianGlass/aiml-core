@@ -31,7 +31,7 @@ class ConditionTagTest
     LiTag node3;
 
     @BeforeEach
-    void setup()
+    void setUp()
     {
         MockitoAnnotations.initMocks(this);
         memory = new HashMap<>();

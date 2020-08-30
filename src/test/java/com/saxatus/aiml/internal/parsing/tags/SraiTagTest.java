@@ -20,7 +20,7 @@ class SraiTagTest
     SraiTag tag;
 
     @BeforeEach
-    void setup()
+    void setUp()
     {
         tag = new SraiTag();
     }

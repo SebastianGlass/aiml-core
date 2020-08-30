@@ -15,7 +15,7 @@ class BrTagTest
     BrTag tag;
 
     @BeforeEach
-    void setup()
+    void setUp()
     {
         tag = new BrTag();
     }

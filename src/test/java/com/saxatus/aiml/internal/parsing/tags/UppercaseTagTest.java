@@ -19,7 +19,7 @@ class UppercaseTagTest
     UppercaseTag tag;
 
     @BeforeEach
-    void setup()
+    void setUp()
     {
         tag = new UppercaseTag();
     }

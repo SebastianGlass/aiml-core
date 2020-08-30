@@ -29,7 +29,7 @@ class AIMLResolverTest
         private Dictionary<String, AIML> dict;
 
         @BeforeEach
-        void setup()
+        void setUp()
         {
             dict = new Dictionary<>();
             dict.put("A", new TreeSet<>(Arrays.asList(aiml("A B C _"), aiml("A B C D"), aiml("A B"), aiml("A B C"),

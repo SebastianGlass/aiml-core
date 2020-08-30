@@ -19,7 +19,7 @@ class ThinkTagTest
     ThinkTag tag;
 
     @BeforeEach
-    void setup()
+    void setUp()
     {
         tag = new ThinkTag();
     }

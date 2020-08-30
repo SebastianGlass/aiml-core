@@ -19,7 +19,7 @@ class LiTagTest
     LiTag tag;
 
     @BeforeEach
-    void setup()
+    void setUp()
     {
         tag = new LiTag();
 

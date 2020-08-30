@@ -20,7 +20,7 @@ class BotTagTest
     Map<String, String> memory;
 
     @BeforeEach
-    void setup()
+    void setUp()
     {
         memory = new HashMap<>();
         tag = new BotTag();

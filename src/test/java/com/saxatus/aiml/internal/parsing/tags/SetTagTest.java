@@ -23,7 +23,7 @@ class SetTagTest
     Map<String, String> memory;
 
     @BeforeEach
-    void setup()
+    void setUp()
     {
         memory = new HashMap<>();
         tag = new SetTag();

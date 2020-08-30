@@ -18,7 +18,7 @@ class SrTagTest
     SrTag tag;
 
     @BeforeEach
-    void setup()
+    void setUp()
     {
         tag = new SrTag();
     }

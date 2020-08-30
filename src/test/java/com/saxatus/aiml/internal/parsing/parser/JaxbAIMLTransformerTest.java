@@ -16,7 +16,7 @@ class JaxbAIMLTransformerTest
     JaxbAIMLTransformer<?> a;
 
     @BeforeEach
-    void setup()
+    void setUp()
     {
         a = new JaxbAIMLTransformer<>();
     }

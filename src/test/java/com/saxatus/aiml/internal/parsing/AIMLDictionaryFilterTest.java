@@ -15,7 +15,7 @@ class AIMLDictionaryFilterTest
     AIMLDictionaryFilter filter;
 
     @BeforeEach
-    void setup()
+    void setUp()
     {
         Dictionary<String, AIML> dict = new Dictionary<>();
         dict.put("A", new AIML("_ a", "", "a", "1", "", 1));
