@@ -14,6 +14,7 @@ import org.w3c.dom.Node;
 
 import com.google.inject.assistedinject.Assisted;
 import ai.saxatus.aiml.api.AIMLHandler;
+import ai.saxatus.aiml.api.AIMLResponse;
 import ai.saxatus.aiml.api.parsing.AIMLParser;
 import ai.saxatus.aiml.api.parsing.parser.AIMLTransformException;
 import ai.saxatus.aiml.api.parsing.parser.ResolverMap;
@@ -59,23 +60,24 @@ public class JaxbAIMLParserImpl implements AIMLParser
     void init()
     {
         resolverByClass.put(ContentNeedsOwnRequestNode.class, s -> {
-            String childContent = resolveChildPattern(s).toUpperCase();
+            String childContent = resolveChildPattern(s).getAnswer()
+                            .toUpperCase();
             return handler.increaseDepth()
                             .getAnswer(childContent);
         });
         resolverByClass.put(ContentEnclosingNode.class, this::parseContentEnclosing);
         resolverByClass.put(DecisionMakingNode.class, this::parseDecision);
-        resolverByClass.put(LeafNode.class, LeafNode::getText);
+        resolverByClass.put(LeafNode.class, a -> new AIMLResponse(a.getText(), a.toString()));
 
     }
 
     @Override
-    public String parse(Node node)
+    public AIMLResponse parse(Node node)
     {
         try
         {
             TemplateTag aiml = transformer.transform(node);
-            return parseContentEnclosing(aiml).trim();
+            return parseContentEnclosing(aiml);
         }
         catch(AIMLTransformException e)
         {
@@ -85,56 +87,55 @@ public class JaxbAIMLParserImpl implements AIMLParser
 
     }
 
-    private String parseDecision(DecisionMakingNode s)
+    private AIMLResponse parseDecision(DecisionMakingNode s)
     {
         LiNode node = s.getDecision();
-        String childContent = resolverByClass.getResolverFor(ContentEnclosingNode.class)
+        AIMLResponse childContent = resolverByClass.getResolverFor(ContentEnclosingNode.class)
                         .apply(node);
 
-        return s.getWrappedText(childContent);
+        return new AIMLResponse(s.getWrappedText(childContent.getAnswer()), s.toString());
     }
 
-    private String parseContentEnclosing(ContentEnclosingNode<?> s)
+    private AIMLResponse parseContentEnclosing(ContentEnclosingNode<?> s)
     {
         if (s.getContent() == null)
         {
-            return s.getWrappedText("");
+            return new AIMLResponse(s.getWrappedText(""), s.toString());
         }
         List<?> o = new ArrayList<>(s.getContent());
         String childContent = o.stream()
                         .map(a -> a instanceof String ? new TextNode((String)a) : a)
                         .map(AbstractAIMLContentTag.class::cast)
                         .map(this::parse)
+                        .map(AIMLResponse::getAnswer)
                         .collect(Collectors.joining(" "));
-        return s.getWrappedText(childContent);
+        return new AIMLResponse(s.getWrappedText(childContent), s.toString());
     }
 
-    private String parse(AIMLContentNode s)
+    private AIMLResponse parse(AIMLContentNode s)
     {
         // preprocessing
         preprocessNodes(s);
 
-        String content = resolverByClass.getResolverFor(s.getClass())
+        AIMLResponse content = resolverByClass.getResolverFor(s.getClass())
                         .apply(s);
         if (content != null)
-            return content.trim();
-        return "?";
+            return content;
+        return new AIMLResponse("?", null);
     }
 
-    private String resolveChildPattern(Object s)
+    private AIMLResponse resolveChildPattern(Object s)
     {
-        String childContent = "RANDOM PICKUP LINE";
+        AIMLResponse childContent = new AIMLResponse("RANDOM PICKUP LINE", null);
         if (s instanceof ContentEnclosingNode<?>)
         {
             childContent = resolverByClass.getResolverFor(ContentEnclosingNode.class)
-                            .apply(s)
-                            .trim();
+                            .apply(s);
         }
         else if (s instanceof LeafNode)
         {
             childContent = resolverByClass.getResolverFor(LeafNode.class)
-                            .apply(s)
-                            .trim();
+                            .apply(s);
         }
         return childContent;
     }

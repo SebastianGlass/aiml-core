@@ -12,6 +12,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import ai.saxatus.aiml.api.AIMLHandler;
 import ai.saxatus.aiml.api.AIMLHandlerBuilder;
+import ai.saxatus.aiml.api.AIMLResponse;
 import ai.saxatus.aiml.api.io.AIMLCreationException;
 import ai.saxatus.aiml.api.io.AIMLDirectoryReader;
 import ai.saxatus.aiml.module.AIMLModule;
@@ -59,7 +60,7 @@ public class InteractiveExample
                 System.out.print("Input: \t");
                 input = sc.nextLine();
                 handler.resetDepth();
-                String response = handler.getAnswer(input);
+                AIMLResponse response = handler.getAnswer(input);
                 System.out.println("Result:\t" + response);
             }
             while(!input.equals("q"));

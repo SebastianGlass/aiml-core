@@ -18,6 +18,7 @@ import org.mockito.MockitoAnnotations;
 import org.w3c.dom.Node;
 
 import ai.saxatus.aiml.api.AIMLHandler;
+import ai.saxatus.aiml.api.AIMLResponse;
 import ai.saxatus.aiml.internal.parsing.tags.BotTag;
 import ai.saxatus.aiml.internal.parsing.tags.ConditionTag;
 import ai.saxatus.aiml.internal.parsing.tags.GetTag;
@@ -54,7 +55,7 @@ class JaxbAIMLParserImplTest
         when(handler.getStaticMemory()).thenReturn(staticMemory);
         when(handler.getNonStaticMemory()).thenReturn(nonStaticMemory);
         when(handler.increaseDepth()).thenReturn(handler);
-        when(handler.getAnswer("SRAI PATTERN")).thenReturn("SRAI ANSWER");
+        when(handler.getAnswer("SRAI PATTERN")).thenReturn(new AIMLResponse("SRAI ANSWER", null));
 
         when(transformer.transform(node)).thenReturn(tag);
         when(tag.getWrappedText(anyString())).then(input -> "t(" + input.getArgument(0) + ")");
@@ -70,11 +71,11 @@ class JaxbAIMLParserImplTest
     @Test
     void testParseNodeNoContent() throws Exception
     {
-        String response = parser.parse(node);
-        assertEquals("t()", response);
+        AIMLResponse response = parser.parse(node);
+        assertEquals("t()", response.getAnswer());
         when(tag.getContent()).thenReturn(null);
         response = parser.parse(node);
-        assertEquals("t()", response);
+        assertEquals("t()", response.getAnswer());
 
     }
 
@@ -82,16 +83,16 @@ class JaxbAIMLParserImplTest
     void testParseNodeStringContent() throws Exception
     {
         when(tag.getContent()).thenReturn(Collections.singletonList(new TextNode("Hallo")));
-        String response = parser.parse(node);
-        assertEquals("t(Hallo)", response);
+        AIMLResponse response = parser.parse(node);
+        assertEquals("t(Hallo)", response.getAnswer());
     }
 
     @Test
     void testParseNodeWithStarRequiringNode() throws Exception
     {
         when(tag.getContent()).thenReturn(Collections.singletonList(new StarTag()));
-        String response = parser.parse(node);
-        assertEquals("t(works)", response);
+        AIMLResponse response = parser.parse(node);
+        assertEquals("t(works)", response.getAnswer());
     }
 
     @Test
@@ -100,8 +101,8 @@ class JaxbAIMLParserImplTest
         BotTag child = new BotTag();
         child.setName("bot");
         when(tag.getContent()).thenReturn(Collections.singletonList(child));
-        String response = parser.parse(node);
-        assertEquals("t(tob)", response);
+        AIMLResponse response = parser.parse(node);
+        assertEquals("t(tob)", response.getAnswer());
     }
 
     @Test
@@ -110,8 +111,8 @@ class JaxbAIMLParserImplTest
         GetTag child = new GetTag();
         child.setName("get");
         when(tag.getContent()).thenReturn(Collections.singletonList(child));
-        String response = parser.parse(node);
-        assertEquals("t(teg)", response);
+        AIMLResponse response = parser.parse(node);
+        assertEquals("t(teg)", response.getAnswer());
     }
 
     @Test
@@ -129,13 +130,13 @@ class JaxbAIMLParserImplTest
 
         child.setName("get");
         when(tag.getContent()).thenReturn(Collections.singletonList(child));
-        String response = parser.parse(node);
-        assertEquals("t(li1)", response);
+        AIMLResponse response = parser.parse(node);
+        assertEquals("t(li1)", response.getAnswer());
 
         child.setName("foo");
         when(tag.getContent()).thenReturn(Collections.singletonList(child));
         response = parser.parse(node);
-        assertEquals("t(li2)", response);
+        assertEquals("t(li2)", response.getAnswer());
     }
 
     @Test
@@ -144,8 +145,8 @@ class JaxbAIMLParserImplTest
         SraiTag child = mock(SraiTag.class);
         when(child.getWrappedText(any())).thenReturn("SRAI PATTERN");
         when(tag.getContent()).thenReturn(Collections.singletonList(child));
-        String response = parser.parse(node);
-        assertEquals("t(SRAI ANSWER)", response);
+        AIMLResponse response = parser.parse(node);
+        assertEquals("t(SRAI ANSWER)", response.getAnswer());
     }
 
     @Test
@@ -154,8 +155,8 @@ class JaxbAIMLParserImplTest
         SrTag child = mock(SrTag.class);
         when(child.getText()).thenReturn("SRAI PATTERN");
         when(tag.getContent()).thenReturn(Collections.singletonList(child));
-        String response = parser.parse(node);
-        assertEquals("t(SRAI ANSWER)", response);
+        AIMLResponse response = parser.parse(node);
+        assertEquals("t(SRAI ANSWER)", response.getAnswer());
     }
 
 }

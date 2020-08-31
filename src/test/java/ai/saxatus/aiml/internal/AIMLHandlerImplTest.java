@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import ai.saxatus.aiml.api.AIMLResponse;
 import ai.saxatus.aiml.api.io.AIMLCreationException;
 import ai.saxatus.aiml.api.parsing.AIML;
 import ai.saxatus.aiml.api.parsing.AIMLNotFoundException;
@@ -38,7 +39,7 @@ class AIMLHandlerImplTest
     {
         nonStatic = new HashMap<String, String>();
         MockitoAnnotations.initMocks(this);
-        when(aimlParser.parse(any())).thenReturn("it worked");
+        when(aimlParser.parse(any())).thenReturn(new AIMLResponse("it worked", null));
         List<AIML> list = Arrays.asList(new AIML("A B", "", null, null, "", 1),
                         new AIML("BRO KEN", "<>", null, null, "", 2), new AIML("A B", "", "that", "topic", "", 3));
         aimlHandler = new AIMLHandlerImpl(list, nonStatic, Collections.emptyMap(), null, aimlParserProvider);
@@ -74,7 +75,8 @@ class AIMLHandlerImplTest
     @Test
     void getAnswer2() throws AIMLNotFoundException, IOException
     {
-        assertEquals("it worked", aimlHandler.getAnswer("a b"));
+        assertEquals("it worked", aimlHandler.getAnswer("a b")
+                        .getAnswer());
         assertEquals("a b", aimlHandler.getInputHistory()
                         .get(0));
         assertEquals("it worked", aimlHandler.getOutputHistory()
@@ -85,21 +87,24 @@ class AIMLHandlerImplTest
     @Test
     void getAnswer3() throws AIMLNotFoundException, IOException
     {
-        assertEquals("it worked", aimlHandler.getAnswer("a b", "a b"));
+        assertEquals("it worked", aimlHandler.getAnswer("a b", "a b")
+                        .getAnswer());
 
     }
 
     @Test
     void getAnswer3InternalException() throws AIMLNotFoundException, IOException
     {
-        assertEquals("I've lost track, sorry.", aimlHandler.getAnswer("bro ken", "bro ken"));
+        assertEquals("I've lost track, sorry.", aimlHandler.getAnswer("bro ken", "bro ken")
+                        .getAnswer());
     }
 
     @Test
     void getAnswer2InternalException() throws AIMLNotFoundException, IOException
     {
-        when(aimlParser.parse(any())).thenReturn("it worked");
-        assertEquals("it worked", aimlHandler.getAnswer("NOT THERE"));
+        when(aimlParser.parse(any())).thenReturn(new AIMLResponse("it worked", null));
+        assertEquals("it worked", aimlHandler.getAnswer("NOT THERE")
+                        .getAnswer());
 
     }
 

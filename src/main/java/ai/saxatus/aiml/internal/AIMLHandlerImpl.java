@@ -19,6 +19,7 @@ import org.xml.sax.SAXException;
 import com.google.common.collect.Maps;
 import com.google.inject.assistedinject.Assisted;
 import ai.saxatus.aiml.api.AIMLHandler;
+import ai.saxatus.aiml.api.AIMLResponse;
 import ai.saxatus.aiml.api.parsing.AIML;
 import ai.saxatus.aiml.api.parsing.AIMLDictionaryFilter;
 import ai.saxatus.aiml.api.parsing.AIMLNotFoundException;
@@ -40,7 +41,7 @@ public class AIMLHandlerImpl implements AIMLHandler
 
     private final Dictionary<String, AIML> aimlDict;
     private final Map<String, String> botMemory;
-    private final Map<String, String> nonStaticMemory;
+    private Map<String, String> nonStaticMemory;
     private final List<String> inputs;
     private final List<String> outputs;
 
@@ -87,14 +88,14 @@ public class AIMLHandlerImpl implements AIMLHandler
     }
 
     @Override
-    public String getAnswer(String input)
+    public AIMLResponse getAnswer(String input)
     {
         inputs.add(input);
         try
         {
-            String answer = getAnswer(StringUtils.clearString(input), input);
-            nonStaticMemory.put("that", answer);
-            outputs.add(answer);
+            AIMLResponse answer = getAnswer(StringUtils.clearString(input), input);
+            nonStaticMemory.put("that", answer.getAnswer());
+            outputs.add(answer.getAnswer());
             return answer;
         }
         catch(AIMLNotFoundException e)
@@ -106,11 +107,11 @@ public class AIMLHandlerImpl implements AIMLHandler
     }
 
     @Override
-    public String getAnswer(String input, String real) throws AIMLNotFoundException
+    public AIMLResponse getAnswer(String input, String real) throws AIMLNotFoundException
     {
         if (this.depth >= 30)
         {
-            return "To deep senpai uwu";
+            return new AIMLResponse("To deep senpai uwu", null);
         }
         AIML aiml = new AIMLResolver(aimlDict, nonStaticMemory).getAIML(input);
         log.info(aiml);
@@ -121,18 +122,17 @@ public class AIMLHandlerImpl implements AIMLHandler
         return aimltoString(aiml, input);
     }
 
-    private String aimltoString(AIML aiml, String input)
+    private AIMLResponse aimltoString(AIML aiml, String input)
     {
         try
         {
             Node rootNode = XMLUtils.parseStringToXMLNode(aiml.getTemplate(), "template");
             AIMLParser parser = aimlParserProvider.provideTemplateParser(aiml.getPattern(), input, this);
-            return parser.parse(rootNode)
-                            .trim();
+            return parser.parse(rootNode);
         }
         catch(IOException | ParserConfigurationException | SAXException e)
         {
-            return "I've lost track, sorry.";
+            return new AIMLResponse("I've lost track, sorry.", null);
         }
 
     }
@@ -173,6 +173,7 @@ public class AIMLHandlerImpl implements AIMLHandler
         this.thatStars = thatStars;
     }
 
+    @Override
     public File getLearnFile()
     {
         return learnFile;
@@ -182,6 +183,12 @@ public class AIMLHandlerImpl implements AIMLHandler
     public Map<String, String> getStaticMemory()
     {
         return Maps.newHashMap(botMemory);
+    }
+
+    @Override
+    public void setNonStaticMemory(Map<String, String> memory)
+    {
+        this.nonStaticMemory = memory;
     }
 
     @Override
