@@ -14,6 +14,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import ai.saxatus.aiml.api.AIMLHandler;
 import ai.saxatus.aiml.api.AIMLHandlerBuilder;
+import ai.saxatus.aiml.api.AIMLResponse;
 import ai.saxatus.aiml.api.io.AIMLCreationException;
 import ai.saxatus.aiml.api.io.AIMLFileReader;
 import ai.saxatus.aiml.module.AIMLModule;
@@ -40,7 +41,7 @@ public class BasicExample
 
     public void getAnswer()
     {
-        String response;
+        AIMLResponse response;
         try
         {
 
@@ -49,28 +50,28 @@ public class BasicExample
             response = handler.getAnswer("Hello TestBot");
 
             log.info(response);
-            if (!"Hello User.".equals(response))
+            if (!"Hello User.".equals(response.getAnswer()))
                 System.exit(1);
 
             response = handler.getAnswer("Condition test");
 
             log.info(response);
-            if (!"No topic set.".equals(response))
+            if (!"No topic set.".equals(response.getAnswer()))
                 System.exit(1);
 
             response = handler.getAnswer("What's your name?");
             log.info(response);
-            if (!"My name is TestBot".equals(response))
+            if (!"My name is TestBot".equals(response.getAnswer()))
                 System.exit(1);
 
             response = handler.getAnswer("My name is User");
             log.info(response);
-            if (!"Random Name Sentence".equals(response))
+            if (!"Random Name Sentence".equals(response.getAnswer()))
                 System.exit(1);
 
             response = handler.getAnswer("Condition test");
             log.info(response);
-            if (!"Topic is names.".equals(response))
+            if (!"Topic is names.".equals(response.getAnswer()))
                 System.exit(1);
 
             log.info("Basic Example successful");

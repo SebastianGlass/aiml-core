@@ -9,9 +9,9 @@ import ai.saxatus.aiml.api.parsing.AIMLNotFoundException;
 public interface AIMLHandler
 {
 
-    String getAnswer(String input);
+    AIMLResponse getAnswer(String input);
 
-    String getAnswer(String input, String real) throws AIMLNotFoundException;
+    AIMLResponse getAnswer(String input, String real) throws AIMLNotFoundException;
 
     Map<String, String> getStaticMemory();
 
@@ -30,5 +30,7 @@ public interface AIMLHandler
     AIMLHandler increaseDepth();
 
     void resetDepth();
+
+    void setNonStaticMemory(Map<String, String> memory);
 
 }
