@@ -1,4 +1,5 @@
 rootProject.name = 'ai.saxatus.aiml'
 
-include ':ai.saxatus.aiml.api'
-include ':ai.saxatus.aiml.jaxb'
+include ':aiml-api'
+include ':aiml-jaxb'
+include ':example'

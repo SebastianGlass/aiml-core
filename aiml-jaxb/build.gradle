@@ -22,25 +22,6 @@ repositories {
   mavenCentral()
   jcenter()
 }
-
-sourceSets {
-    main {
-        java {
-            srcDirs 'src/main/java'
-        }
-        resources {
-            srcDirs 'src/main/resources'
-        }
-    }
-    example {
-        java {
-            srcDirs 'src/example/java'
-        }
-        resources {
-            srcDirs 'src/example/resources'
-        }
-    }
- }
  
 archivesBaseName = "ai.saxatus.aiml.jaxb"
 version = "1.0.0"
@@ -50,7 +31,7 @@ targetCompatibility = 11
 
 dependencies {
   
-  implementation project(":ai.saxatus.aiml.api")
+  implementation project(":aiml-api")
   
   implementation "org.apache.commons:commons-lang3:3.1"
   implementation "commons-logging:commons-logging:1.2"
