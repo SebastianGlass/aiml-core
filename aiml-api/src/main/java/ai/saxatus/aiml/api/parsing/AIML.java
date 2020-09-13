@@ -21,6 +21,8 @@ public class AIML implements Serializable, Comparable<AIML>
     private final String source;
     private final int line;
 
+    static AIMLComparator aimlComperator = new AIMLComparator();
+
     public AIML(String pattern, String template, String that, String topic, String source, int line)
     {
         super();
@@ -40,15 +42,14 @@ public class AIML implements Serializable, Comparable<AIML>
         {
             s += ", that=" + that.trim();
         }
-        if (source != null)
-        {
-            s += ", src=" + source.trim();
-        }
         if (topic != null)
         {
             s += ", topic=" + topic.trim();
         }
-
+        if (source != null)
+        {
+            s += ", src=" + source.trim();
+        }
         s += ", line=" + line + "]";
         return s;
     }
@@ -86,7 +87,7 @@ public class AIML implements Serializable, Comparable<AIML>
     @Override
     public int compareTo(AIML o)
     {
-        return new AIMLComparator().compare(this, o);
+        return aimlComperator.compare(this, o);
 
     }
 
