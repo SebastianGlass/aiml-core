@@ -22,25 +22,6 @@ repositories {
   mavenCentral()
   jcenter()
 }
-
-sourceSets {
-    main {
-        java {
-            srcDirs 'src/main/java'
-        }
-        resources {
-            srcDirs 'src/main/resources'
-        }
-    }
-    example {
-        java {
-            srcDirs 'src/example/java'
-        }
-        resources {
-            srcDirs 'src/example/resources'
-        }
-    }
- }
  
 archivesBaseName = "ai.saxatus.aiml"
 version = "1.0.0"
