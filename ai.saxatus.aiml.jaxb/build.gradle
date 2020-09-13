@@ -1,7 +1,5 @@
 buildscript {
   ext {
-    sonarVersion = "2.7.1"
-    spotlessVersion= "3.25.0"
     junit5Version = "5.6.2"
     guiceVersion = "4.2.3"
     jaxbVersion = "2.3.1"
@@ -11,17 +9,14 @@ buildscript {
     mavenCentral()
     jcenter()
   }
-  dependencies { classpath "com.diffplug.spotless:spotless-plugin-gradle:${spotlessVersion}" }
 }
 
 plugins {
-  id "org.sonarqube" version "2.8"
   id "jacoco" 
 }
 
 apply plugin: "java"
 apply plugin: "eclipse"
-apply plugin: "com.diffplug.gradle.spotless"
 
 repositories {
   mavenCentral()
@@ -47,7 +42,7 @@ sourceSets {
     }
  }
  
-archivesBaseName = "ai.saxatus.aiml"
+archivesBaseName = "ai.saxatus.aiml.jaxb"
 version = "1.0.0"
  
 sourceCompatibility = 11
@@ -76,14 +71,6 @@ dependencies {
   testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junit5Version}"
 }
 
-spotless {
-  enforceCheck = false	
-    java {  
-      target project.fileTree(projectDir) { include "**/*.java" }
-      eclipse().configFile new File("${projectDir}/CodeStyle.xml")
-  }
-}
-
 test {
   useJUnitPlatform()
   finalizedBy jacocoTestReport // report is always generated after tests run
@@ -101,16 +88,5 @@ jacocoTestReport {
     html.destination file("${buildDir}/reports/coverage")
     //for XML
     xml.destination file(TestCoverageFile)
-  }
-}
-
-sonarqube {
-  properties {
-    property "sonar.projectName", "ai.saxatus.aiml.jaxb"
-    property "sonar.organization", "ai-saxatus"
-    property "sonar.projectKey", "ai.saxatus.aiml.jaxb"
-    property "sonar.core.codeCoveragePlugin", "jacoco"
-    property "sonar.host.url", "https://sonarcloud.io"
-    property "sonar.coverage.jacoco.xmlReportPaths", TestCoverageFile
   }
 }
