@@ -18,10 +18,10 @@ import org.xml.sax.SAXException;
 
 import com.google.common.collect.Maps;
 import com.google.inject.assistedinject.Assisted;
+
 import ai.saxatus.aiml.api.AIMLHandler;
 import ai.saxatus.aiml.api.AIMLResponse;
 import ai.saxatus.aiml.api.parsing.AIML;
-import ai.saxatus.aiml.api.parsing.AIMLDictionaryFilter;
 import ai.saxatus.aiml.api.parsing.AIMLNotFoundException;
 import ai.saxatus.aiml.api.parsing.AIMLParser;
 import ai.saxatus.aiml.api.provider.AIMLParserProvider;
@@ -159,13 +159,6 @@ public class AIMLHandlerImpl implements AIMLHandler
     public List<String> getThatStar()
     {
         return thatStars;
-    }
-
-    public Dictionary<String, AIML> getTopicDict()
-    {
-        String topic = nonStaticMemory.get("topic");
-        return new AIMLDictionaryFilter(aimlDict).applyTopicFilter(topic)
-                        .getDictionary();
     }
 
     @Override

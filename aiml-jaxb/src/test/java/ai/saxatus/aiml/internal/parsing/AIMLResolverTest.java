@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.TreeSet;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -21,6 +22,88 @@ class AIMLResolverTest
 
     private int k = 0;
     AIMLResolver resolver;
+
+    @Nested
+    class TopicAIMLResolverTest
+    {
+        private Dictionary<String, AIML> dict;
+
+        Map<String, String> mem = new HashMap<>();
+
+        @BeforeEach
+        void setUp()
+        {
+            dict = new Dictionary<>();
+            dict.put("A", new TreeSet<>(
+                            Arrays.asList(aiml("_", null, "wrongTopic"), aiml("A B", null, "topic"), aiml("*"))));
+
+            resolver = new AIMLResolver(dict, mem);
+        }
+
+        @Test
+        void test()
+        {
+            mem.put("topic", "topic");
+            AIML aiml = resolver.getAIML("A B");
+            assertNotNull(aiml);
+            assertEquals("A B", aiml.getPattern());
+            assertEquals("topic", aiml.getTopic());
+
+        }
+
+        @Test
+        void testOtherTopic()
+        {
+            mem.put("topic", "buscuits");
+            AIML aiml = resolver.getAIML("A B");
+            assertNotNull(aiml);
+            assertEquals("*", aiml.getPattern());
+            assertEquals(null, aiml.getTopic());
+
+        }
+
+    }
+
+    @Nested
+    class ThatAIMLResolverTest
+    {
+        private Dictionary<String, AIML> dict;
+
+        Map<String, String> mem = new HashMap<>();
+
+        @BeforeEach
+        void setUp()
+        {
+            dict = new Dictionary<>();
+            dict.put("A", new TreeSet<>(
+                            Arrays.asList(aiml("_", "wrongThat", null), aiml("A B", "that", null), aiml("*"))));
+
+            resolver = new AIMLResolver(dict, mem);
+        }
+
+        @Test
+        void test()
+        {
+            mem.put("that", "that");
+            AIML aiml = resolver.getAIML("A B");
+            assertNotNull(aiml);
+            assertEquals("A B", aiml.getPattern());
+            assertEquals("that", aiml.getThat());
+
+        }
+
+        @Test
+        void testOtherTopic()
+        {
+            mem.put("that", "buscuits");
+            AIML aiml = resolver.getAIML("A B");
+            assertNotNull(aiml);
+            assertEquals("*", aiml.getPattern());
+            assertEquals(null, aiml.getThat());
+
+        }
+
+    }
 
     @Nested
     class BasicAIMLResolverTest
@@ -91,6 +174,11 @@ class AIMLResolverTest
 
     private AIML aiml(String pattern)
     {
-        return new AIML(pattern, "", null, null, "", k++);
+        return aiml(pattern, null, null);
+    }
+
+    private AIML aiml(String pattern, String that, String topic)
+    {
+        return new AIML(pattern, "", that, topic, "", k++);
     }
 }

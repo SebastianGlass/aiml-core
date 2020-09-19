@@ -1,10 +1,8 @@
 package ai.saxatus.aiml.api.parsing;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -90,25 +88,6 @@ class AIMLTest
         AIML.aimlComperator = comparator;
         aiml.compareTo(aimlWithBoth);
         verify(comparator).compare(aiml, aimlWithBoth);
-    }
-
-    @Test
-    void testHasMatchingTopic()
-    {
-        assertTrue(aiml.hasMatchingTopic("unknown"));
-        assertFalse(aiml.hasMatchingTopic("falsetopic"));
-        assertFalse(aimlWithTopic.hasMatchingTopic("falsetopic"));
-        assertTrue(aimlWithTopic.hasMatchingTopic("topic"));
-    }
-
-    @Test
-    void testHasMatchingThat()
-    {
-
-        assertTrue(aiml.hasMatchingThat("unknown"));
-        assertFalse(aiml.hasMatchingThat("falsethat"));
-        assertFalse(aimlWithThat.hasMatchingThat("falsethat"));
-        assertTrue(aimlWithThat.hasMatchingThat("that"));
     }
 
     @Test

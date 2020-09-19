@@ -57,14 +57,6 @@ class AIMLHandlerImplTest
     }
 
     @Test
-    void testGetTopic() throws AIMLCreationException
-    {
-        nonStatic.put("topic", "topic");
-        assertEquals(1, aimlHandler.getTopicDict()
-                        .size());
-    }
-
-    @Test
     void testThatStar() throws AIMLCreationException
     {
         List<String> list = Collections.singletonList("star");
