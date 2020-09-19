@@ -81,6 +81,8 @@ public class XMLUtils
     public static void writeXMLDocumentToFile(Document doc, File output) throws TransformerException
     {
         Transformer transformer = transformerFactory.newTransformer();
+        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
         transformer.transform(new DOMSource(doc), new StreamResult(output));
     }
 
