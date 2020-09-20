@@ -1,7 +1,6 @@
 package ai.saxatus.aiml.api.io;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -9,36 +8,29 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
-
 import ai.saxatus.aiml.api.parsing.AIML;
 
-public class AIMLDirectoryReader extends AbstractAIMLFileReader
+public class AIMLDirectoryReader implements AIMLProvider
 {
 
     private static final Predicate<File> isAIMLFile = f -> f.getName()
                     .endsWith(".aiml");
 
-    public AIMLDirectoryReader(File file)
-    {
-        super(file);
-    }
+    private File path;
 
-    protected AIMLDirectoryReader(AIMLDirectoryReader aimlFileReader)
+    public AIMLDirectoryReader(File path)
     {
-        super(aimlFileReader);
+        this.path = path;
     }
 
     @Override
     public Collection<AIML> provide() throws AIMLCreationException
     {
-        if (!this.file.isDirectory())
+        if (!this.path.isDirectory())
         {
-            throw new AIMLCreationException("Can't read file " + file.getAbsolutePath());
+            throw new AIMLCreationException("Can't read file " + path.getAbsolutePath());
         }
-        return getFilesRecursive(this.file, isAIMLFile).map(this::loadFromFileOrDoNothing)
+        return getFilesRecursive(this.path, isAIMLFile).map(this::loadFromFileOrDoNothing)
                         .flatMap(Collection::stream)
                         .collect(Collectors.toList());
 
@@ -48,9 +40,9 @@ public class AIMLDirectoryReader extends AbstractAIMLFileReader
     {
         try
         {
-            return loadFromFile(t);
+            return new AIMLFileReader(t).provide();
         }
-        catch(ParserConfigurationException | SAXException | IOException e)
+        catch(AIMLCreationException e)
         {
             return Collections.emptyList();
         }
