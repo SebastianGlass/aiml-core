@@ -13,6 +13,7 @@ buildscript {
 
 plugins {
   id "jacoco" 
+  id "maven-publish"
 }
 
 apply plugin: "java"
@@ -24,6 +25,7 @@ repositories {
 }
  
 archivesBaseName = "ai.saxatus.aiml"
+def artifactId = "aiml-api"
 version = "1.0.0"
  
 sourceCompatibility = 11
@@ -66,5 +68,17 @@ jacocoTestReport {
     html.destination file("${buildDir}/reports/coverage")
     //for XML
     xml.destination file(TestCoverageFile)
+  }
+}
+
+publishing {
+  publications {
+    maven(MavenPublication) {
+      groupId = "${project.archivesBaseName}"
+      artifactId = "${artifactId}"
+      version = "${project.version}"
+
+      from components.java
+    }
   }
 }
