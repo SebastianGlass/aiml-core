@@ -5,8 +5,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.function.BiFunction;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ai.saxatus.aiml.api.utils.StringUtils;
 
@@ -18,7 +18,7 @@ public class AIMLComparator implements Comparator<AIML>
     // Needs to be a char before all letters and numbers
     private static final String UNDERSCORE_REPLACEMENT = "\u0001";
 
-    private static final Log log = LogFactory.getLog(AIMLComparator.class);
+    private static final Logger log = LogManager.getLogger(AIMLComparator.class);
 
     private static List<BiFunction<AIML, AIML, Integer>> filterChain = Arrays.asList(AIMLComparator::compareTopic,
                     AIMLComparator::compareThat, AIMLComparator::comparePatternRegex,
@@ -37,7 +37,7 @@ public class AIMLComparator implements Comparator<AIML>
                         .filter(r -> r != 0)
                         .findFirst()
                         .orElseGet(() -> {
-                            log.warn("Duplicated AIML Signature: \n\t" + aiml1 + ",\n\t" + aiml2);
+                            log.warn("Duplicated AIML Signature:\n\t{}\n\t{}", aiml1, aiml2);
                             return aiml2.getLine() - aiml1.getLine();
                         });
 

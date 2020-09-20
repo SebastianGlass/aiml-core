@@ -8,8 +8,8 @@ import java.util.TreeSet;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -21,7 +21,7 @@ import ai.saxatus.aiml.api.utils.XMLUtils;
 
 public abstract class AbstractAIMLFileReader implements AIMLProvider
 {
-    private static final Log log = LogFactory.getLog(AbstractAIMLFileReader.class);
+    private static final Logger log = LogManager.getLogger(AbstractAIMLFileReader.class);
 
     private int readingLine = 1;
 
