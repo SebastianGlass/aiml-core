@@ -40,7 +40,8 @@ public class ConditionTag extends AbstractOptionsTag implements NonStaticMemoryU
         }
         return getContent().stream()
                         .filter(a -> a.getValue() == null || a.getValue()
-                                        .equals(memory.getOrDefault(name, "Unknown")))
+                                        .equals("*") || a.getValue()
+                                                        .equals(memory.getOrDefault(name, "Unknown")))
                         .findFirst()
                         .orElse(FALLBACK_LITAG);
     }
