@@ -1,21 +1,23 @@
 package ai.saxatus.aiml.api;
 
+import ai.saxatus.aiml.api.parsing.AIML;
+
 public class AIMLResponse
 {
 
     private final String string;
     private final String resolutionXML;
-    private String aimlPattern;
+    private final AIML aiml;
 
     public AIMLResponse(String string, String resolutionXML)
     {
         this(string, null, resolutionXML);
     }
 
-    public AIMLResponse(String string, String aimlPattern, String resolutionXML)
+    public AIMLResponse(String string, AIML aiml, String resolutionXML)
     {
         this.string = string.trim();
-        this.aimlPattern = aimlPattern;
+        this.aiml = aiml;
         this.resolutionXML = resolutionXML == null ? "" : resolutionXML;
     }
 
@@ -29,9 +31,9 @@ public class AIMLResponse
         return resolutionXML;
     }
 
-    public String getAimlPattern()
+    public AIML getAiml()
     {
-        return aimlPattern;
+        return aiml;
     }
 
     @Override
@@ -40,7 +42,7 @@ public class AIMLResponse
         return "AIMLResponse [string=" + string + ", resolutionXML=" + resolutionXML + "]";
     }
 
-    public AIMLResponse withAIMLPattern(String aiml)
+    public AIMLResponse withAIML(AIML aiml)
     {
         return new AIMLResponse(string, aiml, resolutionXML);
     }

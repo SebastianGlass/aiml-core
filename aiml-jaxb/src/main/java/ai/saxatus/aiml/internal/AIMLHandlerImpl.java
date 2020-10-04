@@ -129,11 +129,11 @@ public class AIMLHandlerImpl implements AIMLHandler
             Node rootNode = XMLUtils.parseStringToXMLNode(aiml.getTemplate(), "template");
             AIMLParser parser = aimlParserProvider.provideTemplateParser(aiml.getPattern(), input, this);
             return parser.parse(rootNode)
-                            .withAIMLPattern(aiml.getPattern());
+                            .withAIML(aiml);
         }
         catch(IOException | ParserConfigurationException | SAXException e)
         {
-            return new AIMLResponse("I've lost track, sorry.", aiml.getPattern(), null);
+            return new AIMLResponse("I've lost track, sorry.", aiml, null);
         }
 
     }
