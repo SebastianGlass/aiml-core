@@ -14,9 +14,9 @@ definitions:
         script:
           - ./gradlew build
         artifacts:
-          - build/classes/**
-          - build/jacoco/**
-          - build/libs/**
+          - '**/build/classes/**'
+          - '**/build/jacoco/**'
+          - '**/build/libs/**'
 
     - step: &sonar
         name: analyze on SonarCloud
