@@ -1,0 +1,18 @@
+<aiml>
+	<category>
+		<pattern>Test</pattern>
+		<template>Correct
+		</template>
+	</category>
+	<category>
+		<pattern>RANDOM PICKUP LINE</pattern>
+		<template>Random</template>
+	</category>
+	<topic name="Topic">
+		<category>
+			<pattern>Topic</pattern>
+			<template>is set</template><!--taught by Unknown -->
+
+		</category>
+	</topic>
+</aiml>
