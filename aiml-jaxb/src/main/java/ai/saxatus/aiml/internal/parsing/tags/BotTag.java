@@ -1,9 +1,11 @@
 package ai.saxatus.aiml.internal.parsing.tags;
 
-import java.util.Map;
+import java.util.Optional;
+import java.util.function.UnaryOperator;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import ai.saxatus.aiml.api.parsing.tags.LeafNode;
 import ai.saxatus.aiml.api.parsing.tags.StaticMemoryUsingNode;
@@ -16,7 +18,8 @@ public class BotTag extends AbstractAIMLContentTag implements LeafNode, StaticMe
     @XmlAttribute(name = "name")
     private String name;
 
-    private Map<String, String> memory;
+    @XmlTransient
+    private UnaryOperator<String> memory;
 
     public void setName(String name)
     {
@@ -24,7 +27,7 @@ public class BotTag extends AbstractAIMLContentTag implements LeafNode, StaticMe
     }
 
     @Override
-    public void setStaticMemory(Map<String, String> memory)
+    public void setStaticMemory(UnaryOperator<String> memory)
     {
         this.memory = memory;
     }
@@ -32,7 +35,8 @@ public class BotTag extends AbstractAIMLContentTag implements LeafNode, StaticMe
     @Override
     public String getText()
     {
-        return memory.getOrDefault(name.toLowerCase(), "Unknown");
+        return Optional.ofNullable(memory.apply(name.toLowerCase()))
+                        .orElse("Unknown");
     }
 
     @Override

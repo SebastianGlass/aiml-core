@@ -39,7 +39,7 @@ class BasicIntegrationTest
         botMem.put("name", "TestBot");
 
         this.handler = aimlHandlerBuilder.nonStaticMemory(new HashMap<>())
-                        .withBotMemory(botMem)
+                        .withBotMemory(botMem::get)
                         .withAimlProvider(new AIMLFileReader(file))
                         .build();
     }
