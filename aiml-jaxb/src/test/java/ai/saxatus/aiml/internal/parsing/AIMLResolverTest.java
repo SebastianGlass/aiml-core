@@ -8,10 +8,14 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeSet;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import ai.saxatus.aiml.api.parsing.AIML;
 import ai.saxatus.aiml.api.utils.Dictionary;
@@ -105,71 +109,56 @@ class AIMLResolverTest
 
     }
 
-    @Nested
-    class BasicAIMLResolverTest
+    private Dictionary<String, AIML> dict;
+
+    @BeforeEach
+    void setUp()
     {
+        dict = new Dictionary<>();
+        dict.put("A", new TreeSet<>(
+                        Arrays.asList(aiml("A B C _"), aiml("A B C D"), aiml("A B"), aiml("A B C"), aiml("A B *"))));
 
-        private Dictionary<String, AIML> dict;
+        resolver = new AIMLResolver(dict, new HashMap<>());
+    }
 
-        @BeforeEach
-        void setUp()
-        {
-            dict = new Dictionary<>();
-            dict.put("A", new TreeSet<>(Arrays.asList(aiml("A B C _"), aiml("A B C D"), aiml("A B"), aiml("A B C"),
-                            aiml("A B *"))));
+    @ParameterizedTest(name = "getAIML(\"{0}\") shuld return \"{1}\"")
+    @MethodSource("provideGetAIMLData")
+    void testGetAIML(String input, String expected)
+    {
+        AIML aiml = resolver.getAIML(input);
+        assertNotNull(aiml);
+        assertEquals(expected, aiml.getPattern());
+    }
 
-            resolver = new AIMLResolver(dict, new HashMap<>());
-        }
+    private static Stream<Arguments> provideGetAIMLData()
+    {
+        return Stream.of(Arguments.of("A B C D", "A B C _"), Arguments.of("A B C", "A B C"),
+                        Arguments.of("A B", "A B"));
+    }
 
-        @Test
-        void testHighPrioWildcard()
-        {
-            AIML aiml = resolver.getAIML("A B C D");
-            assertNotNull(aiml);
-            assertEquals("A B C _", aiml.getPattern());
-        }
+    @Test
+    void testHighPrioWildcardAtStart()
+    {
+        dict.put("_", new TreeSet<>(Arrays.asList(aiml("_"))));
+        AIML aiml = resolver.getAIML("B");
+        assertNotNull(aiml);
+        assertEquals("_", aiml.getPattern());
+    }
 
-        @Test
-        void testLowPrioWildcard()
-        {
-            AIML aiml = resolver.getAIML("A B C");
-            assertNotNull(aiml);
-            assertEquals("A B C", aiml.getPattern());
-        }
+    @Test
+    void testLowPrioWildcardAtStart()
+    {
+        dict.put("*", new TreeSet<>(Arrays.asList(aiml("*"))));
+        AIML aiml = resolver.getAIML("B");
+        assertNotNull(aiml);
+        assertEquals("*", aiml.getPattern());
+    }
 
-        @Test
-        void testHighPrioWildcardAtStart()
-        {
-            dict.put("_", new TreeSet<>(Arrays.asList(aiml("_"))));
-            AIML aiml = resolver.getAIML("B");
-            assertNotNull(aiml);
-            assertEquals("_", aiml.getPattern());
-        }
-
-        @Test
-        void testLowPrioWildcardAtStart()
-        {
-            dict.put("*", new TreeSet<>(Arrays.asList(aiml("*"))));
-            AIML aiml = resolver.getAIML("B");
-            assertNotNull(aiml);
-            assertEquals("*", aiml.getPattern());
-        }
-
-        @Test
-        void testNoFound()
-        {
-            AIML aiml = resolver.getAIML("A E");
-            assertNull(aiml);
-        }
-
-        @Test
-        void test()
-        {
-            AIML aiml = resolver.getAIML("A B");
-            assertNotNull(aiml);
-            assertEquals("A B", aiml.getPattern());
-
-        }
+    @Test
+    void testNoFound()
+    {
+        AIML aiml = resolver.getAIML("A E");
+        assertNull(aiml);
     }
 
     private AIML aiml(String pattern)
@@ -181,4 +170,5 @@ class AIMLResolverTest
     {
         return new AIML(pattern, "", that, topic, "", k++);
     }
+
 }
