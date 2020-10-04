@@ -37,7 +37,7 @@ public class JaxbAIMLParserImpl implements AIMLParser
 
     private static final Log log = LogFactory.getLog(JaxbAIMLParserImpl.class);
 
-    ResolverMap resolverByClass = new ResolverMap();
+    ResolverMap<AIMLResponse> resolverByClass = new ResolverMap<>();
 
     private JaxbAIMLTransformer<TemplateTag> transformer;
     private String pattern;
