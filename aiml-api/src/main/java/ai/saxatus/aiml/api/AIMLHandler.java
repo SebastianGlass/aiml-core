@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.List;
 import java.util.Map;
 
-import ai.saxatus.aiml.api.parsing.AIMLNotFoundException;
+import ai.saxatus.aiml.api.exceptions.AIMLNotFoundException;
 
 public interface AIMLHandler
 {

@@ -16,7 +16,7 @@ import com.google.inject.Injector;
 import ai.saxatus.aiml.api.AIMLHandler;
 import ai.saxatus.aiml.api.AIMLHandlerBuilder;
 import ai.saxatus.aiml.api.AIMLResponse;
-import ai.saxatus.aiml.api.io.AIMLCreationException;
+import ai.saxatus.aiml.api.exceptions.AIMLCreationException;
 import ai.saxatus.aiml.api.io.AIMLFileReader;
 import ai.saxatus.aiml.module.AIMLModule;
 

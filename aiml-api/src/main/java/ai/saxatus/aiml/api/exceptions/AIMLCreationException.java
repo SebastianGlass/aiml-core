@@ -1,4 +1,4 @@
-package ai.saxatus.aiml.api.io;
+package ai.saxatus.aiml.api.exceptions;
 
 public class AIMLCreationException extends Exception
 {

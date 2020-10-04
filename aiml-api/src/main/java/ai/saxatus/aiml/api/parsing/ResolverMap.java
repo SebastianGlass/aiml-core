@@ -1,4 +1,4 @@
-package ai.saxatus.aiml.api.parsing.parser;
+package ai.saxatus.aiml.api.parsing;
 
 import java.util.ArrayList;
 import java.util.List;

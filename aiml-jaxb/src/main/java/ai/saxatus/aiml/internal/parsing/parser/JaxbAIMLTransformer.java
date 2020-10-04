@@ -13,8 +13,9 @@ import org.reflections.ReflectionsException;
 import org.w3c.dom.Node;
 
 import com.google.inject.Singleton;
-import ai.saxatus.aiml.api.parsing.parser.AIMLTransformException;
-import ai.saxatus.aiml.api.parsing.parser.AIMLTransformer;
+
+import ai.saxatus.aiml.api.exceptions.AIMLTransformException;
+import ai.saxatus.aiml.api.parsing.AIMLTransformer;
 import ai.saxatus.aiml.api.parsing.tags.AIMLContentNode;
 
 @Singleton

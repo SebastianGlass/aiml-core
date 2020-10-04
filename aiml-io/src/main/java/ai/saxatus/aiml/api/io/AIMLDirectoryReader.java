@@ -8,7 +8,9 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import ai.saxatus.aiml.api.exceptions.AIMLCreationException;
 import ai.saxatus.aiml.api.parsing.AIML;
+import ai.saxatus.aiml.api.provider.AIMLProvider;
 
 public class AIMLDirectoryReader implements AIMLProvider
 {

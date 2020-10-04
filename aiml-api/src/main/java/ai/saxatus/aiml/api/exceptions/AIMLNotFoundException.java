@@ -1,4 +1,4 @@
-package ai.saxatus.aiml.api.parsing;
+package ai.saxatus.aiml.api.exceptions;
 
 public class AIMLNotFoundException extends Exception
 {
@@ -7,19 +7,13 @@ public class AIMLNotFoundException extends Exception
 
     public AIMLNotFoundException(String input)
     {
+        super("No AIML found for input: " + input);
         this.input = input;
     }
 
     public String getInput()
     {
         return input;
-    }
-
-    @Override
-    public String toString()
-    {
-        return this.getClass()
-                        .getName() + " caused by input: " + input;
     }
 
 }

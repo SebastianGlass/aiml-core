@@ -10,10 +10,10 @@ import javax.inject.Inject;
 
 import ai.saxatus.aiml.api.AIMLHandler;
 import ai.saxatus.aiml.api.AIMLHandlerBuilder;
-import ai.saxatus.aiml.api.io.AIMLCreationException;
-import ai.saxatus.aiml.api.io.AIMLProvider;
+import ai.saxatus.aiml.api.exceptions.AIMLCreationException;
 import ai.saxatus.aiml.api.parsing.AIML;
 import ai.saxatus.aiml.api.provider.AIMLHandlerProvider;
+import ai.saxatus.aiml.api.provider.AIMLProvider;
 
 public class AIMLHandlerBuilderImpl implements AIMLHandlerBuilder
 {

@@ -5,7 +5,7 @@ import com.google.inject.assistedinject.FactoryModuleBuilder;
 import ai.saxatus.aiml.api.AIMLHandler;
 import ai.saxatus.aiml.api.AIMLHandlerBuilder;
 import ai.saxatus.aiml.api.parsing.AIMLParser;
-import ai.saxatus.aiml.api.parsing.parser.AIMLTransformer;
+import ai.saxatus.aiml.api.parsing.AIMLTransformer;
 import ai.saxatus.aiml.api.provider.AIMLHandlerProvider;
 import ai.saxatus.aiml.api.provider.AIMLParserProvider;
 import ai.saxatus.aiml.internal.AIMLHandlerBuilderImpl;

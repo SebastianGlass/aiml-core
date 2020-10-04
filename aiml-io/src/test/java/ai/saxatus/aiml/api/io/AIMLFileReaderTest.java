@@ -9,6 +9,7 @@ import java.util.function.Predicate;
 
 import org.junit.jupiter.api.Test;
 
+import ai.saxatus.aiml.api.exceptions.AIMLCreationException;
 import ai.saxatus.aiml.api.parsing.AIML;
 
 class AIMLFileReaderTest

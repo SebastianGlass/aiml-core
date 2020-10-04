@@ -21,8 +21,8 @@ import com.google.inject.assistedinject.Assisted;
 
 import ai.saxatus.aiml.api.AIMLHandler;
 import ai.saxatus.aiml.api.AIMLResponse;
+import ai.saxatus.aiml.api.exceptions.AIMLNotFoundException;
 import ai.saxatus.aiml.api.parsing.AIML;
-import ai.saxatus.aiml.api.parsing.AIMLNotFoundException;
 import ai.saxatus.aiml.api.parsing.AIMLParser;
 import ai.saxatus.aiml.api.provider.AIMLParserProvider;
 import ai.saxatus.aiml.api.utils.Dictionary;

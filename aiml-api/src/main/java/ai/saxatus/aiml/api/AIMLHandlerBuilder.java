@@ -3,8 +3,8 @@ package ai.saxatus.aiml.api;
 import java.io.File;
 import java.util.Map;
 
-import ai.saxatus.aiml.api.io.AIMLCreationException;
-import ai.saxatus.aiml.api.io.AIMLProvider;
+import ai.saxatus.aiml.api.exceptions.AIMLCreationException;
+import ai.saxatus.aiml.api.provider.AIMLProvider;
 
 public interface AIMLHandlerBuilder
 {

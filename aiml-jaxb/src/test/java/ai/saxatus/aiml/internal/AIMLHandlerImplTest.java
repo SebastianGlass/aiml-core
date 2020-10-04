@@ -18,9 +18,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import ai.saxatus.aiml.api.AIMLResponse;
-import ai.saxatus.aiml.api.io.AIMLCreationException;
+import ai.saxatus.aiml.api.exceptions.AIMLCreationException;
+import ai.saxatus.aiml.api.exceptions.AIMLNotFoundException;
 import ai.saxatus.aiml.api.parsing.AIML;
-import ai.saxatus.aiml.api.parsing.AIMLNotFoundException;
 import ai.saxatus.aiml.api.parsing.AIMLParser;
 import ai.saxatus.aiml.api.provider.AIMLParserProvider;
 
