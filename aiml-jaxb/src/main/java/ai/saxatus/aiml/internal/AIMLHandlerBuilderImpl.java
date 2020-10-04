@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
@@ -22,7 +23,7 @@ public class AIMLHandlerBuilderImpl implements AIMLHandlerBuilder
     private AIMLProvider aimlProvider;
 
     private Map<String, String> nonStaticMemory = new HashMap<>();
-    private Map<String, String> botMemory = new HashMap<>();
+    private UnaryOperator<String> botMemory = s -> null;
     private File learnFile = new File("./temp.aiml");
 
     @Inject
@@ -31,25 +32,29 @@ public class AIMLHandlerBuilderImpl implements AIMLHandlerBuilder
         this.aimlHandlerProvider = aimlHandlerProvider;
     }
 
+    @Override
     public AIMLHandlerBuilderImpl withLearnFile(File file)
     {
         this.learnFile = file;
         return this;
     }
 
+    @Override
     public AIMLHandlerBuilderWithAimlsImpl withAiml(AIMLProvider provider)
     {
         this.aimlProvider = provider;
         return new AIMLHandlerBuilderWithAimlsImpl();
     }
 
+    @Override
     public AIMLHandlerBuilderImpl nonStaticMemory(Map<String, String> nonStaticMemory)
     {
         this.nonStaticMemory = nonStaticMemory;
         return this;
     }
 
-    public AIMLHandlerBuilderWithBotMemory withBotMemory(Map<String, String> botMemory)
+    @Override
+    public AIMLHandlerBuilderWithBotMemory withBotMemory(UnaryOperator<String> botMemory)
     {
         this.botMemory = botMemory;
         return new AIMLHandlerBuilderWithBotMemoryImpl();
@@ -57,6 +62,7 @@ public class AIMLHandlerBuilderImpl implements AIMLHandlerBuilder
 
     public class AIMLHandlerBuilderWithBotMemoryImpl implements AIMLHandlerBuilderWithBotMemory
     {
+        @Override
         public AIMLHandlerBuilderWithAimls withAimlProvider(AIMLProvider provider)
         {
             aimlProvider = provider;
@@ -66,6 +72,7 @@ public class AIMLHandlerBuilderImpl implements AIMLHandlerBuilder
 
     public class AIMLHandlerBuilderWithAimlsImpl implements AIMLHandlerBuilderWithAimls
     {
+        @Override
         public AIMLHandler build() throws AIMLCreationException
         {
 

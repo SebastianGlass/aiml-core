@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.UnaryOperator;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -42,7 +43,8 @@ class AIMLHandlerImplTest
         when(aimlParser.parse(any())).thenReturn(new AIMLResponse("it worked", null));
         List<AIML> list = Arrays.asList(new AIML("A B", "", null, null, "", 1),
                         new AIML("BRO KEN", "<>", null, null, "", 2), new AIML("A B", "", "that", "topic", "", 3));
-        aimlHandler = new AIMLHandlerImpl(list, nonStatic, Collections.emptyMap(), null, aimlParserProvider);
+        aimlHandler = new AIMLHandlerImpl(list, nonStatic, s -> "foo".equals(s) ? "bar" : null, null,
+                        aimlParserProvider);
 
         when(aimlParserProvider.provideTemplateParser(any(), any(), any())).thenReturn(aimlParser);
 
@@ -104,6 +106,20 @@ class AIMLHandlerImplTest
     void getAnswer3NoAIMLException() throws AIMLNotFoundException, IOException
     {
         assertThrows(AIMLNotFoundException.class, () -> aimlHandler.getAnswer("NOT THERE", "NOT THERE"));
+    }
+
+    @Test
+    void testReplaceBotTagsInPattern() throws Exception
+    {
+        String result = AIMLHandlerImpl.replaceBotTagsInPattern("input <BOT NAME=\"a\"/>", s -> s);
+        assertEquals("input A", result);
+    }
+
+    @Test
+    public void testGetStaticMemory() throws Exception
+    {
+        UnaryOperator<String> f = aimlHandler.getStaticMemory();
+        assertEquals("bar", f.apply("foo"));
     }
 
 }

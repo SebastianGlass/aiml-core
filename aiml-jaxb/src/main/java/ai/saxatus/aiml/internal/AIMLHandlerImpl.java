@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.UnaryOperator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,7 +17,6 @@ import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
-import com.google.common.collect.Maps;
 import com.google.inject.assistedinject.Assisted;
 
 import ai.saxatus.aiml.api.AIMLHandler;
@@ -40,7 +40,7 @@ public class AIMLHandlerImpl implements AIMLHandler
     private static final Log log = LogFactory.getLog(AIMLHandlerImpl.class);
 
     private final Dictionary<String, AIML> aimlDict;
-    private final Map<String, String> botMemory;
+    private final UnaryOperator<String> botMemory;
     private Map<String, String> nonStaticMemory;
     private final List<String> inputs;
     private final List<String> outputs;
@@ -55,7 +55,7 @@ public class AIMLHandlerImpl implements AIMLHandler
 
     @Inject
     public AIMLHandlerImpl(@Assisted List<AIML> aimls, @Assisted("non-static") Map<String, String> nonStaticMemory,
-                    @Assisted("static") Map<String, String> botMemory, @Assisted File learnfile,
+                    @Assisted("static") UnaryOperator<String> botMemory, @Assisted File learnfile,
                     AIMLParserProvider aimlParserProvider)
     {
         this.botMemory = botMemory;
@@ -72,14 +72,14 @@ public class AIMLHandlerImpl implements AIMLHandler
 
     }
 
-    static String replaceBotTagsInPattern(String string, Map<String, String> botMemory)
+    static String replaceBotTagsInPattern(String string, UnaryOperator<String> botMemory)
     {
 
         final Matcher matcher = pattern.matcher(string);
 
         if (matcher.find())
         {
-            return StringUtils.innerTrim(string.replaceAll(BOT_TAG_REGEX, " " + botMemory.get(matcher.group(1)
+            return StringUtils.innerTrim(string.replaceAll(BOT_TAG_REGEX, " " + botMemory.apply(matcher.group(1)
                             .toLowerCase())
                             .toUpperCase()));
         }
@@ -174,9 +174,9 @@ public class AIMLHandlerImpl implements AIMLHandler
     }
 
     @Override
-    public Map<String, String> getStaticMemory()
+    public UnaryOperator<String> getStaticMemory()
     {
-        return Maps.newHashMap(botMemory);
+        return botMemory;
     }
 
     @Override

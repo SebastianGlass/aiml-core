@@ -52,7 +52,7 @@ class JaxbAIMLParserImplTest
         Map<String, String> nonStaticMemory = new HashMap<>();
         nonStaticMemory.put("get", "teg");
 
-        when(handler.getStaticMemory()).thenReturn(staticMemory);
+        when(handler.getStaticMemory()).thenReturn(staticMemory::get);
         when(handler.getNonStaticMemory()).thenReturn(nonStaticMemory);
         when(handler.increaseDepth()).thenReturn(handler);
         when(handler.getAnswer("SRAI PATTERN")).thenReturn(new AIMLResponse("SRAI ANSWER", null));

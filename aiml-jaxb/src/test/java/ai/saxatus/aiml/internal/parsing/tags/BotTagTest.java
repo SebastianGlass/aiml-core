@@ -24,7 +24,7 @@ class BotTagTest
     {
         memory = new HashMap<>();
         tag = new BotTag();
-        tag.setStaticMemory(memory);
+        tag.setStaticMemory(memory::get);
         tag.setName("foo");
     }
 

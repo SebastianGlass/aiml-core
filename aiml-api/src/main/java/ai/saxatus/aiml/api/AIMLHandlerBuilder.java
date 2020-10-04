@@ -2,6 +2,7 @@ package ai.saxatus.aiml.api;
 
 import java.io.File;
 import java.util.Map;
+import java.util.function.UnaryOperator;
 
 import ai.saxatus.aiml.api.exceptions.AIMLCreationException;
 import ai.saxatus.aiml.api.provider.AIMLProvider;
@@ -15,7 +16,7 @@ public interface AIMLHandlerBuilder
 
     AIMLHandlerBuilderWithAimls withAiml(AIMLProvider aimlProvider);
 
-    AIMLHandlerBuilderWithBotMemory withBotMemory(Map<String, String> botMemory);
+    AIMLHandlerBuilderWithBotMemory withBotMemory(UnaryOperator<String> botMemory);
 
     public interface AIMLHandlerBuilderWithBotMemory
     {
